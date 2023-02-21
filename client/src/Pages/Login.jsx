@@ -16,7 +16,6 @@ import {
   InputGroup,
   Stack,
   Link,
-  useBreakpointValue,
 } from "@chakra-ui/react";
 import logo from "../Utils/logo.png";
 import laptop from "../Utils/laptop.avif";
