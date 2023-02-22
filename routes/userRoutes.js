@@ -1,5 +1,5 @@
 const express = require("express");
-const { registerController, loginController, singleUser, getAllUser,userUpdate, deleteUser, resetpassword } = require("../controllers/userController");
+const { registerController, loginController, singleUser, getAllUser,userUpdate, deleteUser, resetpassword, sendUserPasswordResetEmail } = require("../controllers/userController");
 const authorisation = require("../middlewares/authenticate.middleware");
 
 const userRoute = express.Router();
@@ -36,6 +36,11 @@ userRoute.delete("/delete", deleteUser);
 //update password
 
 userRoute.post("/resetpassword",authorisation, resetpassword);
+
+
+// send email forget password
+
+userRoute.post("/forgot", sendUserPasswordResetEmail);
 
 
 
