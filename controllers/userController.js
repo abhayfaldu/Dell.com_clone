@@ -175,8 +175,13 @@ exports.deleteUser = async (req, res) => {
 
 exports.resetpassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body;
-  
+
   try {
+    if (!oldPassword || !newPassword) {
+      return res
+        .status(201)
+        .send({ success: false, message: "Please Fill Credentials" });
+    }
     //checking user existence
     const user = await userModel.findOne({ _id: req.body.user });
     if (!user) {
@@ -186,7 +191,7 @@ exports.resetpassword = async (req, res) => {
     }
 
     // check user old password
-    const match = comparePassword(oldPassword, user.password);
+    const match =await comparePassword(oldPassword, user.password);
     if (!match) {
       return res
         .status(401)
@@ -208,4 +213,53 @@ exports.resetpassword = async (req, res) => {
   }
 };
 
+
+
+// send email forget password
+
+
+exports.sendUserPasswordResetEmail = async (req, res) => {
+  const email = req.body.email;
+
+  try {
+    if (!email) {
+      return res.status(201).send({ success: false, message: "Please Enter Email" });
+    };
+    const user = await userModel.findOne({ email: email });
+
+    if (!user) {
+      return res.status(404).send({ success: false, message: "User Not Found" });
+    }
+
+    // secret key to verify user
+
+    const secret = user._id + process.env.SECRET_KEY;
+    const token = JWT.sign({ userID: user._id }, secret, {
+      expiresIn: '15m'
+    });
+
+    //link for user
+    const link = `http://127.0.0.1:3000/users/forgot/${user._id}/${token}`
+
+
+    res.status(200).send({success:true,message:"Email Sent to Your mail",link})
+  } catch (error) {
+    return res.status(401).send({ success: false, message: "Something went wrong" });
+  }
+}
+
+
+// after send email save the user new password if valid
+
+
+// exports.saveUserForgotPassword = async (req, res) => {
+//   const { password, confirmPassword } = req.body;
+//   const { id, token } = req.params;
+//   try {
+//     const user = awa
+    
+//   } catch (error) {
+    
+//   }
+// }
 
