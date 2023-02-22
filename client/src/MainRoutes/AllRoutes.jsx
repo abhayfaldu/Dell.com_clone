@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Footer from "../Components/Footer";
 import Navbar from "../Components/Navbar";
+import SubNavbar from "../Components/SubNavbar";
 import Homepage from "../Pages/Homepage";
 import NotFound from "../Pages/NotFound";
 
@@ -12,7 +13,7 @@ const AllRoutes = () => {
         path="/"
         element={
           <>
-            <Navbar /> <Homepage /> <Footer />
+            <Navbar /> <SubNavbar /> <Homepage /> <Footer />
           </>
         }
       ></Route>
