@@ -2,7 +2,7 @@ const { comparePassword, hashedPassword } = require("../helper/authPassword");
 const userModel = require("../models/User.model");
 const JWT = require("jsonwebtoken");
 
-const registerController = async (req, res) => {
+ exports.registerController = async (req, res) => {
   try {
     const { first_name, last_name, email, password } = req.body;
     //validations
@@ -48,7 +48,11 @@ const registerController = async (req, res) => {
   }
 };
 
-const loginController = async (req, res) => {
+
+// user login
+
+
+exports.loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -67,7 +71,7 @@ const loginController = async (req, res) => {
     }
 
     // check  password
-    const match =await comparePassword(password, user.password);
+    const match = await comparePassword(password, user.password);
     if (!match) {
       return res.status(200).send({
         success: false,
@@ -97,4 +101,111 @@ const loginController = async (req, res) => {
   }
 };
 
-module.exports = { registerController, loginController };
+
+
+
+//  get single user admin
+exports.singleUser = async (req, res) => {
+  try {
+    const user = await userModel.findOne({ _id: req.params.id });
+    if (!user) {
+      return res
+        .status(404)
+        .send({ success: false, message: "User Not Found" });
+    }
+    return res.status(200).send({ success: true, user });
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ success: false, message: "Something went wrong" });
+  }
+};
+
+
+//get all user admin
+
+
+exports.getAllUser = async (req, res) => {
+  try {
+    const users = await userModel.find().select("-password");
+    if (!user) {
+      return res
+        .status(404)
+        .send({ success: false, message: "User Not Found" });
+    }
+    return res.status(200).send({ success: true, users,total:users.length });
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ success: false, message: "Something went wrong" });
+  }
+};
+
+
+//user update profile
+
+
+exports.userUpdate = async (req, res) => {
+  req.body = delete req.body.password;
+  try {
+    const user = await userModel.findByIdAndUpdate({ _id: req.body.user },req.body);
+      res.status(200).send({ success: true, message: "User Updated Sucessfully" , user});
+
+  } catch (error) {
+    res.status(404).send({ success: false, message: "User Not Found" });
+  }
+}
+
+
+// delete user
+
+
+exports.deleteUser = async (req, res) => {
+  try {
+    await userModel.findByIdAndDelete({ _id: req.body.user });
+    res.status(200).send({ success: true, message: "User Deleted Sucessfully" });
+  } catch (error) {
+    res.status(404).send({ success: false, message: "User Not Found" });
+  }
+}
+
+
+// reset password password
+
+
+exports.resetpassword = async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  
+  try {
+    //checking user existence
+    const user = await userModel.findOne({ _id: req.body.user });
+    if (!user) {
+      return res
+        .status(404)
+        .send({ success: false, message: "User Not Found" });
+    }
+
+    // check user old password
+    const match = comparePassword(oldPassword, user.password);
+    if (!match) {
+      return res
+        .status(401)
+        .send({ success: false, message: "Incorrect Password" });
+    }
+
+    // hash user new password
+
+    const hashPassword = await hashedPassword(newPassword);
+
+    // update password
+    await userModel.findByIdAndUpdate({ _id: req.body.user }, { password: hashPassword });
+
+    return res.status(200).send({ success: true, message: "Password updated successfully" });
+
+
+  } catch (error) {
+    return res.status(404).send({ success: false, message: "User Not Found" });
+  }
+};
+
+
