@@ -11,7 +11,6 @@ import {
   FormControl,
   Input,
   Text,
-  Center,
   InputRightElement,
   InputGroup,
   Stack,
@@ -19,7 +18,6 @@ import {
 } from "@chakra-ui/react";
 import logo from "../Utils/logo.png";
 import laptop from "../Utils/laptop.avif";
-import { FcGoogle } from "react-icons/fc";
 import {
   ViewIcon,
   ViewOffIcon,
@@ -28,7 +26,7 @@ import {
 } from "@chakra-ui/icons";
 import PersonIcon from "@mui/icons-material/Person";
 
-const Login = () => {
+const Reset = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -38,30 +36,23 @@ const Login = () => {
         py={[0, 10, 20]}
         direction={{ base: "column-reverse", md: "row" }}
       >
-        <VStack w="full" h="full" p={10} spacing={10}  /*bg={"red.50"}*/>
+        <VStack w="full" h="full" p={10} spacing={10} /*bg={"red.50"}*/>
           <VStack spacing={10} alignItems="center">
             <Image src={logo} alt="mylogo" w={200} />
 
-            <Heading>Sign In</Heading>
-            <Button
-              _hover={{
-                bg: "blue.100",
-              }}
-              w={"full"}
-              variant={"outline"}
-              leftIcon={<FcGoogle />}
-            >
-              <Center>
-                <Text>Sign in with Google</Text>
-              </Center>
-            </Button>
+            <Heading>Change Password</Heading>
+            <Text fontWeight={400} fontSize={[12,14,16]}>
+              Enter the email address associated with your Dell account to
+              receive one-time password
+            </Text>
+
             <form style={{ width: "100%" }}>
               <FormControl mb={10}>
-                <Input placeholder="Email Address"></Input>
-              </FormControl>
-              <FormControl mb={10}>
                 <InputGroup>
-                  <Input type={showPassword ? "text" : "password"} />
+                  <Input
+                    placeholder="Enter Old Password"
+                    type={showPassword ? "text" : "password"}
+                  />
                   <InputRightElement h={"full"}>
                     <Button
                       variant={"ghost"}
@@ -74,10 +65,24 @@ const Login = () => {
                   </InputRightElement>
                 </InputGroup>
               </FormControl>
-              <Text align={"center"} mb={10}>
-                Don't remember your password?{" "}
-                <Link color={"blue.400"}> Create or Reset password</Link>
-              </Text>
+              <FormControl mb={10}>
+                <InputGroup>
+                  <Input
+                    placeholder="Enter New Password"
+                    type={showPassword ? "text" : "password"}
+                  />
+                  <InputRightElement h={"full"}>
+                    <Button
+                      variant={"ghost"}
+                      onClick={() =>
+                        setShowPassword((showPassword) => !showPassword)
+                      }
+                    >
+                      {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+              </FormControl>
               <Stack spacing={10} pt={2}>
                 <Button
                   loadingText="Submitting"
@@ -88,24 +93,12 @@ const Login = () => {
                     bg: "blue.500",
                   }}
                 >
-                  Login
+                  Change Password
                 </Button>
               </Stack>
             </form>
-            <Text>OR</Text>
-            <Button
-              _hover={{
-                bg: "blue.100",
-              }}
-              colorScheme="blue.500"
-              variant="outline"
-              w="full"
-            >
-              Send One-time Password
-            </Button>
             <Text align={"center"}>
-              Don't have a LapDen account?{" "}
-              <Link color={"blue.400"}>Create an account</Link>
+              Forgot Password? <Link color={"blue.400"}>Click Here</Link>
             </Text>
           </VStack>
         </VStack>
@@ -157,4 +150,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Reset;
