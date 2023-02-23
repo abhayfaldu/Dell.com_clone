@@ -1,5 +1,5 @@
 const express = require("express");
-const { registerController, loginController, singleUser, getAllUser,userUpdate, deleteUser, resetpassword, sendUserPasswordResetEmail } = require("../controllers/userController");
+const { registerController, loginController, singleUser, getAllUser,userUpdate, deleteUser, resetpassword, sendUserPasswordResetEmail, saveUserForgotPassword } = require("../controllers/userController");
 const authorisation = require("../middlewares/authenticate.middleware");
 
 const userRoute = express.Router();
@@ -20,17 +20,17 @@ userRoute.get("/:id", singleUser);
 
 //all users
 
-userRoute.get("/getall", getAllUser);
+userRoute.get("/", getAllUser);
 
 
 // update user profile
 
-userRoute.patch("/update",authorisation, userUpdate);
+userRoute.patch("/update:id",authorisation, userUpdate);
 
 
 // delete user
 
-userRoute.delete("/delete", deleteUser); 
+userRoute.delete("/delete:id", deleteUser); 
 
 
 //update password
@@ -40,7 +40,13 @@ userRoute.post("/resetpassword",authorisation, resetpassword);
 
 // send email forget password
 
-userRoute.post("/forgot", sendUserPasswordResetEmail);
+userRoute.post("/forgotpassword", sendUserPasswordResetEmail);
+
+
+//save forgot password
+
+
+userRoute.post("/saveforgotpassword/:id/:token", saveUserForgotPassword);
 
 
 

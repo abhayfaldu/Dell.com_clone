@@ -1,3 +1,4 @@
+const ApiFeatures = require("../helper/ApiFeatures");
 const productModel = require("../models/productModel");
 
 // create product
@@ -15,10 +16,19 @@ exports.createProduct = async (req, res) => {
 
 // get all product
 
+
+
+
 exports.getAllProduct = async (req, res) => {
+  const resultPerPage = 5;
   try {
-    const products = await productModel.find();
     const totalCount = await productModel.countDocuments();
+    const apiFeature = new ApiFeatures(productModel.find(), req.query)
+      .search()
+      .filter()
+      .pagination(resultPerPage);
+
+    const products = await apiFeature.query;
     res
       .status(200)
       .send({ success: true, message: "Success", products, totalCount });

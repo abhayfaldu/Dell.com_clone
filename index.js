@@ -4,6 +4,7 @@ const connectDB = require("./configs/db");
 const cors = require("cors");
 const colors = require("colors");
 const userRoute = require("./routes/userRoutes");
+const productRoute = require("./routes/productRoutes");
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(cors());
 
 //routes
 app.use("/users", userRoute);
+app.use("/products",productRoute)
 
 
 //default home

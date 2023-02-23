@@ -7,9 +7,8 @@ const productSchema = new mongoose.Schema({
   },
   rating: {
     type: Number,
-    default: 0,
   },
-  noOfReview: { type: Number },
+  number_of_reviews: { type: Number },
   category: {
     type: String,
     required: [true, "Please Enter Category"],
@@ -43,7 +42,7 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please Enter GraphicsCard"],
   },
-  os: {
+  OS: {
     type: String,
     required: [true, "Please Enter Operating System"],
   },
