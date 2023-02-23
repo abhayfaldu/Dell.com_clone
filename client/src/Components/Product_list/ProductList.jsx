@@ -24,15 +24,16 @@ const ProductList = () => {
 			m={"auto"}
 			p={3}
 			flexDir={"column"}
-			w={["100%", "100%", "100%", "100%", "1645px"]}
+			w={["100%", "100%", "100%", "100%", "100%", "1645px"]}
+			border={"2px solid red"}
 		>
 			{/* Page heading */}
 			<Heading my={5}>Inspiron Laptops & 2-in-1 PCs</Heading>
 
 			{/* Page content */}
-			<Flex gap={3} textAlign="left">
+			<Flex gap={6} textAlign="left">
 				{/* Filter section */}
-				<Box flex={1}>
+				<Box flex={1} display={["none", "none", "none", "block", "block"]}>
 					<Box style={filterBoxStyle}>filter content</Box>
 					<Box style={filterBoxStyle}>filter content</Box>
 					<Box style={filterBoxStyle}>filter content</Box>
@@ -55,7 +56,7 @@ const ProductList = () => {
 							<Skeleton h={"20rem"} w="full"></Skeleton>
 						</>
 					) : (
-						<SimpleGrid gap={3}>
+						<SimpleGrid gap={4}>
 							{products.length &&
 								products.map((product, i) => {
 									return (
