@@ -8,6 +8,8 @@ import SubNavbar from "../Components/SubNavbar";
 import Homepage from "../Pages/Homepage";
 import NotFound from "../Pages/NotFound";
 import AddProduct from "../Dashboard/AddProduct";
+import AdminStore from "../Dashboard/Store";
+import AdminCustomer from "../Dashboard/Customer";
 
 const AllRoutes = () => {
   return (
@@ -23,6 +25,8 @@ const AllRoutes = () => {
       <Route path="/products" element={<ProductList />}></Route>
       <Route path="/dashboard" element={<Dashboard />}></Route>
       <Route path="/addproduct" element={<AddProduct />}></Route>
+      <Route path="/adminstore" element={<AdminStore />}></Route>
+      <Route path="/admincustomer" element={<AdminCustomer />}></Route>
       <Route path="*" element={<NotFound />}></Route>
     </Routes>
   );

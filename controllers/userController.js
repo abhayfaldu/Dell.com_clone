@@ -3,7 +3,9 @@ const userModel = require("../models/User.model");
 const JWT = require("jsonwebtoken");
 const transporter = require("../configs/emailConfig");
 
+
 //register --
+
 
 exports.registerController = async (req, res) => {
   try {
@@ -124,7 +126,11 @@ exports.singleUser = async (req, res) => {
 exports.getAllUser = async (req, res) => {
   try {
     const users = await userModel.find().select("-password");
-    console.log(users);
+    if (!users) {
+      return res
+        .status(404)
+        .send({ success: false, message: "User Not Found" });
+    }
     return res.status(200).send({ success: true, users, total: users.length });
   } catch (error) {
     return res
@@ -140,15 +146,13 @@ exports.getAllUser = async (req, res) => {
 //user update profile
 
 exports.userUpdate = async (req, res) => {
-  req.body = delete req.body.password;
+  delete req.body.password;
+  const ID = req.params.id;
   try {
-    const user = await userModel.findByIdAndUpdate(
-      { _id: req.body.user },
-      req.body
-    );
+    const user = await userModel.findByIdAndUpdate({ _id: ID }, req.body);
     res
       .status(200)
-      .send({ success: true, message: "User Updated Sucessfully", user });
+      .send({ success: true, message: "User Updated Sucessfully" });
   } catch (error) {
     res.status(404).send({ success: false, message: "User Not Found" });
   }
@@ -157,8 +161,9 @@ exports.userUpdate = async (req, res) => {
 // delete user
 
 exports.deleteUser = async (req, res) => {
+  const ID = req.params.id;
   try {
-    await userModel.findByIdAndDelete({ _id: req.body.user });
+    await userModel.findByIdAndDelete({ _id: ID });
     res
       .status(200)
       .send({ success: true, message: "User Deleted Sucessfully" });
