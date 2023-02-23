@@ -2,7 +2,7 @@ const { comparePassword, hashedPassword } = require("../helper/authPassword");
 const userModel = require("../models/User.model");
 const JWT = require("jsonwebtoken");
 
- exports.registerController = async (req, res) => {
+exports.registerController = async (req, res) => {
   try {
     const { first_name, last_name, email, password } = req.body;
     //validations
@@ -48,9 +48,7 @@ const JWT = require("jsonwebtoken");
   }
 };
 
-
 // user login
-
 
 exports.loginController = async (req, res) => {
   try {
@@ -101,9 +99,6 @@ exports.loginController = async (req, res) => {
   }
 };
 
-
-
-
 //  get single user admin
 exports.singleUser = async (req, res) => {
   try {
@@ -121,19 +116,17 @@ exports.singleUser = async (req, res) => {
   }
 };
 
-
 //get all user admin
-
 
 exports.getAllUser = async (req, res) => {
   try {
     const users = await userModel.find().select("-password");
-    if (!user) {
+    if (!users) {
       return res
         .status(404)
         .send({ success: false, message: "User Not Found" });
     }
-    return res.status(200).send({ success: true, users,total:users.length });
+    return res.status(200).send({ success: true, users, total: users.length });
   } catch (error) {
     return res
       .status(500)
@@ -141,37 +134,36 @@ exports.getAllUser = async (req, res) => {
   }
 };
 
-
 //user update profile
 
-
 exports.userUpdate = async (req, res) => {
-  req.body = delete req.body.password;
+  delete req.body.password;
+  const ID = req.params.id;
   try {
-    const user = await userModel.findByIdAndUpdate({ _id: req.body.user },req.body);
-      res.status(200).send({ success: true, message: "User Updated Sucessfully" , user});
-
+    const user = await userModel.findByIdAndUpdate({ _id: ID }, req.body);
+    res
+      .status(200)
+      .send({ success: true, message: "User Updated Sucessfully" });
   } catch (error) {
     res.status(404).send({ success: false, message: "User Not Found" });
   }
-}
-
+};
 
 // delete user
 
-
 exports.deleteUser = async (req, res) => {
+  const ID = req.params.id;
   try {
-    await userModel.findByIdAndDelete({ _id: req.body.user });
-    res.status(200).send({ success: true, message: "User Deleted Sucessfully" });
+    await userModel.findByIdAndDelete({ _id: ID });
+    res
+      .status(200)
+      .send({ success: true, message: "User Deleted Sucessfully" });
   } catch (error) {
     res.status(404).send({ success: false, message: "User Not Found" });
   }
-}
-
+};
 
 // reset password password
-
 
 exports.resetpassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body;
@@ -191,7 +183,7 @@ exports.resetpassword = async (req, res) => {
     }
 
     // check user old password
-    const match =await comparePassword(oldPassword, user.password);
+    const match = await comparePassword(oldPassword, user.password);
     if (!match) {
       return res
         .status(401)
@@ -203,63 +195,67 @@ exports.resetpassword = async (req, res) => {
     const hashPassword = await hashedPassword(newPassword);
 
     // update password
-    await userModel.findByIdAndUpdate({ _id: req.body.user }, { password: hashPassword });
+    await userModel.findByIdAndUpdate(
+      { _id: req.body.user },
+      { password: hashPassword }
+    );
 
-    return res.status(200).send({ success: true, message: "Password updated successfully" });
-
-
+    return res
+      .status(200)
+      .send({ success: true, message: "Password updated successfully" });
   } catch (error) {
     return res.status(404).send({ success: false, message: "User Not Found" });
   }
 };
 
-
-
 // send email forget password
-
 
 exports.sendUserPasswordResetEmail = async (req, res) => {
   const email = req.body.email;
 
   try {
     if (!email) {
-      return res.status(201).send({ success: false, message: "Please Enter Email" });
-    };
+      return res
+        .status(201)
+        .send({ success: false, message: "Please Enter Email" });
+    }
     const user = await userModel.findOne({ email: email });
 
     if (!user) {
-      return res.status(404).send({ success: false, message: "User Not Found" });
+      return res
+        .status(404)
+        .send({ success: false, message: "User Not Found" });
     }
 
     // secret key to verify user
 
     const secret = user._id + process.env.SECRET_KEY;
     const token = JWT.sign({ userID: user._id }, secret, {
-      expiresIn: '15m'
+      expiresIn: "15m",
     });
 
     //link for user
-    const link = `http://127.0.0.1:3000/users/forgot/${user._id}/${token}`
+    const link = `http://127.0.0.1:3000/users/forgot/${user._id}/${token}`;
 
-
-    res.status(200).send({success:true,message:"Email Sent to Your mail",link})
+    res
+      .status(200)
+      .send({ success: true, message: "Email Sent to Your mail", link });
   } catch (error) {
-    return res.status(401).send({ success: false, message: "Something went wrong" });
+    return res
+      .status(401)
+      .send({ success: false, message: "Something went wrong" });
   }
-}
-
+};
 
 // after send email save the user new password if valid
-
 
 // exports.saveUserForgotPassword = async (req, res) => {
 //   const { password, confirmPassword } = req.body;
 //   const { id, token } = req.params;
 //   try {
 //     const user = awa
-    
+
 //   } catch (error) {
-    
+
 //   }
 // }
-

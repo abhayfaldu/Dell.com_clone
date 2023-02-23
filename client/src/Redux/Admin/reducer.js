@@ -23,7 +23,7 @@ import {
 } from "./actionTypes";
 
 const instialState = {
-  user: [],
+  users: [],
   product: [],
   isLoading: false,
   isError: false,
@@ -71,7 +71,7 @@ const reducer = (state = instialState, { type, payload }) => {
       return { ...state, isLoading: true };
     }
     case GET_USER_SUCCESS: {
-      return { ...state, isLoading: false, user: payload };
+      return { ...state, isLoading: false, users: payload };
     }
     case GET_USER_FAILURE: {
       return { ...state, isLoading: false, isError: true };
