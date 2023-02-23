@@ -121,3 +121,39 @@ export const getProductData = (dispatch) => {
       dispatch(getProductFailure());
     });
 };
+
+export const getUserData = (dispatch) => {
+  dispatch(getUserRequest());
+  axios
+    .get(`http://localhost:8080/users`)
+    .then((res) => {
+      dispatch(getUserSuccess(res.data.users));
+    })
+    .catch((err) => {
+      dispatch(getUserFailure());
+    });
+};
+
+export const deleteUserData = (id) => (dispatch) => {
+  dispatch(deleteUserRequest());
+  return axios
+    .delete(`http://localhost:8080/users/delete/${id}`)
+    .then((res) => {
+      dispatch(deleteUserSuccess());
+    })
+    .catch((err) => {
+      dispatch(deleteUserFailure());
+    });
+};
+
+export const updateUserData = (id, role) => (dispatch) => {
+  dispatch(updateUserRequest());
+  return axios
+    .patch(`http://localhost:8080/users/update/${id}`, { role })
+    .then((res) => {
+      dispatch(updateUserSuccess());
+    })
+    .catch((err) => {
+      dispatch(updateUserFailure());
+    });
+};

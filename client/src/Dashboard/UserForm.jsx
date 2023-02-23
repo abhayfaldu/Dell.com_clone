@@ -16,7 +16,7 @@ import {
   InputGroup,
   Textarea,
 } from "@chakra-ui/react";
-
+import BeatLoader from "react-spinners/BeatLoader";
 import { useToast } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
 // import {
@@ -357,6 +357,7 @@ const initialData = {
 export default function UserForm() {
   const toast = useToast();
   const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(33.33);
 
   const [data, setData] = useState(initialData);
@@ -370,14 +371,19 @@ export default function UserForm() {
     // } else if (data.category === "Child") {
     //   dispatch(addChildAdminProduct(data));
     // }
-
-    toast({
-      title: "Product Added",
-      description: "Product Added Successfully Added in website",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
+    setTimeout(() => {
+      toast({
+        title: "Successfully Added.",
+        description: "You have added product successfully.",
+        status: "success",
+        duration: 1500,
+        isClosable: true,
+      });
+      setLoading(false);
+      setStep(1);
+      setProgress(33.33);
+    }, 2000);
+    setLoading(true);
     console.log(data);
   };
 
@@ -443,13 +449,13 @@ export default function UserForm() {
             </Flex>
             {step === 3 ? (
               <Button
-                w="7rem"
+                // w="7rem"
                 colorScheme="red"
                 variant="solid"
+                isLoading={loading}
+                loadingText="Submitting"
+                spinner={<BeatLoader size={10} color="white" />}
                 onClick={handleClick}
-                // onClick={() => {
-                //
-                // }}
               >
                 Submit
               </Button>

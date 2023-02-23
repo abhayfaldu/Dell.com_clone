@@ -37,8 +37,8 @@ import AdminImage from "./Utils/admin.png";
 const LinkItems = [
   { name: "Home", icon: FiHome, path: "/dashboard" },
   { name: "Add Product", icon: AiOutlineFolderAdd, path: "/addproduct" },
-  { name: "Store", icon: MdOutlineStoreMallDirectory, path: "/storeproduct" },
-  { name: "Customer", icon: AiOutlineUsergroupAdd, path: "/customer" },
+  { name: "Store", icon: MdOutlineStoreMallDirectory, path: "/adminstore" },
+  { name: "Customer", icon: AiOutlineUsergroupAdd, path: "/admincustomer" },
   { name: "Settings", icon: FiSettings, path: "/setting" },
 ];
 
