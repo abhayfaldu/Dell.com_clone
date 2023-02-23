@@ -11,15 +11,15 @@ import {
   FormControl,
   Input,
   Text,
-  Center,
   InputRightElement,
   InputGroup,
   Stack,
   Link,
+  Checkbox,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import logo from "../Utils/logo.png";
 import laptop from "../Utils/laptop.avif";
-import { FcGoogle } from "react-icons/fc";
 import {
   ViewIcon,
   ViewOffIcon,
@@ -28,8 +28,10 @@ import {
 } from "@chakra-ui/icons";
 import PersonIcon from "@mui/icons-material/Person";
 
-const Login = () => {
+const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
+
+  const colSpan = useBreakpointValue({ base: 2, md: 1 });
 
   return (
     <Container maxW="full" p={0}>
@@ -38,46 +40,57 @@ const Login = () => {
         py={[0, 10, 20]}
         direction={{ base: "column-reverse", md: "row" }}
       >
-        <VStack w="full" h="full" p={10} spacing={10}  /*bg={"red.50"}*/>
+        <VStack w="full" h="full" p={10} spacing={10} /*bg={"red.50"}*/>
           <VStack spacing={10} alignItems="center">
             <Image src={logo} alt="mylogo" w={200} />
 
-            <Heading>Sign In</Heading>
-            <Button
-              _hover={{
-                bg: "blue.100",
-              }}
-              w={"full"}
-              variant={"outline"}
-              leftIcon={<FcGoogle />}
-            >
-              <Center>
-                <Text>Sign in with Google</Text>
-              </Center>
-            </Button>
+            <Heading>Create Your Account</Heading>
+            <Text align={"center"}>
+              Already have an account?
+              <Link color={"blue.400"}>Sign In</Link>
+            </Text>
+
             <form style={{ width: "100%" }}>
-              <FormControl mb={10}>
-                <Input placeholder="Email Address"></Input>
-              </FormControl>
-              <FormControl mb={10}>
-                <InputGroup>
-                  <Input placeholder="Password" type={showPassword ? "text" : "password"} />
-                  <InputRightElement h={"full"}>
-                    <Button
-                      variant={"ghost"}
-                      onClick={() =>
-                        setShowPassword((showPassword) => !showPassword)
-                      }
-                    >
-                      {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
-              <Text align={"center"} mb={10}>
-                Don't remember your password?{" "}
-                <Link color={"blue.400"}> Create or Reset password</Link>
-              </Text>
+              <SimpleGrid column={2} columnGap={3} rowGap={6} width="full">
+                <GridItem colSpan={colSpan}>
+                  <FormControl>
+                    <Input placeholder="First Name"></Input>
+                  </FormControl>
+                </GridItem>
+                <GridItem colSpan={colSpan}>
+                  <FormControl>
+                    <Input placeholder="Last Name"></Input>
+                  </FormControl>
+                </GridItem>
+                <GridItem colSpan={2}>
+                  <FormControl>
+                    <Input placeholder="Email Address"></Input>
+                  </FormControl>
+                </GridItem>
+                <GridItem colSpan={2}>
+                  <FormControl>
+                    <InputGroup>
+                      <Input placeholder="Password" type={showPassword ? "text" : "password"} />
+                      <InputRightElement h={"full"}>
+                        <Button
+                          variant={"ghost"}
+                          onClick={() =>
+                            setShowPassword((showPassword) => !showPassword)
+                          }
+                        >
+                          {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                        </Button>
+                      </InputRightElement>
+                    </InputGroup>
+                  </FormControl>
+                </GridItem>
+                <GridItem colSpan={2} mb={10}>
+                  <Checkbox defaultChecked>
+                    By clicking “Create Account”, you agree to our Terms &
+                    Conditions.
+                  </Checkbox>
+                </GridItem>
+              </SimpleGrid>
               <Stack spacing={10} pt={2}>
                 <Button
                   loadingText="Submitting"
@@ -88,11 +101,10 @@ const Login = () => {
                     bg: "blue.500",
                   }}
                 >
-                  Login
+                  Create Account
                 </Button>
               </Stack>
             </form>
-            <Text>OR</Text>
             <Button
               _hover={{
                 bg: "blue.100",
@@ -101,12 +113,8 @@ const Login = () => {
               variant="outline"
               w="full"
             >
-              Send One-time Password
+              Cancel
             </Button>
-            <Text align={"center"}>
-              Don't have a LapDen account?{" "}
-              <Link color={"blue.400"}>Create an account</Link>
-            </Text>
           </VStack>
         </VStack>
         <VStack w="full" h="full" p={10} spacing={10} bg={"gray.50"}>
@@ -157,4 +165,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;
