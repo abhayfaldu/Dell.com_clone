@@ -6,18 +6,6 @@ import { FaHeadphonesAlt } from "react-icons/fa";
 import "./Subnavbar.modules.css";
 
 const SubNavbar = () => {
-	window.onscroll = function() {myFunction()};
-
-	var navbar = document.getElementsByClassName("container");
-	var sticky = navbar.offsetTop;
-	
-	function myFunction() {
-	  if (window.pageYOffset >= sticky) {
-		navbar.classList.add("sticky")
-	  } else {
-		navbar.classList.remove("sticky");
-	  }
-	}
 	return (
 		<div className="container">
 		<div>
