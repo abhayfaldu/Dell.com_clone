@@ -1,0 +1,76 @@
+.card {
+	display: flex;
+	width: 90%;
+	margin: auto;
+	margin-top: 10px;
+	height: 600px;
+	gap: 10px;
+	padding: 50px 0 50px 0;
+}
+.button {
+	display: flex;
+	justify-content: left;
+	margin-top: 20px;
+}
+.button Button {
+	margin-right: 20px;
+}
+.text {
+	width: 38%;
+	text-align: left;
+	justify-content: left;
+}
+.photo {
+	width: 60%;
+}
+.photo > Image {
+	width: 50%;
+}
+.welcome{
+    width: 90%;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 10px;
+}
+.twocolumn{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    justify-content: center;
+    text-align: center;
+    gap: 10px;
+    width: 70%;
+    margin: auto;
+}
+.twocolumnbutton{
+    margin-top: 20px;
+}
+@media only screen and (max-width: 1024px) {
+    .welcome{
+        
+        grid-template-columns: repeat(2,1fr);
+    gap: 10px;
+    }
+  }
+  
+@media only screen and (max-width: 600px) {
+    .card{
+        flex-direction: column;
+    }
+	.text{
+        width: 80%;
+        margin: auto;
+        text-align: center;
+    }
+    .photo{
+        width: 80%;
+        margin: auto;
+        display: block;
+        justify-content: center;
+    }
+    .welcome{
+        grid-template-columns: repeat(1,1fr);
+    gap: 10px;
+    }
+  }
+  

@@ -69,16 +69,16 @@ export default function Navbar() {
 							aria-label={"Toggle Navigation"}
 						/>
 					</Flex>
-					<Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-						<div className="laplogo"><img src={logo} alt="" srcset="" width={"15%"} /></div>
-						<Flex display={{ base: "none", md: "flex" }} ml={10}>
+					<Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }} width={"50%"}>
+						<div className="laplogo"><img src={logo} alt="" srcset="" width={"35%"} /></div>
+						{/* <Flex display={{ base: "none", md: "flex" }} ml={10}  width={"500px"}> */}
 							<InputGroup>
 								<InputLeftElement pointerEvents="none">
 									<AiOutlineSearch />
 								</InputLeftElement>
-								<Input type="tel" placeholder="Search LAP-DEN" />
+								<Input type="tel" placeholder="Search LAP-DEN"  />
 							</InputGroup>
-						</Flex>
+						{/* </Flex> */}
 					</Flex>
 					<Stack
 						flex={{ base: 1, md: 0 }}
@@ -238,7 +238,7 @@ export default function Navbar() {
 					<MobileNav />
 				</Collapse>
 			</Box>
-			<Box>
+			<Box className={"tags"}>
 				<Flex display={{ base: "none", md: "flex" }} ml={10}>
 					<DesktopNav />
 				</Flex>
