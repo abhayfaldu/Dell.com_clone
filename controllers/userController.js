@@ -1,6 +1,11 @@
 const { comparePassword, hashedPassword } = require("../helper/authPassword");
 const userModel = require("../models/User.model");
 const JWT = require("jsonwebtoken");
+const transporter = require("../configs/emailConfig");
+
+
+//register --
+
 
 exports.registerController = async (req, res) => {
   try {
@@ -130,7 +135,11 @@ exports.getAllUser = async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .send({ success: false, message: "Something went wrong" });
+      .send({
+        success: false,
+        message: "Something went wrong",
+        error: error.message,
+      });
   }
 };
 
@@ -236,26 +245,57 @@ exports.sendUserPasswordResetEmail = async (req, res) => {
 
     //link for user
     const link = `http://127.0.0.1:3000/users/forgot/${user._id}/${token}`;
-
+    let info = await transporter.sendMail({
+      from: "bipinecommerce@gmail.com",
+      to: user.email,
+      subject: "LAPDEN - Password Reset Link",
+      html: `<a href=${link}>Click Here</a> to Reset Your Password`,
+    });
     res
       .status(200)
-      .send({ success: true, message: "Email Sent to Your mail", link });
+      .send({ success: true, message: "Email Sent to Your mail", info });
   } catch (error) {
-    return res
-      .status(401)
-      .send({ success: false, message: "Something went wrong" });
+    return res.status(401).send({
+      success: false,
+      message: "Something went wrong",
+      error: error.message,
+    });
   }
 };
 
 // after send email save the user new password if valid
 
-// exports.saveUserForgotPassword = async (req, res) => {
-//   const { password, confirmPassword } = req.body;
-//   const { id, token } = req.params;
-//   try {
-//     const user = awa
+exports.saveUserForgotPassword = async (req, res) => {
+  const { password, confirmPassword } = req.body;
+  const { id, token } = req.params;
+  try {
+    if (!password || !confirmPassword) {
+      return res.status(401).send({
+        success: false,
+        message: "Please fill both  password fields",
+      });
+    }
+    const user = await userModel.findById({ _id: id });
+    const newSecret = user._id + process.env.SECRET_KEY;
+    await JWT.verify(token, newSecret);
+    if (password !== confirmPassword) {
+      return res.status(401).send({
+        success: false,
+        message: "Password and Confirm Password not matching",
+      });
+    }
 
-//   } catch (error) {
+    const hash = await hashedPassword(password);
 
-//   }
-// }
+    await userModel.findByIdAndUpdate(
+      { _id: user._id },
+      { $set: { password: hash } }
+    );
+
+    res
+      .status(200)
+      .send({ success: true, message: "Password Reset Successfully" });
+  } catch (error) {
+    res.status(400).send({ success: false, message: "Something Went Wrong" });
+  }
+};
