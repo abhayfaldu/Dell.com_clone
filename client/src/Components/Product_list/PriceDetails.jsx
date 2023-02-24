@@ -8,8 +8,9 @@ const calculatePercentDifference = (num1, num2) => {
 	return percentDiff.toFixed(0);
 };
 
-function rupeeAmountToString(amount) {
+function rupeeAmountToString(amount, isSaving = false) {
 	const amountString = amount.toFixed(2).toString();
+	// console.log('amountString:', amountString)
 	const [integerPart, fractionalPart] = amountString.split(".");
 
 	// Add commas to the integer part
@@ -17,9 +18,11 @@ function rupeeAmountToString(amount) {
 		/(\d)(?=(\d{2})+\d$)/g,
 		"$1,"
 	);
-
-	const result = `${integerPartWithCommas}.${fractionalPart}`;
-	return result;
+	// console.log("integerPartWithCommas:", integerPartWithCommas);
+	if (isSaving) {
+		return integerPartWithCommas + "";
+	}
+	return `${integerPartWithCommas}.${fractionalPart}`
 }
 
 const PriceDetails = ({ original_price, discounted_price }) => {
@@ -46,7 +49,7 @@ const PriceDetails = ({ original_price, discounted_price }) => {
 					Save
 				</Text>
 				<Text fontSize={"14px"} color="green" fontWeight={"bold"}>
-					₹ {original_price - discounted_price}
+					₹ {rupeeAmountToString(original_price - discounted_price, true)}
 				</Text>
 				<Text fontSize={"14px"} color={"green"} fontWeight={"bold"}>
 					({saving_percentage})%
