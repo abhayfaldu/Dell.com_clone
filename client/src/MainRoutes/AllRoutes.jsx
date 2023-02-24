@@ -14,6 +14,7 @@ import Login from "../Pages/Login";
 import SignUp from "../Pages/SignUp";
 import ChangePw from "../Pages/ChangePw";
 import ForgotPw from "../Pages/ForgotPw";
+import CreatePw from "../Pages/CreatePw";
 
 
 const AllRoutes = () => {
@@ -37,6 +38,7 @@ const AllRoutes = () => {
       <Route path="/register" element={<SignUp />}></Route>
       <Route path="/changepassword" element={<ChangePw />}></Route>
       <Route path="/forgotpassword" element={<ForgotPw />}></Route>
+      <Route path="/saveforgotpassword" element={<CreatePw />}></Route>
     </Routes>
   );
 };

@@ -62,6 +62,7 @@ const Login = () => {
             duration: 9000,
             isClosable: true,
           });
+          navigate("/")
         } else {
           // alert(res.data.message);
           toast({

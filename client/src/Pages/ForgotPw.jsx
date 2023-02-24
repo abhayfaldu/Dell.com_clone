@@ -51,6 +51,7 @@ const ForgotPw = () => {
             duration: 9000,
             isClosable: true,
           });
+          navigate("/saveforgotpassword")
         } else {
           // alert(res.data.message);
           toast({

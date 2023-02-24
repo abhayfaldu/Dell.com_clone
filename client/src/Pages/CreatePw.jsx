@@ -30,7 +30,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
-const ChangePw = () => {
+const CreatePw = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const [data, setData] = useState({});
@@ -64,7 +64,8 @@ const ChangePw = () => {
             duration: 9000,
             isClosable: true,
           });
-          navigate("/login");
+          navigate("/login")
+
         } else {
           // alert(res.data.message);
           toast({
@@ -107,18 +108,19 @@ const ChangePw = () => {
           <VStack spacing={10} alignItems="center">
             <Image src={logo} alt="mylogo" w={200} />
 
-            <Heading>Change Password</Heading>
+            <Heading>Create Password</Heading>
             <Text fontWeight={400} fontSize={[12, 14, 16]}>
-              Enter Old Password And New Password To Change Password
+              Enter New Password and Confirm New password to
+              reset password
             </Text>
 
             <form onSubmit={handleSubmit} style={{ width: "100%" }}>
               <FormControl mb={10}>
                 <InputGroup>
                   <Input
-                    name="oldPassword"
+                    name="password"
                     onChange={handleChange}
-                    placeholder="Enter Old Password"
+                    placeholder="Enter New Password"
                     type={showPassword ? "text" : "password"}
                   />
                   <InputRightElement h={"full"}>
@@ -136,9 +138,9 @@ const ChangePw = () => {
               <FormControl mb={10}>
                 <InputGroup>
                   <Input
-                    name="newPassword"
+                    name="confirmPassword"
                     onChange={handleChange}
-                    placeholder="Enter New Password"
+                    placeholder="Confirm New Password"
                     type={showPassword ? "text" : "password"}
                   />
                   <InputRightElement h={"full"}>
@@ -164,18 +166,18 @@ const ChangePw = () => {
                   }}
                   type="submit"
                 >
-                  Change Password
+                  Save Password
                 </Button>
               </Stack>
             </form>
             <Text align={"center"}>
-              Forgot Password?{" "}
+              Goto Home?{" "}
               <Link
                 _hover={{
                   textDecoration: "underline",
                   cursor: "pointer",
                 }}
-                onClick={() => navigate("/forgotpassword")}
+                onClick={() => navigate("/")}
                 color={"blue.400"}
               >
                 Click Here
@@ -231,4 +233,4 @@ const ChangePw = () => {
   );
 };
 
-export default ChangePw;
+export default CreatePw;
