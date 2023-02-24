@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   Container,
   Heading,
@@ -26,8 +27,74 @@ import {
 } from "@chakra-ui/icons";
 import PersonIcon from "@mui/icons-material/Person";
 
-const Reset = () => {
+import { useToast } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+
+const ChangePw = () => {
   const [showPassword, setShowPassword] = useState(false);
+
+  const [data, setData] = useState({});
+
+  const toast = useToast();
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setData({ ...data, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post(`http://localhost:8080/users/resetpassword`, data, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        // alert(res.data.message);
+
+        if (res.data.success) {
+          // alert(res.data.message);
+          toast({
+            title: "Successfully Logged In.",
+            description: res.data.message,
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+          });
+          navigate("/login");
+        } else {
+          // alert(res.data.message);
+          toast({
+            title: "Something Went Wrong.",
+            description: res.data.message,
+            status: "error",
+            duration: 9000,
+            isClosable: true,
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        toast({
+          title: "User Not Exists.",
+          description: "Invalid Username or Password",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      });
+  };
+
+  /*
+  const res = await axios.post('https://httpbin.org/post', body, {
+  headers: {
+    'Authorization': 'my secret token'
+  }
+});
+  */
 
   return (
     <Container maxW="full" p={0}>
@@ -41,15 +108,16 @@ const Reset = () => {
             <Image src={logo} alt="mylogo" w={200} />
 
             <Heading>Change Password</Heading>
-            <Text fontWeight={400} fontSize={[12,14,16]}>
-              Enter the email address associated with your Dell account to
-              receive one-time password
+            <Text fontWeight={400} fontSize={[12, 14, 16]}>
+              Enter Old Password And New Password To Change Password
             </Text>
 
-            <form style={{ width: "100%" }}>
+            <form onSubmit={handleSubmit} style={{ width: "100%" }}>
               <FormControl mb={10}>
                 <InputGroup>
                   <Input
+                    name="oldPassword"
+                    onChange={handleChange}
                     placeholder="Enter Old Password"
                     type={showPassword ? "text" : "password"}
                   />
@@ -68,6 +136,8 @@ const Reset = () => {
               <FormControl mb={10}>
                 <InputGroup>
                   <Input
+                    name="newPassword"
+                    onChange={handleChange}
                     placeholder="Enter New Password"
                     type={showPassword ? "text" : "password"}
                   />
@@ -92,13 +162,24 @@ const Reset = () => {
                   _hover={{
                     bg: "blue.500",
                   }}
+                  type="submit"
                 >
                   Change Password
                 </Button>
               </Stack>
             </form>
             <Text align={"center"}>
-              Forgot Password? <Link color={"blue.400"}>Click Here</Link>
+              Forgot Password?{" "}
+              <Link
+                _hover={{
+                  textDecoration: "underline",
+                  cursor: "pointer",
+                }}
+                onClick={() => navigate("/forgotpassword")}
+                color={"blue.400"}
+              >
+                Click Here
+              </Link>
             </Text>
           </VStack>
         </VStack>
@@ -150,4 +231,4 @@ const Reset = () => {
   );
 };
 
-export default Reset;
+export default ChangePw;
