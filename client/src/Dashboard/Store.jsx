@@ -74,7 +74,7 @@ const AdminStore = () => {
         category
       )
     ).then(() => {
-      dispatch(getProductData);
+      dispatch(getProductData(page, setTotalCount));
       onClose();
       setOriginal_price("");
       setDiscounted_price("");
