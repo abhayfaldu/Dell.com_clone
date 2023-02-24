@@ -28,10 +28,13 @@ import {
 } from "@chakra-ui/icons";
 import PersonIcon from "@mui/icons-material/Person";
 import axios from "axios";
+import { useToast } from '@chakra-ui/react'
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [data, setData] = useState({});
+
+  const toast = useToast()
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,12 +52,35 @@ const Login = () => {
         localStorage.setItem("token", res.data.token);
 
         if (res.data.success && res.data.token) {
-          alert(res.data.message);
+          // alert(res.data.message);
+          toast({
+            title: 'Successfully Logged In.',
+            description: res.data.message,
+            status: 'success',
+            duration: 9000,
+            isClosable: true,
+          })
         } else {
-          alert(res.data.message);
+          // alert(res.data.message);
+          toast({
+            title: 'Something Went Wrong.',
+            description: res.data.message,
+            status: 'error',
+            duration: 9000,
+            isClosable: true,
+          })
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+      toast({
+        title: 'User Not Exists.',
+        description: "Invalid Username or Password",
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      })}
+      );
   };
 
   return (

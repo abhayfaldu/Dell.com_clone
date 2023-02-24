@@ -29,6 +29,7 @@ import {
 import PersonIcon from "@mui/icons-material/Person";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useToast } from '@chakra-ui/react'
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -37,6 +38,7 @@ const SignUp = () => {
   const colSpan = useBreakpointValue({ base: 2, md: 1 });
 
   const navigate = useNavigate();
+  const toast = useToast()
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,11 +55,25 @@ const SignUp = () => {
         console.log(res);
 
         if (res.data.success) {
-          alert(res.data.message);
+          // alert(res.data.message);
+          toast({
+            title: 'Account Created.',
+            description: res.data.message,
+            status: 'success',
+            duration: 9000,
+            isClosable: true,
+          })
           navigate("/login")
 
         } else {
-          alert(res.data.message);
+          // alert(res.data.message);
+          toast({
+            title: 'Existing User.',
+            description: res.data.message,
+            status: 'error',
+            duration: 9000,
+            isClosable: true,
+          })
         }
       })
       .catch((err) => console.log(err));
