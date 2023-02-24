@@ -12,6 +12,8 @@ import AdminStore from "../Dashboard/Store";
 import AdminCustomer from "../Dashboard/Customer";
 import Login from "../Pages/Login";
 import SignUp from "../Pages/SignUp";
+import ChangePw from "../Pages/ChangePw";
+import ForgotPw from "../Pages/ForgotPw";
 
 
 const AllRoutes = () => {
@@ -33,6 +35,8 @@ const AllRoutes = () => {
       <Route path="*" element={<NotFound />}></Route>
       <Route path="/login" element={<Login />}></Route>
       <Route path="/register" element={<SignUp />}></Route>
+      <Route path="/changepassword" element={<ChangePw />}></Route>
+      <Route path="/forgotpassword" element={<ForgotPw />}></Route>
     </Routes>
   );
 };

@@ -11,7 +11,6 @@ import {
   FormControl,
   Input,
   Text,
-  Center,
   InputRightElement,
   InputGroup,
   Stack,
@@ -19,7 +18,6 @@ import {
 } from "@chakra-ui/react";
 import logo from "../Utils/logo.png";
 import laptop from "../Utils/laptop.avif";
-import { FcGoogle } from "react-icons/fc";
 import {
   ViewIcon,
   ViewOffIcon,
@@ -27,63 +25,9 @@ import {
   EmailIcon,
 } from "@chakra-ui/icons";
 import PersonIcon from "@mui/icons-material/Person";
-import axios from "axios";
-import { useToast } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const ChangePw = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [data, setData] = useState({});
-
-  const toast = useToast();
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setData({ ...data, [name]: value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios
-      .post(`http://localhost:8080/users/login`, data)
-      .then((res) => {
-        // alert(res.data.message);
-
-        localStorage.setItem("token", res.data.token);
-
-        if (res.data.success && res.data.token) {
-          // alert(res.data.message);
-          toast({
-            title: "Successfully Logged In.",
-            description: res.data.message,
-            status: "success",
-            duration: 9000,
-            isClosable: true,
-          });
-        } else {
-          // alert(res.data.message);
-          toast({
-            title: "Something Went Wrong.",
-            description: res.data.message,
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        toast({
-          title: "User Not Exists.",
-          description: "Invalid Username or Password",
-          status: "error",
-          duration: 9000,
-          isClosable: true,
-        });
-      });
-  };
 
   return (
     <Container maxW="full" p={0}>
@@ -96,35 +40,18 @@ const Login = () => {
           <VStack spacing={10} alignItems="center">
             <Image src={logo} alt="mylogo" w={200} />
 
-            <Heading>Sign In</Heading>
-            <Button
-              _hover={{
-                bg: "blue.100",
-              }}
-              w={"full"}
-              variant={"outline"}
-              leftIcon={<FcGoogle />}
-            >
-              <Center>
-                <Text>Sign in with Google</Text>
-              </Center>
-            </Button>
-            <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-              <FormControl mb={10}>
-                <Input
-                  type="email"
-                  name="email"
-                  placeholder="Email Address"
-                  onChange={handleChange}
-                ></Input>
-              </FormControl>
+            <Heading>Change Password</Heading>
+            <Text fontWeight={400} fontSize={[12,14,16]}>
+              Enter the email address associated with your Dell account to
+              receive one-time password
+            </Text>
+
+            <form style={{ width: "100%" }}>
               <FormControl mb={10}>
                 <InputGroup>
                   <Input
-                    placeholder="Password"
+                    placeholder="Enter Old Password"
                     type={showPassword ? "text" : "password"}
-                    name="password"
-                    onChange={handleChange}
                   />
                   <InputRightElement h={"full"}>
                     <Button
@@ -138,13 +65,24 @@ const Login = () => {
                   </InputRightElement>
                 </InputGroup>
               </FormControl>
-              <Text align={"center"} mb={10}>
-                Don't remember your password?{" "}
-                <Link onClick={navigate("/forgotpassword")} color={"blue.400"}>
-                  {" "}
-                  Forgot password
-                </Link>
-              </Text>
+              <FormControl mb={10}>
+                <InputGroup>
+                  <Input
+                    placeholder="Enter New Password"
+                    type={showPassword ? "text" : "password"}
+                  />
+                  <InputRightElement h={"full"}>
+                    <Button
+                      variant={"ghost"}
+                      onClick={() =>
+                        setShowPassword((showPassword) => !showPassword)
+                      }
+                    >
+                      {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+              </FormControl>
               <Stack spacing={10} pt={2}>
                 <Button
                   loadingText="Submitting"
@@ -154,26 +92,13 @@ const Login = () => {
                   _hover={{
                     bg: "blue.500",
                   }}
-                  type="submit"
                 >
-                  Login
+                  Change Password
                 </Button>
               </Stack>
             </form>
-            <Text>OR</Text>
-            <Button
-              _hover={{
-                bg: "blue.100",
-              }}
-              colorScheme="blue.500"
-              variant="outline"
-              w="full"
-            >
-              Send One-time Password
-            </Button>
             <Text align={"center"}>
-              Don't have a LapDen account?{" "}
-              <Link color={"blue.400"}>Create an account</Link>
+              Forgot Password? <Link color={"blue.400"}>Click Here</Link>
             </Text>
           </VStack>
         </VStack>
@@ -225,4 +150,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ChangePw;
