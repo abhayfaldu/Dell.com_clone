@@ -27,11 +27,41 @@ import {
   EmailIcon,
 } from "@chakra-ui/icons";
 import PersonIcon from "@mui/icons-material/Person";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [data, setData] = useState({});
 
   const colSpan = useBreakpointValue({ base: 2, md: 1 });
+
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post(`http://localhost:8080/users/register`, data)
+      .then((res) => {
+
+        localStorage.setItem("token", res.data.token);
+
+        console.log(res);
+
+        if (res.data.success) {
+          alert(res.data.message);
+          navigate("/login")
+
+        } else {
+          alert(res.data.message);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <Container maxW="full" p={0}>
@@ -50,27 +80,47 @@ const SignUp = () => {
               <Link color={"blue.400"}>Sign In</Link>
             </Text>
 
-            <form style={{ width: "100%" }}>
+            <form style={{ width: "100%" }} onSubmit={handleSubmit}>
               <SimpleGrid column={2} columnGap={3} rowGap={6} width="full">
                 <GridItem colSpan={colSpan}>
                   <FormControl>
-                    <Input placeholder="First Name"></Input>
+                    <Input
+                      onChange={handleChange}
+                      placeholder="First Name"
+                      type="text"
+                      name="first_name"
+                    ></Input>
                   </FormControl>
                 </GridItem>
                 <GridItem colSpan={colSpan}>
                   <FormControl>
-                    <Input placeholder="Last Name"></Input>
+                    <Input
+                      onChange={handleChange}
+                      placeholder="Last Name"
+                      type="text"
+                      name="last_name"
+                    ></Input>
                   </FormControl>
                 </GridItem>
                 <GridItem colSpan={2}>
                   <FormControl>
-                    <Input placeholder="Email Address"></Input>
+                    <Input
+                      onChange={handleChange}
+                      placeholder="Email Address"
+                      type="email"
+                      name="email"
+                    ></Input>
                   </FormControl>
                 </GridItem>
                 <GridItem colSpan={2}>
                   <FormControl>
                     <InputGroup>
-                      <Input placeholder="Password" type={showPassword ? "text" : "password"} />
+                      <Input
+                        onChange={handleChange}
+                        placeholder="Password"
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                      />
                       <InputRightElement h={"full"}>
                         <Button
                           variant={"ghost"}
@@ -100,6 +150,7 @@ const SignUp = () => {
                   _hover={{
                     bg: "blue.500",
                   }}
+                  type="submit"
                 >
                   Create Account
                 </Button>

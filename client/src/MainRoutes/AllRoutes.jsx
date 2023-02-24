@@ -10,6 +10,9 @@ import NotFound from "../Pages/NotFound";
 import AddProduct from "../Dashboard/AddProduct";
 import AdminStore from "../Dashboard/Store";
 import AdminCustomer from "../Dashboard/Customer";
+import Login from "../Pages/Login";
+import SignUp from "../Pages/SignUp";
+
 
 const AllRoutes = () => {
   return (
@@ -28,6 +31,8 @@ const AllRoutes = () => {
       <Route path="/adminstore" element={<AdminStore />}></Route>
       <Route path="/admincustomer" element={<AdminCustomer />}></Route>
       <Route path="*" element={<NotFound />}></Route>
+      <Route path="/login" element={<Login />}></Route>
+      <Route path="/register" element={<SignUp />}></Route>
     </Routes>
   );
 };
