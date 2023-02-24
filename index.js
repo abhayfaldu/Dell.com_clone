@@ -6,7 +6,8 @@ const colors = require("colors");
 const userRoute = require("./routes/userRoutes");
 const productRoute = require("./routes/productRoutes");
 const cartRoute = require("./routes/cartRoutes");
-
+const swaggerJSdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 
 const app = express();
 
@@ -14,15 +15,35 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+// swaggerUi docs
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Lap-Den Documentation",
+      version: "1.0.0",
+    },
+    servers: [
+      {
+        url: "http://localhost:8080",
+      },
+    ],
+  },
+  apis: ["./routes/*.js"],
+};
+
+const swaggerSpec = swaggerJSdoc(options);
+app.use("/api", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 //routes
 app.use("/users", userRoute);
-app.use("/products",productRoute)
+app.use("/products", productRoute);
 app.use("/carts", cartRoute);
 //default home
 
-app.use("/", (req, res) => {
-  res.status(200).send("Home Page");
-});
+// app.use("/", (req, res) => {
+//   res.status(200).send("Home Page");
+// });
 
 app.listen(process.env.port, async () => {
   try {

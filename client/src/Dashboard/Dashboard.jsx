@@ -5,14 +5,14 @@ import Sidebar from "./Sidebar";
 import Chart from "react-apexcharts";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getProductData } from "../Redux/Admin/action";
+import { getProductCount } from "../Redux/Admin/action";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const { product } = useSelector((store) => store.AdminReducer);
+  const { productCount } = useSelector((store) => store.AdminReducer);
 
   useEffect(() => {
-    dispatch(getProductData);
+    dispatch(getProductCount);
   }, []);
   return (
     <Box>
@@ -27,9 +27,9 @@ const Dashboard = () => {
             type="pie"
             width={1200}
             height={400}
-            series={[product.length, 1000, 1800, 600]}
+            series={[productCount, 40, 100, 150]}
             options={{
-              labels: ["temp-data", "Tech-PC", "HeadPhone", "All-In-One"],
+              labels: ["Laptop", "Mouse", "Keyboard", "All-In-One PC"],
               dropShadow: {
                 enabled: true,
                 top: 0,

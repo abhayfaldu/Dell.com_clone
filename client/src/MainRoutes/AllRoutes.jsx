@@ -10,6 +10,7 @@ import NotFound from "../Pages/NotFound";
 import AddProduct from "../Dashboard/AddProduct";
 import AdminStore from "../Dashboard/Store";
 import AdminCustomer from "../Dashboard/Customer";
+import SignUp from "../Pages/SignUp";
 
 const AllRoutes = () => {
   return (
@@ -27,6 +28,7 @@ const AllRoutes = () => {
       <Route path="/addproduct" element={<AddProduct />}></Route>
       <Route path="/adminstore" element={<AdminStore />}></Route>
       <Route path="/admincustomer" element={<AdminCustomer />}></Route>
+      <Route path="/signup" element={<SignUp />}></Route>
       <Route path="*" element={<NotFound />}></Route>
     </Routes>
   );
