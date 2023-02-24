@@ -27,6 +27,7 @@ import {
 	ChevronDownIcon,
 	ChevronRightIcon,
 } from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom";
 import logo from "../Utils/logo.png";
 import { MdOutlineAccountCircle } from "react-icons/md";
 import { RiCustomerService2Fill } from "react-icons/ri";
@@ -36,7 +37,15 @@ import "./Navbar.modules.css";
 
 export default function Navbar() {
 	const { isOpen, onToggle } = useDisclosure();
-
+	const navigate = useNavigate();
+	const token=localStorage.getItem("token");
+	const handleNavigate=()=>{
+		if(token){
+			navigate("/login")
+		}else{
+			navigate("/register")
+		}
+	}
 	return (
 		<>
 			<Box>
@@ -81,6 +90,7 @@ export default function Navbar() {
 						{/* </Flex> */}
 					</Flex>
 					<Stack
+					className="dropdown"
 						flex={{ base: 1, md: 0 }}
 						justify={"flex-end"}
 						direction={"row"}
@@ -131,13 +141,22 @@ export default function Navbar() {
 									</Text>
 								</MenuItem>
 								<MenuItem>
-									<Button
+								{token?(<Button
+									onClick={handleNavigate}
+										width={"100%"}
+										backgroundColor={"#0672cb"}
+										color={"white"}
+									>
+										Login
+									</Button>):(<Button
+									onClick={handleNavigate}
 										width={"100%"}
 										backgroundColor={"#0672cb"}
 										color={"white"}
 									>
 										Sign In
-									</Button>
+									</Button>)}
+									
 								</MenuItem>
 								<MenuItem>
 									<Button width={"100%"}>Create an Account</Button>
