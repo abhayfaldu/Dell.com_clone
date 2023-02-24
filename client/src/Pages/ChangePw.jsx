@@ -47,7 +47,11 @@ const ChangePw = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(`http://localhost:8080/users/resetpassword`, data)
+      .post(`http://localhost:8080/users/resetpassword`, data, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
       .then((res) => {
         // alert(res.data.message);
 
@@ -60,6 +64,8 @@ const ChangePw = () => {
             duration: 9000,
             isClosable: true,
           });
+          navigate("/login")
+
         } else {
           // alert(res.data.message);
           toast({
@@ -83,6 +89,14 @@ const ChangePw = () => {
       });
   };
 
+  /*
+  const res = await axios.post('https://httpbin.org/post', body, {
+  headers: {
+    'Authorization': 'my secret token'
+  }
+});
+  */
+
   return (
     <Container maxW="full" p={0}>
       <Flex
@@ -104,7 +118,7 @@ const ChangePw = () => {
               <FormControl mb={10}>
                 <InputGroup>
                   <Input
-                    name="password"
+                    name="oldPassword"
                     onChange={handleChange}
                     placeholder="Enter Old Password"
                     type={showPassword ? "text" : "password"}
@@ -124,7 +138,7 @@ const ChangePw = () => {
               <FormControl mb={10}>
                 <InputGroup>
                   <Input
-                    name="password"
+                    name="newPassword"
                     onChange={handleChange}
                     placeholder="Enter New Password"
                     type={showPassword ? "text" : "password"}
