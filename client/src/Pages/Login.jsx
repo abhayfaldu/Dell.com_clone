@@ -27,9 +27,35 @@ import {
   EmailIcon,
 } from "@chakra-ui/icons";
 import PersonIcon from "@mui/icons-material/Person";
+import axios from "axios";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [data, setData] = useState({});
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setData({ ...data, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post(`http://localhost:8080/users/login`, data)
+      .then((res) => {
+        // alert(res.data.message);
+
+        localStorage.setItem("token", res.data.token);
+
+        if (res.data.success && res.data.token) {
+          alert(res.data.message);
+        } else {
+          alert(res.data.message);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <Container maxW="full" p={0}>
@@ -38,7 +64,7 @@ const Login = () => {
         py={[0, 10, 20]}
         direction={{ base: "column-reverse", md: "row" }}
       >
-        <VStack w="full" h="full" p={10} spacing={10}  /*bg={"red.50"}*/>
+        <VStack w="full" h="full" p={10} spacing={10} /*bg={"red.50"}*/>
           <VStack spacing={10} alignItems="center">
             <Image src={logo} alt="mylogo" w={200} />
 
@@ -55,13 +81,23 @@ const Login = () => {
                 <Text>Sign in with Google</Text>
               </Center>
             </Button>
-            <form style={{ width: "100%" }}>
+            <form onSubmit={handleSubmit} style={{ width: "100%" }}>
               <FormControl mb={10}>
-                <Input placeholder="Email Address"></Input>
+                <Input
+                  type="email"
+                  name="email"
+                  placeholder="Email Address"
+                  onChange={handleChange}
+                ></Input>
               </FormControl>
               <FormControl mb={10}>
                 <InputGroup>
-                  <Input placeholder="Password" type={showPassword ? "text" : "password"} />
+                  <Input
+                    placeholder="Password"
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    onChange={handleChange}
+                  />
                   <InputRightElement h={"full"}>
                     <Button
                       variant={"ghost"}
@@ -87,6 +123,7 @@ const Login = () => {
                   _hover={{
                     bg: "blue.500",
                   }}
+                  type="submit"
                 >
                   Login
                 </Button>
