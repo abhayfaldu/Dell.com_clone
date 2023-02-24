@@ -4,24 +4,32 @@ const CartModel = require("../models/cartModel");
 
 exports.createCart = async (req, res) => {
   try {
-    const cart = await CartModel.create(req.body);
+    const cart = await CartModel.create(req.body );
     res
       .status(200)
       .send({ success: true, message: "Product Added Successfully", cart });
   } catch (error) {
-    res.status(500).send({ success: false, message: "Something Went Wrong" });
+    res
+      .status(500)
+      .send({
+        success: false,
+        message: "Something Went Wrong",
+        error: error.message,
+      });
   }
 };
 
-// get all product
+// get all carts only admin
 
 exports.getAllCartData = async (req, res) => {
   try {
     const cart = await CartModel.find();
-    const totalCount = await CartModel.countDocuments();
-    res
-      .status(200)
-      .send({ success: true, message: "Success", cart, totalCount });
+    res.status(200).send({
+      success: true,
+      message: "Success",
+      cart,
+      totalCount: cart.count,
+    });
   } catch (error) {
     res.status(500).send({ success: false, message: "Something Went Wrong" });
   }
@@ -29,11 +37,24 @@ exports.getAllCartData = async (req, res) => {
 
 // get single product
 
-// update product
+exports.getSingleUserCart = async (req, res) => {
+  try {
+    const userCart =await CartModel.find({ user: req.body.user });
+    res.status(200).send({
+      success: true,
+      message: "Success",
+      userCart,
+      totalCount: userCart.length,
+    });
+  } catch (error) {
+    res.status(500).send({ success: false, message: "Something Went Wrong",error:error.message });
+  }
+};
 
-// delete product
 
-exports.deleteCart = async (req, res) => {
+// remove cart item
+
+exports.removeSingleCartItem = async (req, res) => {
   try {
     await CartModel.findByIdAndDelete({ _id: req.params.id });
     res
@@ -43,3 +64,17 @@ exports.deleteCart = async (req, res) => {
     res.status(500).send({ success: false, message: "Something Went Wrong" });
   }
 };
+
+
+//remove all cart item
+
+exports.removeAllCartItem = async (req, res) => {
+  try {
+    await CartModel.deleteMany({ user: req.body.user });
+    res
+      .status(200)
+      .send({ success: true, message: "All Product Deleted Successfully" });
+  } catch (error) {
+    res.status(500).send({ success: false, message: "Something Went Wrong" });
+  }
+}

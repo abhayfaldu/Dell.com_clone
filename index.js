@@ -37,8 +37,8 @@ app.use("/api", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //routes
 app.use("/users", userRoute);
-app.use("/products", productRoute);
-app.use("/carts", cartRoute);
+app.use("/products",productRoute)
+app.use("/cart", cartRoute);
 //default home
 
 // app.use("/", (req, res) => {

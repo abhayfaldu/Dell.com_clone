@@ -10,11 +10,8 @@ const {
   sendUserPasswordResetEmail,
   saveUserForgotPassword,
 } = require("../controllers/userController");
-
 const authorisation = require("../middlewares/authenticate.middleware");
-
 const userRoute = express.Router();
-
 /**
  * @swagger
  * components:
@@ -38,14 +35,12 @@ const userRoute = express.Router();
  *           type: string
  *           description: the user password
  */
-
 /**
  * @swagger
  * tags:
  *  name: User
  *  description: All the API routes related to User
  */
-
 /**
  * @swagger
  * /users:
@@ -63,13 +58,9 @@ const userRoute = express.Router();
  *                              $ref: "#/components/schemas/User"
  *
  */
-
 //all users
-
 userRoute.get("/", getAllUser);
-
 // register
-
 /**
  * @swagger
  * /users/register:
@@ -92,11 +83,8 @@ userRoute.get("/", getAllUser);
  *       500:
  *         description: Some server error
  */
-
 userRoute.post("/register", registerController);
-
 // login
-
 /**
  * @swagger
  * /users/login:
@@ -119,11 +107,8 @@ userRoute.post("/register", registerController);
  *       500:
  *         description: Some server error
  */
-
 userRoute.post("/login", loginController);
-
 //single user
-
 /**
  * @swagger
  * /users/{id}:
@@ -148,13 +133,9 @@ userRoute.post("/login", loginController);
  *                              $ref: "#/components/schemas/User"
  *
  */
-
 //all users
-
 userRoute.get("/:id", singleUser);
-
 // update user profile
-
 /**
  * @swagger
  * /users/update/{id}:
@@ -186,11 +167,8 @@ userRoute.get("/:id", singleUser);
  *      500:
  *        description: Some server error
  */
-
 userRoute.patch("/update/:id", userUpdate);
-
 // delete user
-
 /**
  * @swagger
  * /users/delete/{id}:
@@ -216,19 +194,11 @@ userRoute.patch("/update/:id", userUpdate);
  *      500:
  *        description: Some server error
  */
-
 userRoute.delete("/delete/:id", deleteUser);
-
 //update password
-
 userRoute.post("/resetpassword", authorisation, resetpassword);
-
 // send email forget password
-
 userRoute.post("/forgotpassword", sendUserPasswordResetEmail);
-
 //save forgot password
-
 userRoute.post("/saveforgotpassword/:id/:token", saveUserForgotPassword);
-
 module.exports = userRoute;

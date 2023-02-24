@@ -17,14 +17,18 @@ export const getProductsFailureAction = () => {
 	return { type: GET_PRODUCTS_FAILURE };
 };
 
-export const getProducts = () => dispatch => {
-	dispatch(getProductsRequestAction());
-	axios("http://localhost:8080/products")
-		.then(res => {
-			dispatch(getProductsSuccessAction(res.data));
-		})
-		.catch(err => {
-			console.log("something went wrong in getting products:", err);
-			dispatch(getProductsFailureAction());
-		});
-};
+export const getProducts =
+	(params = {}) =>
+	dispatch => {
+		dispatch(getProductsRequestAction());
+		axios
+			.get("http://localhost:8080/products/all", params)
+			.then(res => {
+				console.log(res.data);
+				dispatch(getProductsSuccessAction(res.data.products));
+			})
+			.catch(err => {
+				console.log("something went wrong in getting products:", err);
+				dispatch(getProductsFailureAction());
+			});
+	};

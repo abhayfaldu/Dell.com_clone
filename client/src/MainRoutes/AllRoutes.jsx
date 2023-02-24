@@ -10,7 +10,11 @@ import NotFound from "../Pages/NotFound";
 import AddProduct from "../Dashboard/AddProduct";
 import AdminStore from "../Dashboard/Store";
 import AdminCustomer from "../Dashboard/Customer";
+import Login from "../Pages/Login";
 import SignUp from "../Pages/SignUp";
+import ChangePw from "../Pages/ChangePw";
+import ForgotPw from "../Pages/ForgotPw";
+import CreatePw from "../Pages/CreatePw";
 
 const AllRoutes = () => {
   return (
@@ -30,6 +34,11 @@ const AllRoutes = () => {
       <Route path="/admincustomer" element={<AdminCustomer />}></Route>
       <Route path="/signup" element={<SignUp />}></Route>
       <Route path="*" element={<NotFound />}></Route>
+      <Route path="/login" element={<Login />}></Route>
+      <Route path="/register" element={<SignUp />}></Route>
+      <Route path="/changepassword" element={<ChangePw />}></Route>
+      <Route path="/forgotpassword" element={<ForgotPw />}></Route>
+      <Route path="/users/saveforgotpassword/:id/:token" element={<CreatePw />}></Route>
     </Routes>
   );
 };
