@@ -10,7 +10,6 @@ todos: change value of key prop form index to _id
 
 const ProductCard = props => {
 	const {
-		index,
 		title,
 		rating,
 		number_of_reviews,
@@ -30,7 +29,6 @@ const ProductCard = props => {
 	const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
 	return (
 		<Flex
-			key={index}
 			flexDir={["column", "row"]}
 			shadow={"0 2px 2px #002A581a, 0 4px 4px #002A581a, 0 8px 8px #002A581a"}
 			border={"1px solid #e1e1e1"}
