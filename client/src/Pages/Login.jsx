@@ -140,8 +140,14 @@ const Login = () => {
               </FormControl>
               <Text align={"center"} mb={10}>
                 Don't remember your password?{" "}
-                <Link onClick={navigate("/forgotpassword")} color={"blue.400"}>
-                  {" "}
+                <Link
+                  _hover={{
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => navigate("/forgotpassword")}
+                  color={"blue.400"}
+                >
                   Forgot password
                 </Link>
               </Text>
@@ -173,7 +179,16 @@ const Login = () => {
             </Button>
             <Text align={"center"}>
               Don't have a LapDen account?{" "}
-              <Link color={"blue.400"}>Create an account</Link>
+              <Link
+                _hover={{
+                  textDecoration: "underline",
+                  cursor: "pointer",
+                }}
+                onClick={() => navigate("/register")}
+                color={"blue.400"}
+              >
+                Create an account
+              </Link>
             </Text>
           </VStack>
         </VStack>

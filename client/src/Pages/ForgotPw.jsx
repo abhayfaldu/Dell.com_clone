@@ -145,7 +145,14 @@ const ForgotPw = () => {
             </form>
             <Text align={"center"}>
               Remember Password?{" "}
-              <Link onClick={navigate("/login")} color={"blue.400"}>
+              <Link
+                _hover={{
+                  textDecoration: "underline",
+                  cursor: "pointer",
+                }}
+                onClick={() => navigate("/login")}
+                color={"blue.400"}
+              >
                 Click Here
               </Link>
             </Text>
