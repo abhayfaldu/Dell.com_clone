@@ -5,6 +5,9 @@ import {
   DELETE_USER_FAILURE,
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
+  GET_PRODUCT_COUNT_FAILURE,
+  GET_PRODUCT_COUNT_REQUEST,
+  GET_PRODUCT_COUNT_SUCCESS,
   GET_PRODUCT_FAILURE,
   GET_PRODUCT_REQUEST,
   GET_PRODUCT_SUCCESS,
@@ -34,6 +37,18 @@ export const getProductSuccess = (payload) => {
 };
 export const getProductFailure = () => {
   return { type: GET_PRODUCT_FAILURE };
+};
+
+// GET PRODUCT COUNT
+
+export const getProductCountRequest = () => {
+  return { type: GET_PRODUCT_COUNT_REQUEST };
+};
+export const getProductCountSuccess = (payload) => {
+  return { type: GET_PRODUCT_COUNT_SUCCESS, payload };
+};
+export const getProductCountFailure = () => {
+  return { type: GET_PRODUCT_COUNT_FAILURE };
 };
 
 // POST PRODUCT ACTION
@@ -110,18 +125,76 @@ export const deleteUserFailure = () => {
 
 //-------------------------------------------------------------------ACTION PROCESS-------------------------------------------------------//
 
-export const getProductData = (dispatch) => {
+export const getProductData = (page, setTotalCount) => (dispatch) => {
   dispatch(getProductRequest());
   axios
-    .get(`https://wadrobe.onrender.com/men`)
+    .get(`http://localhost:8080/products/all?page=${page}`)
     .then((res) => {
-      dispatch(getProductSuccess(res.data));
+      setTotalCount(res.data.totalCount);
+      dispatch(getProductSuccess(res.data.products));
     })
     .catch((err) => {
       dispatch(getProductFailure());
     });
 };
 
+export const getProductCount = (dispatch) => {
+  dispatch(getProductCountRequest());
+  axios
+    .get(`http://localhost:8080/products/all`)
+    .then((res) => {
+      dispatch(getProductCountSuccess(res.data.totalCount));
+    })
+    .catch((err) => {
+      dispatch(getProductCountFailure());
+    });
+};
+
+export const postProductData = (data) => (dispatch) => {
+  dispatch(postProductRequest());
+  return axios
+    .post(`http://localhost:8080/products/create`, data)
+    .then((res) => {
+      dispatch(postProductSuccess());
+    })
+    .catch((err) => {
+      dispatch(postProductFailure());
+    });
+};
+
+export const updateProductData =
+  (id, discounted_price, original_price, graphics_card, memory, category) =>
+  (dispatch) => {
+    dispatch(updateProductRequest());
+    return axios
+      .patch(`http://localhost:8080/products/update/${id}`, {
+        discounted_price,
+        original_price,
+        graphics_card,
+        memory,
+        category,
+      })
+      .then((res) => {
+        dispatch(updateProductSuccess());
+      })
+      .catch((err) => {
+        dispatch(updateProductFailure());
+      });
+  };
+
+export const deleteProductData = (id) => (dispatch) => {
+  dispatch(deleteProductRequest());
+  return axios
+    .delete(`http://localhost:8080/products/delete/${id}`)
+    .then((res) => {
+      dispatch(deleteProductSuccess());
+    })
+    .catch((err) => {
+      dispatch(deleteProductFailure());
+    });
+};
+
+//-------------------------------------------------------------------User Action-------------------------------------------------------------//
 export const getUserData = (dispatch) => {
   dispatch(getUserRequest());
   axios

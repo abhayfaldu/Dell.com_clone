@@ -5,6 +5,8 @@ import {
   DELETE_USER_FAILURE,
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
+  GET_PRODUCT_COUNT_REQUEST,
+  GET_PRODUCT_COUNT_SUCCESS,
   GET_PRODUCT_FAILURE,
   GET_PRODUCT_REQUEST,
   GET_PRODUCT_SUCCESS,
@@ -27,6 +29,7 @@ const instialState = {
   product: [],
   isLoading: false,
   isError: false,
+  productCount: [],
 };
 
 const reducer = (state = instialState, { type, payload }) => {
@@ -92,6 +95,15 @@ const reducer = (state = instialState, { type, payload }) => {
       return { ...state, isLoading: false };
     }
     case DELETE_USER_FAILURE: {
+      return { ...state, isLoading: false, isError: true };
+    }
+    case GET_PRODUCT_COUNT_REQUEST: {
+      return { ...state, isLoading: true };
+    }
+    case GET_PRODUCT_COUNT_SUCCESS: {
+      return { ...state, isLoading: false, productCount: payload };
+    }
+    case GET_PRODUCT_COUNT_SUCCESS: {
       return { ...state, isLoading: false, isError: true };
     }
     default:

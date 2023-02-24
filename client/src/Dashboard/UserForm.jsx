@@ -19,6 +19,7 @@ import {
 import BeatLoader from "react-spinners/BeatLoader";
 import { useToast } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
+import { postProductData } from "../Redux/Admin/action";
 // import {
 //   addChildAdminProduct,
 //   addMenAdminProduct,
@@ -83,9 +84,9 @@ const Form1 = ({ data, setData }) => {
           rounded="md"
           onChange={handleChange}
         >
-          <option value={"Laptop"}>Laptop</option>
-          <option value={"PC"}>PC</option>
-          <option value={"Headphone"}>Headphone</option>
+          <option>Laptop</option>
+          <option>Desktop</option>
+          <option>All-In-One</option>
         </Select>
       </FormControl>
     </>
@@ -176,7 +177,7 @@ const Form2 = ({ data, setData }) => {
           Discounted Price
         </FormLabel>
         <Input
-          type="text"
+          type="number"
           name="discounted_price"
           autoComplete="discounted_price"
           focusBorderColor="brand.400"
@@ -279,11 +280,12 @@ const Form3 = ({ data, setData }) => {
             size="sm"
             w="full"
             rounded="md"
+            onChange={handleChange}
           >
-            <option>2</option>
-            <option>4</option>
-            <option>6</option>
-            <option>8</option>
+            <option>NVIDIA® GeForce® MX550, 2 GB GDDR6</option>
+            <option>AMD Radeon™ Graphics with shared graphics memory</option>
+            <option>Intel® UHD Graphics</option>
+            <option>NVIDIA® GeForce® MX550, 2 GB GDDR6</option>
           </Select>
         </FormControl>
 
@@ -323,8 +325,8 @@ const Form3 = ({ data, setData }) => {
           </FormLabel>
           <Input
             type="text"
-            name="os"
-            id="os"
+            name="OS"
+            id="OS"
             autoComplete="os"
             focusBorderColor="brand.400"
             shadow="sm"
@@ -351,7 +353,7 @@ const initialData = {
   storage: "",
   memory: "",
   graphics_card: "",
-  os: "",
+  OS: "",
 };
 
 export default function UserForm() {
@@ -364,13 +366,7 @@ export default function UserForm() {
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    // if (data.category === "Men") {
-    //   dispatch(addMenAdminProduct(data));
-    // } else if (data.category === "Women") {
-    //   dispatch(addWomenAdminProduct(data));
-    // } else if (data.category === "Child") {
-    //   dispatch(addChildAdminProduct(data));
-    // }
+    dispatch(postProductData(data));
     setTimeout(() => {
       toast({
         title: "Successfully Added.",
