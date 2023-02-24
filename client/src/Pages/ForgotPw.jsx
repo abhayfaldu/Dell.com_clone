@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   Container,
   Heading,
@@ -11,28 +12,17 @@ import {
   FormControl,
   Input,
   Text,
-  Center,
-  InputRightElement,
-  InputGroup,
   Stack,
   Link,
 } from "@chakra-ui/react";
 import logo from "../Utils/logo.png";
 import laptop from "../Utils/laptop.avif";
-import { FcGoogle } from "react-icons/fc";
-import {
-  ViewIcon,
-  ViewOffIcon,
-  Search2Icon,
-  EmailIcon,
-} from "@chakra-ui/icons";
+import { Search2Icon, EmailIcon } from "@chakra-ui/icons";
 import PersonIcon from "@mui/icons-material/Person";
-import axios from "axios";
 import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
-  const [showPassword, setShowPassword] = useState(false);
+const ForgotPw = () => {
   const [data, setData] = useState({});
 
   const toast = useToast();
@@ -47,22 +37,21 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(`http://localhost:8080/users/login`, data)
+      .post(`http://localhost:8080/users/forgotpassword`, data)
       .then((res) => {
+        console.log("res:", res);
         // alert(res.data.message);
 
-        localStorage.setItem("token", res.data.token);
-
-        if (res.data.success && res.data.token) {
+        if (res.data.success) {
           // alert(res.data.message);
           toast({
-            title: "Successfully Logged In.",
-            description: res.data.message,
+            title: "Successfully Sent.",
+            description: "Check Your Email For Reset Password",
             status: "success",
             duration: 9000,
             isClosable: true,
           });
-          navigate("/")
+          // navigate("/saveforgotpassword")
         } else {
           // alert(res.data.message);
           toast({
@@ -97,19 +86,12 @@ const Login = () => {
           <VStack spacing={10} alignItems="center">
             <Image src={logo} alt="mylogo" w={200} />
 
-            <Heading>Sign In</Heading>
-            <Button
-              _hover={{
-                bg: "blue.100",
-              }}
-              w={"full"}
-              variant={"outline"}
-              leftIcon={<FcGoogle />}
-            >
-              <Center>
-                <Text>Sign in with Google</Text>
-              </Center>
-            </Button>
+            <Heading>Forgot Password</Heading>
+            <Text fontWeight={400} fontSize={[12, 14, 16]}>
+              Enter the email address associated with your LapDen account to
+              receive reset link
+            </Text>
+
             <form onSubmit={handleSubmit} style={{ width: "100%" }}>
               <FormControl mb={10}>
                 <Input
@@ -119,39 +101,6 @@ const Login = () => {
                   onChange={handleChange}
                 ></Input>
               </FormControl>
-              <FormControl mb={10}>
-                <InputGroup>
-                  <Input
-                    placeholder="Password"
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    onChange={handleChange}
-                  />
-                  <InputRightElement h={"full"}>
-                    <Button
-                      variant={"ghost"}
-                      onClick={() =>
-                        setShowPassword((showPassword) => !showPassword)
-                      }
-                    >
-                      {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
-              <Text align={"center"} mb={10}>
-                Don't remember your password?{" "}
-                <Link
-                  _hover={{
-                    textDecoration: "underline",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => navigate("/forgotpassword")}
-                  color={"blue.400"}
-                >
-                  Forgot password
-                </Link>
-              </Text>
               <Stack spacing={10} pt={2}>
                 <Button
                   loadingText="Submitting"
@@ -163,32 +112,21 @@ const Login = () => {
                   }}
                   type="submit"
                 >
-                  Login
+                  Send Email
                 </Button>
               </Stack>
             </form>
-            <Text>OR</Text>
-            <Button
-              _hover={{
-                bg: "blue.100",
-              }}
-              colorScheme="blue.500"
-              variant="outline"
-              w="full"
-            >
-              Send One-time Password
-            </Button>
             <Text align={"center"}>
-              Don't have a LapDen account?{" "}
+              Remember Password?{" "}
               <Link
                 _hover={{
                   textDecoration: "underline",
                   cursor: "pointer",
                 }}
-                onClick={() => navigate("/register")}
+                onClick={() => navigate("/login")}
                 color={"blue.400"}
               >
-                Create an account
+                Click Here
               </Link>
             </Text>
           </VStack>
@@ -241,4 +179,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgotPw;

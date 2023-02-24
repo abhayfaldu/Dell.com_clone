@@ -1,23 +1,41 @@
-import { Box, Flex, Heading, SimpleGrid, Skeleton } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import { Box, Flex, Heading, Select, SimpleGrid, Skeleton } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { ScrollRestoration, useLocation, useSearchParams } from "react-router-dom";
 import { getProducts } from "../../Redux/Product/action";
+import FilterSection from "./FilterSection";
 import ProductCard from "./ProductCard";
 
 const ProductList = () => {
 	const dispatch = useDispatch();
 	const { products, isLoading } = useSelector(store => store.ProductReducer);
+	console.log("products:", products);
+	const location = useLocation();
+	const [searchParams] = useSearchParams();
+	const initialOrder = searchParams.getAll("order");
+	const [order, setOrder] = useState(initialOrder[0] || "");
+
+	useEffect(() => {
+		const processor = searchParams.get("processor");
+		let paramObj = {
+			params: {
+				category: searchParams.getAll("category"),
+				memory: searchParams.getAll("memory"),
+				storage: searchParams.getAll("storage"),
+				processor,
+			},
+		};
+		dispatch(getProducts(paramObj));
+	}, [location.search]);
+	console.log("location.search:", location.search);
+
+	const handleSort = (e) => {
+		setOrder(e.target.value)
+	};
 
 	useEffect(() => {
 		dispatch(getProducts());
 	}, []);
-
-	// style objects
-	const filterBoxStyle = {
-		backgroundColor: "lightgray",
-		padding: "8px 8px 50px",
-		marginBottom: "10px",
-	};
 
 	return (
 		<Flex
@@ -25,29 +43,23 @@ const ProductList = () => {
 			p={3}
 			flexDir={"column"}
 			w={["100%", "100%", "100%", "100%", "100%", "1645px"]}
-			border={"2px solid red"}
 		>
 			{/* Page heading */}
 			<Heading my={5}>Inspiron Laptops & 2-in-1 PCs</Heading>
 
 			{/* Page content */}
 			<Flex gap={6} textAlign="left">
-				{/* Filter section */}
-				<Box flex={1} display={["none", "none", "none", "block", "block"]}>
-					<Box style={filterBoxStyle}>filter content</Box>
-					<Box style={filterBoxStyle}>filter content</Box>
-					<Box style={filterBoxStyle}>filter content</Box>
-					<Box style={filterBoxStyle}>filter content</Box>
-					<Box style={filterBoxStyle}>filter content</Box>
-					<Box style={filterBoxStyle}>filter content</Box>
-				</Box>
+				<FilterSection />
 
 				{/* Product list section */}
 				<Flex flexDir={"column"} flex={5} w="full" gap={3}>
 					{/* Pagination info and sort bar */}
-					<Box py={3} border="1px solid lightgray">
-						sort and pagination info
-					</Box>
+					<Flex py={3} border="1px solid lightgray" justify='flex-start'>
+						<Select w={"300px"}>
+							<option>hello</option>
+							<option>world</option>
+						</Select>
+					</Flex>
 					{isLoading ? (
 						<>
 							<Skeleton h={"20rem"} w="full"></Skeleton>
@@ -61,7 +73,7 @@ const ProductList = () => {
 								products.map((product, i) => {
 									return (
 										<ProductCard
-											index={i}
+											key={i}
 											title={product.title}
 											rating={product.rating}
 											number_of_reviews={product.number_of_reviews}
