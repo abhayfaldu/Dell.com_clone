@@ -30,7 +30,6 @@ import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 const ForgotPw = () => {
-  const [showPassword, setShowPassword] = useState(false);
   const [data, setData] = useState({});
 
   const toast = useToast();
@@ -47,14 +46,13 @@ const ForgotPw = () => {
     axios
       .post(`http://localhost:8080/users/forgotpassword`, data)
       .then((res) => {
+        console.log('res:', res)
         // alert(res.data.message);
 
-        localStorage.setItem("token", res.data.token);
-
-        if (res.data.success && res.data.token) {
+        if (res.data.success) {
           // alert(res.data.message);
           toast({
-            title: "Successfully Logged In.",
+            title: "Successfully Sent.",
             description: res.data.message,
             status: "success",
             duration: 9000,
@@ -94,10 +92,10 @@ const ForgotPw = () => {
           <VStack spacing={10} alignItems="center">
             <Image src={logo} alt="mylogo" w={200} />
 
-            <Heading>Change Password</Heading>
+            <Heading>Forgot Password</Heading>
             <Text fontWeight={400} fontSize={[12, 14, 16]}>
-              Enter the email address associated with your Dell account to
-              receive one-time password
+              Enter the email address associated with your LapDen account to
+              receive reset link
             </Text>
 
             <form onSubmit={handleSubmit} style={{ width: "100%" }}>
@@ -109,26 +107,6 @@ const ForgotPw = () => {
                   onChange={handleChange}
                 ></Input>
               </FormControl>
-              <FormControl mb={10}>
-                <InputGroup>
-                  <Input
-                    name="password"
-                    onChange={handleChange}
-                    placeholder="Enter New Password"
-                    type={showPassword ? "text" : "password"}
-                  />
-                  <InputRightElement h={"full"}>
-                    <Button
-                      variant={"ghost"}
-                      onClick={() =>
-                        setShowPassword((showPassword) => !showPassword)
-                      }
-                    >
-                      {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
               <Stack spacing={10} pt={2}>
                 <Button
                   loadingText="Submitting"
@@ -138,8 +116,9 @@ const ForgotPw = () => {
                   _hover={{
                     bg: "blue.500",
                   }}
+                  type="submit"
                 >
-                  Change Password
+                  Send Email
                 </Button>
               </Stack>
             </form>

@@ -47,13 +47,11 @@ const ChangePw = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(`http://localhost:8080/users/forgotpassword`, data)
+      .post(`http://localhost:8080/users/resetpassword`, data)
       .then((res) => {
         // alert(res.data.message);
 
-        localStorage.setItem("token", res.data.token);
-
-        if (res.data.success && res.data.token) {
+        if (res.data.success) {
           // alert(res.data.message);
           toast({
             title: "Successfully Logged In.",
@@ -152,6 +150,7 @@ const ChangePw = () => {
                   _hover={{
                     bg: "blue.500",
                   }}
+                  type="submit"
                 >
                   Change Password
                 </Button>
