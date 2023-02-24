@@ -42,51 +42,60 @@ const CreatePw = () => {
     const { name, value } = e.target;
 
     setData({ ...data, [name]: value });
-  };
+};
 
-  const handleSubmit = (e) => {
+const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post(`http://localhost:8080/users/resetpassword`, data, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      })
-      .then((res) => {
-        // alert(res.data.message);
 
-        if (res.data.success) {
-          // alert(res.data.message);
-          toast({
-            title: "Successfully Logged In.",
-            description: res.data.message,
-            status: "success",
-            duration: 9000,
-            isClosable: true,
+    if(data.password===data.confirmPassword){
+
+        axios
+          .post(`http://localhost:8080/users/saveforgotpassword`, data)
+          .then((res) => {
+            // alert(res.data.message);
+    
+            if (res.data.success) {
+              // alert(res.data.message);
+              toast({
+                title: "Password Saved.",
+                description: res.data.message,
+                status: "success",
+                duration: 9000,
+                isClosable: true,
+              });
+              navigate("/login")
+    
+            } else {
+              // alert(res.data.message);
+              toast({
+                title: "Password Not Saved.",
+                description: res.data.message,
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+              });
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            toast({
+              title: "Something Went Wrong.",
+              description: "Please Try Again Later",
+              status: "error",
+              duration: 9000,
+              isClosable: true,
+            });
           });
-          navigate("/login")
-
-        } else {
-          // alert(res.data.message);
-          toast({
-            title: "Something Went Wrong.",
-            description: res.data.message,
+    }
+    else{
+        toast({
+            title: "Passowrd Not Matched.",
+            description: "Please Make Sure The Password You Entered Are same",
             status: "error",
             duration: 9000,
             isClosable: true,
           });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        toast({
-          title: "User Not Exists.",
-          description: "Invalid Username or Password",
-          status: "error",
-          duration: 9000,
-          isClosable: true,
-        });
-      });
+    }
   };
 
   /*
