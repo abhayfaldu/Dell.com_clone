@@ -91,6 +91,7 @@ exports.loginController = async (req, res) => {
       success: true,
       message: "login successful",
       user: {
+        id:user._id,
         first_name: user.first_name,
         last_name: user.last_name,
         email: user.email,
@@ -107,7 +108,7 @@ exports.loginController = async (req, res) => {
 //  get single user admin
 exports.singleUser = async (req, res) => {
   try {
-    const user = await userModel.findOne({ _id: req.params.id });
+    const user = await userModel.findOne({ _id: req.params.id }).select("-password");
     if (!user) {
       return res
         .status(404)
@@ -244,7 +245,7 @@ exports.sendUserPasswordResetEmail = async (req, res) => {
     });
 
     //link for user
-    const link = `http://127.0.0.1:3000/users/forgot/${user._id}/${token}`;
+    const link = `http://127.0.0.1:3000/users/saveforgotpassword/${user._id}/${token}`;
     let info = await transporter.sendMail({
       from: "bipinecommerce@gmail.com",
       to: user.email,
