@@ -46,12 +46,12 @@ const ForgotPw = () => {
           // alert(res.data.message);
           toast({
             title: "Successfully Sent.",
-            description: res.data.message,
+            description: "Check Your Email For Reset Password",
             status: "success",
             duration: 9000,
             isClosable: true,
           });
-          navigate("/saveforgotpassword")
+          // navigate("/saveforgotpassword")
         } else {
           // alert(res.data.message);
           toast({

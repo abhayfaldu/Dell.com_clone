@@ -29,9 +29,13 @@ import PersonIcon from "@mui/icons-material/Person";
 
 import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const CreatePw = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const {id,token}= useParams();
+  console.log('token:', token)
+  console.log('id:', id)
 
   const [data, setData] = useState({});
 
@@ -44,13 +48,16 @@ const CreatePw = () => {
     setData({ ...data, [name]: value });
 };
 
+
+
+
 const handleSubmit = (e) => {
     e.preventDefault();
 
     if(data.password===data.confirmPassword){
 
         axios
-          .post(`http://localhost:8080/users/saveforgotpassword`, data)
+          .post(`http://localhost:8080/users/saveforgotpassword/${id}/${token}`, data)
           .then((res) => {
             // alert(res.data.message);
     

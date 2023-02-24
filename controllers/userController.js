@@ -244,7 +244,7 @@ exports.sendUserPasswordResetEmail = async (req, res) => {
     });
 
     //link for user
-    const link = `http://127.0.0.1:3000/users/forgot/${user._id}/${token}`;
+    const link = `http://localhost:3000/users/saveforgotpassword/${user._id}/${token}`;
     let info = await transporter.sendMail({
       from: "bipinecommerce@gmail.com",
       to: user.email,
