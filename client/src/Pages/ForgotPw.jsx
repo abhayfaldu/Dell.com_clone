@@ -12,19 +12,12 @@ import {
   FormControl,
   Input,
   Text,
-  InputRightElement,
-  InputGroup,
   Stack,
   Link,
 } from "@chakra-ui/react";
 import logo from "../Utils/logo.png";
 import laptop from "../Utils/laptop.avif";
-import {
-  ViewIcon,
-  ViewOffIcon,
-  Search2Icon,
-  EmailIcon,
-} from "@chakra-ui/icons";
+import { Search2Icon, EmailIcon } from "@chakra-ui/icons";
 import PersonIcon from "@mui/icons-material/Person";
 import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
@@ -46,7 +39,7 @@ const ForgotPw = () => {
     axios
       .post(`http://localhost:8080/users/forgotpassword`, data)
       .then((res) => {
-        console.log('res:', res)
+        console.log("res:", res);
         // alert(res.data.message);
 
         if (res.data.success) {
