@@ -17,7 +17,7 @@ app.use(cors());
 //routes
 app.use("/users", userRoute);
 app.use("/products",productRoute)
-app.use("/carts", cartRoute);
+app.use("/cart", cartRoute);
 //default home
 
 app.use("/", (req, res) => {

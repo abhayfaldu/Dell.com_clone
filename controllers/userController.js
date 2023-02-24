@@ -91,6 +91,7 @@ exports.loginController = async (req, res) => {
       success: true,
       message: "login successful",
       user: {
+        id:user._id,
         first_name: user.first_name,
         last_name: user.last_name,
         email: user.email,
@@ -107,7 +108,7 @@ exports.loginController = async (req, res) => {
 //  get single user admin
 exports.singleUser = async (req, res) => {
   try {
-    const user = await userModel.findOne({ _id: req.params.id });
+    const user = await userModel.findOne({ _id: req.params.id }).select("-password");
     if (!user) {
       return res
         .status(404)
