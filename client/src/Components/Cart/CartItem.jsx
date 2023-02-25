@@ -19,15 +19,21 @@ const QuantitySelect = (props) => {
 
 export const CartItem = (props) => {
   const {
-    isGiftWrapping,
-    name,
-    description,
+    title,
+		rating,
+		number_of_reviews,
+		processor,
+		OS,
+		graphics_card,
+		memory,
+		storage,
+		display,
+		original_price,
+		discounted_price,
+		image_url,
     quantity,
-    imageUrl,
-    currency,
-    price,
     onChangeQuantity,
-    onClickDelete,
+    onClickDelete
   } = props
   return (
     <Flex
@@ -39,10 +45,10 @@ export const CartItem = (props) => {
       align="center"
     >
       <CartProductMeta
-        name={name}
-        description={description}
-        image={imageUrl}
-        isGiftWrapping={isGiftWrapping}
+        name={title}
+        image={image_url[0]}
+        original_price={original_price}
+        discounted_price={discounted_price}
       />
 
       {/* Desktop */}
@@ -60,8 +66,8 @@ export const CartItem = (props) => {
             onChangeQuantity?.(+e.currentTarget.value)
           }}
         />
-        <PriceTag price={price} currency={currency} />
-        <CloseButton aria-label={`Delete ${name} from cart`} onClick={onClickDelete} />
+        <PriceTag price={discounted_price} />
+        <CloseButton aria-label={`Delete ${title} from cart`} onClick={onClickDelete} />
       </Flex>
 
       {/* Mobile */}
@@ -84,7 +90,7 @@ export const CartItem = (props) => {
             onChangeQuantity?.(+e.currentTarget.value)
           }}
         />
-        <PriceTag price={price} currency={currency} />
+        <PriceTag price={discounted_price} />
       </Flex>
     </Flex>
   )
