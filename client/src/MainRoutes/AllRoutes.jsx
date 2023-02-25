@@ -2,7 +2,6 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Footer from "../Components/Footer";
 import Navbar from "../Components/Navbar";
-import ProductList from "../Components/Product_list/ProductList";
 import Dashboard from "../Dashboard/Dashboard";
 import SubNavbar from "../Components/SubNavbar";
 import Homepage from "../Pages/Homepage";
@@ -19,6 +18,7 @@ import SingleProductPage from "../Pages/SingleProductPage";
 import { Cart } from "../Components/Cart/Cart";
 import CartLogo from "../Components/Cart/CartLogo";
 import KeyboardMouse from "../Pages/KeyboardMouse";
+import ProductList from "../Pages/ProductList";
 
 const AllRoutes = () => {
   return (
@@ -42,19 +42,38 @@ const AllRoutes = () => {
       <Route path="/register" element={<SignUp />}></Route>
       <Route path="/changepassword" element={<ChangePw />}></Route>
       <Route path="/forgotpassword" element={<ForgotPw />}></Route>
-      <Route path="/users/saveforgotpassword/:id/:token" element={<CreatePw />}></Route>
-      <Route path ="/cart" element={<><CartLogo /> <Cart /></>}></Route>
-      <Route path="/keyboard&mouse" element={<><Navbar/><KeyboardMouse /><Footer/></>}></Route>
       <Route
-				path="/products/:id"
-				element={
-					<>
-						<Navbar />
-						<SingleProductPage />
-						<Footer />
-					</>
-				}
-			></Route>
+        path="/users/saveforgotpassword/:id/:token"
+        element={<CreatePw />}
+      ></Route>
+      <Route
+        path="/cart"
+        element={
+          <>
+            <CartLogo /> <Cart />
+          </>
+        }
+      ></Route>
+      <Route
+        path="/keyboard&mouse"
+        element={
+          <>
+            <Navbar />
+            <KeyboardMouse />
+            <Footer />
+          </>
+        }
+      ></Route>
+      <Route
+        path="/products/:id"
+        element={
+          <>
+            <Navbar />
+            <SingleProductPage />
+            <Footer />
+          </>
+        }
+      ></Route>
     </Routes>
   );
 };
