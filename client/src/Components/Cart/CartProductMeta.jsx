@@ -1,14 +1,14 @@
 import {
   Box,
-  // HStack,
-  // Icon,
+  HStack,
+  Icon,
   Image,
   // Link,
   Stack,
   Text,
   useColorModeValue as mode,
 } from "@chakra-ui/react";
-// import { FiGift } from 'react-icons/fi'
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 
 function rupeeAmountToString(amount, isSaving = false) {
   const amountString = amount.toFixed(2).toString();
@@ -54,16 +54,16 @@ export const CartProductMeta = (props) => {
             {description}
           </Text> */}
           {/* {isGiftWrapping && (
+          )} */}
           <HStack spacing="1" mt="3" color={mode('gray.600', 'gray.400')}>
-          <Icon as={FiGift} boxSize="4" />
-          <Link fontSize="sm" textDecoration="underline">
-          Add gift wrapping
-          </Link>
-          </HStack>
-        )} */}
-          <Text textAlign={"left"} mt="3" color={mode("gray.600", "gray.400")}>
-            Saving - ₹ {rupeeAmountToString(original_price - discounted_price, true)}
+          <Icon as={LocalOfferIcon} boxSize="4" />
+          <Text fontSize="sm" color={"green"}>
+          Saving - ₹ {rupeeAmountToString(original_price - discounted_price, true)}
           </Text>
+          </HStack>
+          {/* <Text textAlign={"left"} mt="3" color={mode("gray.600", "gray.400")}>
+            Saving - ₹ {rupeeAmountToString(original_price - discounted_price, true)}
+          </Text> */}
         </Stack>
       </Box>
     </Stack>
