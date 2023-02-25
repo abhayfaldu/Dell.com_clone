@@ -17,6 +17,7 @@ import ForgotPw from "../Pages/ForgotPw";
 import CreatePw from "../Pages/CreatePw";
 import { Cart } from "../Components/Cart/Cart";
 import CartLogo from "../Components/Cart/CartLogo";
+import KeyboardMouse from "../Pages/KeyboardMouse";
 
 const AllRoutes = () => {
   return (
@@ -42,6 +43,7 @@ const AllRoutes = () => {
       <Route path="/forgotpassword" element={<ForgotPw />}></Route>
       <Route path="/users/saveforgotpassword/:id/:token" element={<CreatePw />}></Route>
       <Route path ="/cart" element={<><CartLogo /> <Cart /></>}></Route>
+      <Route path="/keyboard&mouse" element={<><Navbar/><KeyboardMouse /><Footer/></>}></Route>
     </Routes>
   );
 };
