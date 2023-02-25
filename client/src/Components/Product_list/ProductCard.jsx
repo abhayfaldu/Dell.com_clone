@@ -4,10 +4,6 @@ import { MdStarBorder, MdStarHalf, MdStarRate } from "react-icons/md";
 import PriceDetails from "./PriceDetails";
 import SpecsTable from "./SpecsTable";
 
-/* 
-todos: change value of key prop form index to _id
-*/
-
 const ProductCard = props => {
 	const {
 		title,
