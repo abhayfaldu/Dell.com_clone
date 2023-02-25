@@ -126,17 +126,17 @@ const FilterSection = () => {
 						<input
 							type={"radio"}
 							name="processor"
-							value={"All Intel Processors"}
+							value={"null"}
 							defaultChecked
 						/>
-						<label>All Intel Processors</label>
+						<label>All Processors</label>
 					</div>
 					<div style={radio_input_container_style}>
 						<input
 							type={"radio"}
 							name="processor"
 							value={"12th Gen Intel® Core™ i7-1255U"}
-							checked={processor === "Intel Core i7"}
+							checked={processor === "12th Gen Intel® Core™ i7-1255U"}
 						/>
 						<label>Intel Core i7</label>
 					</div>
@@ -144,8 +144,8 @@ const FilterSection = () => {
 						<input
 							type={"radio"}
 							name="processor"
-							value={"Intel Core i5"}
-							checked={processor === "Intel Core i5"}
+							value={"12th Gen Intel® Core™ i5-1235U"}
+							checked={processor === "12th Gen Intel® Core™ i5-1235U"}
 						/>
 						<label>Intel Core i5</label>
 					</div>
@@ -153,8 +153,8 @@ const FilterSection = () => {
 						<input
 							type={"radio"}
 							name="processor"
-							value={"Intel Core i3"}
-							checked={processor === "Intel Core i3"}
+							value={"12th Gen Intel® Core™ i3-1215U"}
+							checked={processor === "12th Gen Intel® Core™ i3-1215U"}
 						/>
 						<label>Intel Core i3</label>
 					</div>
@@ -162,8 +162,8 @@ const FilterSection = () => {
 						<input
 							type={"radio"}
 							name="processor"
-							value={"Intel Pentium"}
-							checked={processor === "Intel Pentium"}
+							value={"Intel® Pentium® Silver N5030"}
+							checked={processor === "Intel® Pentium® Silver N5030"}
 						/>
 						<label>Intel Pentium</label>
 					</div>
@@ -171,17 +171,8 @@ const FilterSection = () => {
 						<input
 							type={"radio"}
 							name="processor"
-							value={"All AMD Processors"}
-							checked={processor === "All AMD Processors"}
-						/>
-						<label>All AMD Processors</label>
-					</div>
-					<div style={radio_input_container_style}>
-						<input
-							type={"radio"}
-							name="processor"
-							value={"AMD Ryzen 5"}
-							checked={processor === "AMD Ryzen 5"}
+							value={"AMD Ryzen™ 5 5625U 6-core/12-thread Processor with Radeon™ Graphics"}
+							checked={processor === "AMD Ryzen™ 5 5625U 6-core/12-thread Processor with Radeon™ Graphics"}
 						/>
 						<label>AMD Ryzen 5</label>
 					</div>
@@ -189,8 +180,8 @@ const FilterSection = () => {
 						<input
 							type={"radio"}
 							name="processor"
-							value={"AMD Ryzen 3"}
-							checked={processor === "AMD Ryzen 3"}
+							value={"AMD Ryzen™ 3 5425U 4-core/8-thread Processor with Radeon™ Graphics"}
+							checked={processor === "AMD Ryzen™ 3 5425U 4-core/8-thread Processor with Radeon™ Graphics"}
 						/>
 						<label>AMD Ryzen 3</label>
 					</div>
