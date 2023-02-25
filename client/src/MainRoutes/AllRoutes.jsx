@@ -15,6 +15,7 @@ import SignUp from "../Pages/SignUp";
 import ChangePw from "../Pages/ChangePw";
 import ForgotPw from "../Pages/ForgotPw";
 import CreatePw from "../Pages/CreatePw";
+import KeyboardMouse from "../Pages/KeyboardMouse";
 
 const AllRoutes = () => {
   return (
@@ -39,6 +40,7 @@ const AllRoutes = () => {
       <Route path="/changepassword" element={<ChangePw />}></Route>
       <Route path="/forgotpassword" element={<ForgotPw />}></Route>
       <Route path="/users/saveforgotpassword/:id/:token" element={<CreatePw />}></Route>
+      <Route path="/keyboard&mouse" element={<><Navbar/><KeyboardMouse /><Footer/></>}></Route>
     </Routes>
   );
 };
