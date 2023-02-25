@@ -15,7 +15,7 @@ import { useEffect } from "react";
 
 const getProducts = () => {
   axios
-    .get("http://localhost:8080/cart/singlecart",{
+    .get("http://localhost:8080/cart/singlecart", {
       headers: {
         Authorization: localStorage.getItem("token"),
       },
@@ -83,6 +83,7 @@ export const Cart = () => {
 
         <Flex direction="column" align="center" flex="1">
           <CartOrderSummary />
+
           <HStack mt="6" fontWeight="semibold">
             <p>or</p>
             <Link color={mode("blue.500", "blue.200")}>Continue shopping</Link>

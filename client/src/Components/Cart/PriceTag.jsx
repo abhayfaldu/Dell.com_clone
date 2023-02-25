@@ -1,5 +1,6 @@
 import { HStack, Text, useColorModeValue as mode } from '@chakra-ui/react'
 export function formatPrice(value, opts = {}) {
+  // console.log('value:', value)
   const { locale = 'en-IN', currency = 'INR' } = opts
   const formatter = new Intl.NumberFormat(locale, {
     currency,
@@ -10,17 +11,17 @@ export function formatPrice(value, opts = {}) {
 }
 
 export const PriceTag = (props) => {
-  const { price, currency, salePrice, rootProps, priceProps, salePriceProps } = props
+  const { price, currency, original_price, rootProps, priceProps, salePriceProps } = props
   return (
     <HStack spacing="1" {...rootProps}>
-      <Price isOnSale={!!salePrice} textProps={priceProps}>
+      <Price isOnSale={!!original_price} textProps={priceProps}>
         {formatPrice(price, {
           currency,
         })}
       </Price>
-      {salePrice && (
+      {original_price && (
         <SalePrice {...salePriceProps}>
-          {formatPrice(salePrice, {
+          {formatPrice(original_price, {
             currency,
           })}
         </SalePrice>

@@ -6,20 +6,21 @@ import {
   Stack,
   Text,
   useColorModeValue as mode,
-} from '@chakra-ui/react'
-import { FaArrowRight } from 'react-icons/fa'
-import { formatPrice } from './PriceTag'
+} from "@chakra-ui/react";
+import { FaArrowRight } from "react-icons/fa";
+import { formatPrice } from "./PriceTag";
 const OrderSummaryItem = (props) => {
-  const { label, value, children } = props
+  const { label, value, children } = props;
+  // console.log('value:', value)
   return (
     <Flex justify="space-between" fontSize="sm">
-      <Text fontWeight="medium" color={mode('gray.600', 'gray.400')}>
+      <Text fontWeight="medium" color={mode("gray.600", "gray.400")}>
         {label}
       </Text>
       {value ? <Text fontWeight="medium">{value}</Text> : children}
     </Flex>
-  )
-}
+  );
+};
 
 export const CartOrderSummary = () => {
   return (
@@ -29,14 +30,10 @@ export const CartOrderSummary = () => {
       <Stack spacing="6">
         <OrderSummaryItem label="Subtotal" value={formatPrice(597)} />
         <OrderSummaryItem label="Shipping + Tax">
-          <Link href="#" textDecor="underline">
-            Calculate shipping
-          </Link>
+          <Text>{Math.floor(Math.random() * (400 - 100) ) + 50}</Text>
         </OrderSummaryItem>
         <OrderSummaryItem label="Coupon Code">
-          <Link href="#" textDecor="underline">
-            Add coupon code
-          </Link>
+          <Text fontWeight={"bold"}>LAPDEN2023</Text>
         </OrderSummaryItem>
         <Flex justify="space-between">
           <Text fontSize="lg" fontWeight="semibold">
@@ -47,9 +44,14 @@ export const CartOrderSummary = () => {
           </Text>
         </Flex>
       </Stack>
-      <Button colorScheme="blue" size="lg" fontSize="md" rightIcon={<FaArrowRight />}>
+      <Button
+        colorScheme="blue"
+        size="lg"
+        fontSize="md"
+        rightIcon={<FaArrowRight />}
+      >
         Checkout
       </Button>
     </Stack>
-  )
-}
+  );
+};
