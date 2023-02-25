@@ -27,18 +27,25 @@ import {
 	ChevronDownIcon,
 	ChevronRightIcon,
 } from "@chakra-ui/icons";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import logo from "../Utils/logo.png";
 import { MdOutlineAccountCircle } from "react-icons/md";
 import { RiCustomerService2Fill } from "react-icons/ri";
 import { TbWorld } from "react-icons/tb";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import "./Navbar.modules.css";
+import { useEffect } from "react";
+import { getProducts } from "../Redux/Product/action";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Navbar() {
+	const { products, isLoading } = useSelector(store => store.ProductReducer);
+	const location = useLocation();
+	const [searchParams] = useSearchParams();
 	const { isOpen, onToggle } = useDisclosure();
 	const navigate = useNavigate();
 	const token=localStorage.getItem("token");
+	const dispatch = useDispatch();
 	const handleNavigate=()=>{
 		if(token){
 			navigate("/login")
@@ -46,6 +53,22 @@ export default function Navbar() {
 			navigate("/register")
 		}
 	}
+
+
+	
+	 useEffect(() => {
+		const processor = searchParams.get("processor");
+		let paramObj = {
+			params: {
+				category: searchParams.getAll("category"),
+				memory: searchParams.getAll("memory"),
+				storage: searchParams.getAll("storage"),
+				processor,
+			},
+		};
+		dispatch(getProducts(paramObj));
+	}, [location.search]);
+	console.log(products)
 	return (
 		<>
 			<Box>

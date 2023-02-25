@@ -15,32 +15,46 @@ import SignUp from "../Pages/SignUp";
 import ChangePw from "../Pages/ChangePw";
 import ForgotPw from "../Pages/ForgotPw";
 import CreatePw from "../Pages/CreatePw";
+import SingleProductPage from "../Pages/SingleProductPage";
 
 const AllRoutes = () => {
-  return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <>
-            <Navbar /> <SubNavbar /> <Homepage /> <Footer />
-          </>
-        }
-      ></Route>
-      <Route path="/products" element={<ProductList />}></Route>
-      <Route path="/dashboard" element={<Dashboard />}></Route>
-      <Route path="/addproduct" element={<AddProduct />}></Route>
-      <Route path="/adminstore" element={<AdminStore />}></Route>
-      <Route path="/admincustomer" element={<AdminCustomer />}></Route>
-      <Route path="/signup" element={<SignUp />}></Route>
-      <Route path="*" element={<NotFound />}></Route>
-      <Route path="/login" element={<Login />}></Route>
-      <Route path="/register" element={<SignUp />}></Route>
-      <Route path="/changepassword" element={<ChangePw />}></Route>
-      <Route path="/forgotpassword" element={<ForgotPw />}></Route>
-      <Route path="/users/saveforgotpassword/:id/:token" element={<CreatePw />}></Route>
-    </Routes>
-  );
+	return (
+		<Routes>
+			<Route
+				path="/"
+				element={
+					<>
+						<Navbar /> <SubNavbar /> <Homepage /> <Footer />
+					</>
+				}
+			></Route>
+			<Route path="/products" element={<ProductList />}></Route>
+			<Route path="/dashboard" element={<Dashboard />}></Route>
+			<Route path="/addproduct" element={<AddProduct />}></Route>
+			<Route path="/adminstore" element={<AdminStore />}></Route>
+			<Route path="/admincustomer" element={<AdminCustomer />}></Route>
+			<Route path="/signup" element={<SignUp />}></Route>
+			<Route path="*" element={<NotFound />}></Route>
+			<Route path="/login" element={<Login />}></Route>
+			<Route path="/register" element={<SignUp />}></Route>
+			<Route path="/changepassword" element={<ChangePw />}></Route>
+			<Route path="/forgotpassword" element={<ForgotPw />}></Route>
+			<Route
+				path="/users/saveforgotpassword/:id/:token"
+				element={<CreatePw />}
+			></Route>
+			<Route
+				path="/products/:id"
+				element={
+					<>
+						<Navbar />
+						<SingleProductPage />
+						<Footer />
+					</>
+				}
+			></Route>
+		</Routes>
+	);
 };
 
 export default AllRoutes;
