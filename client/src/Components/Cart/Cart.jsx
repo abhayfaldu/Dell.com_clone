@@ -7,6 +7,7 @@ import {
   Stack,
   useColorModeValue as mode,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import { CartItem } from "./CartItem";
 import { CartOrderSummary } from "./CartOrderSummary";
 import { cartData } from "./_data";
@@ -29,6 +30,7 @@ const getProducts = () => {
 };
 
 export const Cart = () => {
+  const navigate = useNavigate();
   useEffect(() => {
     getProducts();
   }, []);
@@ -86,7 +88,7 @@ export const Cart = () => {
 
           <HStack mt="6" fontWeight="semibold">
             <p>or</p>
-            <Link color={mode("blue.500", "blue.200")}>Continue shopping</Link>
+            <Link onClick={()=>navigate("/")} color={mode("blue.500", "blue.200")}>Continue shopping</Link>
           </HStack>
         </Flex>
       </Stack>

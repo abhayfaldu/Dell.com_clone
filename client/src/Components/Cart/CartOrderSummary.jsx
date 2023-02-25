@@ -2,7 +2,6 @@ import {
   Button,
   Flex,
   Heading,
-  Link,
   Stack,
   Text,
   useColorModeValue as mode,
