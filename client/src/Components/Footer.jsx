@@ -68,7 +68,6 @@ export default function LargeWithLogoCentered() {
             <ListHeader>Our Company</ListHeader>
             <Link href={'#'}>Who We Are</Link>
             <Link href={'#'}>Careers</Link>
-            <Link href={'#'}>LAP-DEN Technologies Capital</Link>
             <Link href={'#'}>Investors</Link>
             <Link href={'#'}>Newsroom</Link>
             <Link href={'#'}>Perspectives</Link>
@@ -85,11 +84,9 @@ export default function LargeWithLogoCentered() {
             <ListHeader>Resources</ListHeader>
             <Link href={'#'}>Blog</Link>
             <Link href={'#'}>Events</Link>
-            <Link href={'#'}>LAP-DEN Learning Center</Link>
             <Link href={'#'}>Glossary</Link>
             <Link href={'#'}>Privacy Center</Link>
             <Link href={'#'}>Resource Library</Link>
-            <Link href={'#'}>Trial Software Downloads</Link>
           </Stack>
         </SimpleGrid>
       </Container>
@@ -124,7 +121,6 @@ export default function LargeWithLogoCentered() {
         justify={{ base: 'center', md: 'space-between' }}
         align={{ base: 'center', md: 'center' }}>
         <Stack direction={'row'} spacing={6}>
-        <Link href={'#'}>Copyright © 2023 LAP-DEN Inc.</Link>
           <Link href={'#'}>Terms of Sale</Link>
           <Link href={'#'}>Privacy Statement</Link>
           <Link href={'#'}>Legal & Regulatory</Link>
