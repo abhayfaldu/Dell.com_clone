@@ -25,14 +25,14 @@ const FilterSection = () => {
 	const initialCategory = searchParams.getAll("category");
 	const [category, setCategory] = useState(initialCategory || []);
 	const [processor, setProcessor] = useState(searchParams.getAll("processor"));
-	// const initialMinPrice = searchParams.get(
-	// 	encodeURIComponent("discounted_price[gte]")
-	// );
-	const [minPrice, setMinPrice] = useState(0);
-	// const initialMaxPrice = searchParams.get(
-	// 	encodeURIComponent("discounted_price[lte]")
-	// );
-	const [maxPrice, setMaxPrice] = useState(500000);
+	const initialMinPrice = searchParams.get(
+		encodeURIComponent("discounted_price[gte]")
+	);
+	const [minPrice, setMinPrice] = useState(initialMinPrice);
+	const initialMaxPrice = searchParams.get(
+		encodeURIComponent("discounted_price[lte]")
+	);
+	const [maxPrice, setMaxPrice] = useState(initialMaxPrice);
 	const [isPriceFilterApplied, setIsPriceFilterApplied] = useState(1);
 	const initialMemory = searchParams.getAll("memory");
 	const [memory, setMemory] = useState(initialMemory || []);
@@ -50,8 +50,6 @@ const FilterSection = () => {
 	};
 
 	const handlePriceChange = () => {
-		setMinPrice(minPrice);
-		setMaxPrice(maxPrice);
 		setIsPriceFilterApplied(prev => (prev === 1 ? 2 : 1));
 	};
 
@@ -79,10 +77,10 @@ const FilterSection = () => {
 		const params = {
 			category,
 			memory,
-			storage,
-			"original_price[gte]": minPrice,
-			"original_price[lte]": maxPrice,
+			storage
 		};
+		if(minPrice) params["discounted_price[gte]"] = minPrice;
+		if(maxPrice) params["discounted_price[lte]"] = maxPrice;
 		processor && (params.processor = processor);
 		setSearchParams(params);
 	}, [category, processor, memory, storage, isPriceFilterApplied]);
@@ -129,10 +127,10 @@ const FilterSection = () => {
 						<input
 							type={"radio"}
 							name="processor"
-							value={"null"}
+							value={null}
 							defaultChecked
 						/>
-						<label>All Processors</label>
+						<label>All processors</label>
 					</div>
 					<div style={radio_input_container_style}>
 						<input

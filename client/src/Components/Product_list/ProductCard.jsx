@@ -3,6 +3,7 @@ import React from "react";
 import { MdStarBorder, MdStarHalf, MdStarRate } from "react-icons/md";
 import PriceDetails from "./PriceDetails";
 import SpecsTable from "./SpecsTable";
+import StarRatings from "react-star-ratings";
 
 const ProductCard = props => {
 	const {
@@ -20,9 +21,6 @@ const ProductCard = props => {
 		image_url,
 	} = props;
 
-	const fullStars = Math.floor(rating);
-	const halfStar = rating - fullStars >= 0.5;
-	const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
 	return (
 		<Flex
 			flexDir={["column", "row"]}
@@ -32,13 +30,7 @@ const ProductCard = props => {
 			p={3}
 		>
 			{/* product image */}
-			<Flex
-				px={4}
-				py={4}
-				flex={1}
-				align={"center"}
-				justify={"center"}
-			>
+			<Flex px={4} py={4} flex={1} align={"center"} justify={"center"}>
 				<Img
 					src={image_url[0]}
 					alt="product_image"
@@ -57,24 +49,14 @@ const ProductCard = props => {
 				{/* rating */}
 				<Flex align={"center"}>
 					<Flex fontSize={"24px"} color="brand" mr={2} align="center">
-						{Array(fullStars)
-							.fill(1)
-							.map((star, i) => (
-								<MdStarRate key={i} style={{ margin: "-2px" }} />
-							))}
-						{halfStar ? (
-							<MdStarHalf style={{ margin: "-2px", marginTop: "1.4px" }} />
-						) : (
-							<></>
-						)}
-						{Array(emptyStars)
-							.fill(1)
-							.map((star, i) => (
-								<MdStarBorder
-									key={i}
-									style={{ margin: "-2px", marginTop: "1.4px" }}
-								/>
-							))}
+						<StarRatings
+							rating={rating}
+							starRatedColor="#0076ce"
+							numberOfStars={5}
+							name="rating"
+							starDimension="20px"
+							starSpacing="0px"
+						/>
 					</Flex>
 					<Text fontSize={"0.9rem"}>{rating}&nbsp;</Text>
 					<Text fontSize={"0.9rem"}>({number_of_reviews})</Text>

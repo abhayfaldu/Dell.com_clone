@@ -22,7 +22,8 @@ const ProductList = () => {
 	const [sortBy, setSortBy] = useState(localStorage.getItem("sortBy") || "");
 	const [order, setOrder] = useState(localStorage.getItem("order") || "");
 
-	const handleSelectChange = e => {
+	const handleSortChange = e => {
+		console.log('change triggered')
 		switch (e.target.value) {
 			case "priceHightToLow":
 				setSortBy("price");
@@ -49,11 +50,11 @@ const ProductList = () => {
 		const processor = searchParams.get("processor");
 		console.log("processor:", processor);
 		const discounted_price_lte = searchParams.get(
-			encodeURIComponent("discounted_price[lte]")
+			decodeURIComponent("discounted_price[lte]")
 		);
 		console.log("discounted_price_lte:", discounted_price_lte);
 		const discounted_price_gte = searchParams.get(
-			encodeURIComponent("discounted_price[gte]")
+			decodeURIComponent("discounted_price[gte]")
 		);
 		console.log("discounted_price_gte:", discounted_price_gte);
 		let paramObj = {
@@ -96,6 +97,8 @@ const ProductList = () => {
 			products.sort((a, b) => {
 				return a.rating < b.rating ? 1 : a.rating > b.rating ? -1 : 0;
 			});
+		} else {
+			// dispatch(getProducts(paramObj));
 		}
 	}
 	console.log("products:", products);
@@ -123,9 +126,14 @@ const ProductList = () => {
 							size="md"
 							icon={<BsFillCaretDownFill />}
 							w="300px"
-							onChange={handleSelectChange}
+							onChange={handleSortChange}
 						>
-							<option value="none">Sort by</option>
+							<option
+								value=""
+								selected={sortBy === "" && order === ""}
+							>
+								Sort by
+							</option>
 							<option
 								value="priceLowToHigh"
 								selected={sortBy === "price" && order === "asc"}
