@@ -197,8 +197,34 @@ userRoute.patch("/update/:id", userUpdate);
 userRoute.delete("/delete/:id", deleteUser);
 //update password
 userRoute.post("/resetpassword", authorisation, resetpassword);
+
+/**
+ * @swagger
+ * /users/forgotpassword:
+ *   post:
+ *     summary: To post the forgetpassword details of a user
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *     responses:
+ *       200:
+ *         description: The forgetpassword request has been send to the registered email
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       500:
+ *         description: Some server error
+ */
+
 // send email forget password
+
 userRoute.post("/forgotpassword", sendUserPasswordResetEmail);
+
 //save forgot password
 userRoute.post("/saveforgotpassword/:id/:token", saveUserForgotPassword);
 module.exports = userRoute;
