@@ -1,16 +1,5 @@
-import {
-	Box,
-	Checkbox,
-	Flex,
-	Heading,
-	Input,
-	RangeSlider,
-	RangeSliderFilledTrack,
-	RangeSliderThumb,
-	RangeSliderTrack,
-} from "@chakra-ui/react";
+import { Box, Button, Checkbox, Flex, Heading, Input } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { MdGraphicEq } from "react-icons/md";
 import { useSearchParams } from "react-router-dom";
 
 // import { useRangeSlider } from "@chakra-ui/react";
@@ -32,17 +21,23 @@ const radio_input_container_style = {
 };
 
 const FilterSection = () => {
-	const [minPrice, setMinPrice] = useState(0);
-	const [maxPrice, setMaxPrice] = useState(300000);
 	const [searchParams, setSearchParams] = useSearchParams();
 	const initialCategory = searchParams.getAll("category");
 	const [category, setCategory] = useState(initialCategory || []);
+	const [processor, setProcessor] = useState(searchParams.getAll("processor"));
+	// const initialMinPrice = searchParams.get(
+	// 	encodeURIComponent("discounted_price[gte]")
+	// );
+	const [minPrice, setMinPrice] = useState(0);
+	// const initialMaxPrice = searchParams.get(
+	// 	encodeURIComponent("discounted_price[lte]")
+	// );
+	const [maxPrice, setMaxPrice] = useState(500000);
+	const [isPriceFilterApplied, setIsPriceFilterApplied] = useState(1);
 	const initialMemory = searchParams.getAll("memory");
 	const [memory, setMemory] = useState(initialMemory || []);
 	const initialStorage = searchParams.getAll("storage");
 	const [storage, setStorage] = useState(initialStorage || []);
-	const initialProcessor = searchParams.getAll("processor");
-	const [processor, setProcessor] = useState(initialProcessor[0] || "");
 
 	const handleCategoryFilter = e => {
 		let newCategory = [...category];
@@ -54,8 +49,14 @@ const FilterSection = () => {
 		setCategory(newCategory);
 	};
 
+	const handlePriceChange = () => {
+		setMinPrice(minPrice);
+		setMaxPrice(maxPrice);
+		setIsPriceFilterApplied(prev => (prev === 1 ? 2 : 1));
+	};
+
 	const handleMemoryFilter = e => {
-		let newMemory = [...category];
+		let newMemory = [...memory];
 		if (newMemory.includes(e.target.value)) {
 			newMemory.splice(newMemory.indexOf(e.target.value), 1);
 		} else {
@@ -65,7 +66,7 @@ const FilterSection = () => {
 	};
 
 	const handleStorageFilter = e => {
-		let newStorage = [...category];
+		let newStorage = [...storage];
 		if (newStorage.includes(e.target.value)) {
 			newStorage.splice(newStorage.indexOf(e.target.value), 1);
 		} else {
@@ -79,10 +80,12 @@ const FilterSection = () => {
 			category,
 			memory,
 			storage,
+			"original_price[gte]": minPrice,
+			"original_price[lte]": maxPrice,
 		};
 		processor && (params.processor = processor);
 		setSearchParams(params);
-	}, [category, processor, memory, storage]);
+	}, [category, processor, memory, storage, isPriceFilterApplied]);
 
 	return (
 		<Box gap={4} flex={1} display={["none", "none", "none", "block", "block"]}>
@@ -171,8 +174,13 @@ const FilterSection = () => {
 						<input
 							type={"radio"}
 							name="processor"
-							value={"AMD Ryzen™ 5 5625U 6-core/12-thread Processor with Radeon™ Graphics"}
-							checked={processor === "AMD Ryzen™ 5 5625U 6-core/12-thread Processor with Radeon™ Graphics"}
+							value={
+								"AMD Ryzen™ 5 5625U 6-core/12-thread Processor with Radeon™ Graphics"
+							}
+							checked={
+								processor ===
+								"AMD Ryzen™ 5 5625U 6-core/12-thread Processor with Radeon™ Graphics"
+							}
 						/>
 						<label>AMD Ryzen 5</label>
 					</div>
@@ -180,8 +188,13 @@ const FilterSection = () => {
 						<input
 							type={"radio"}
 							name="processor"
-							value={"AMD Ryzen™ 3 5425U 4-core/8-thread Processor with Radeon™ Graphics"}
-							checked={processor === "AMD Ryzen™ 3 5425U 4-core/8-thread Processor with Radeon™ Graphics"}
+							value={
+								"AMD Ryzen™ 3 5425U 4-core/8-thread Processor with Radeon™ Graphics"
+							}
+							checked={
+								processor ===
+								"AMD Ryzen™ 3 5425U 4-core/8-thread Processor with Radeon™ Graphics"
+							}
 						/>
 						<label>AMD Ryzen 3</label>
 					</div>
@@ -191,7 +204,7 @@ const FilterSection = () => {
 			{/* price range filter */}
 			<Flex flexDir={"column"} style={filterBoxStyle}>
 				<Heading size={"sm"} mb={2}>
-					Price
+					Price Range
 				</Heading>
 				<Flex gap={2} mb={2} align={"center"}>
 					<Flex flexDir={"column"}>
@@ -200,6 +213,7 @@ const FilterSection = () => {
 							type={"number"}
 							value={minPrice}
 							onChange={e => setMinPrice(e.target.value)}
+							placeholder="Min"
 						></Input>
 					</Flex>
 					<Flex flexDir={"column"}>
@@ -208,25 +222,18 @@ const FilterSection = () => {
 							type={"number"}
 							value={maxPrice}
 							onChange={e => setMaxPrice(e.target.value)}
+							placeholder="Max"
 						></Input>
 					</Flex>
 				</Flex>
-				<RangeSlider
-					defaultValue={[0, 300000]}
-					min={minPrice}
-					max={maxPrice}
-					step={30}
+				<Button
+					bgColor={"brand"}
+					color="white"
+					_hover={{ backgroundColor: "#0076cecc" }}
+					onClick={handlePriceChange}
 				>
-					<RangeSliderTrack bg="lightgray" h={2}>
-						<RangeSliderFilledTrack bg="brand" />
-					</RangeSliderTrack>
-					<RangeSliderThumb boxSize={5} index={0}>
-						<Box color="brand" as={MdGraphicEq} />
-					</RangeSliderThumb>
-					<RangeSliderThumb boxSize={5} index={1}>
-						<Box color="brand" as={MdGraphicEq} />
-					</RangeSliderThumb>
-				</RangeSlider>
+					Apply
+				</Button>
 			</Flex>
 
 			{/* memory filter */}
@@ -236,25 +243,18 @@ const FilterSection = () => {
 				</Heading>
 				<Flex flexDir={"column"}>
 					<Checkbox
-						value={"16 Gb"}
+						value={"16 GB, 2 x 8 GB, DDR4, 3200 MHz"}
 						onChange={handleMemoryFilter}
-						checked={memory.includes("16 Gb")}
+						checked={memory.includes("16 GB, 2 x 8 GB, DDR4, 3200 MHz")}
 					>
 						16 Gb
 					</Checkbox>
 					<Checkbox
-						value={"8 Gb"}
+						value={"8 GB, 1 x 8 GB, DDR4, 3200 MHz"}
 						onChange={handleMemoryFilter}
-						checked={memory.includes("8 Gb")}
+						checked={memory.includes("8 GB, 1 x 8 GB, DDR4, 3200 MHz")}
 					>
 						8 Gb
-					</Checkbox>
-					<Checkbox
-						value={"4 Gb"}
-						onChange={handleMemoryFilter}
-						checked={memory.includes("4 Gb")}
-					>
-						4 Gb
 					</Checkbox>
 				</Flex>
 			</Flex>
@@ -265,23 +265,27 @@ const FilterSection = () => {
 					Storage
 				</Heading>
 				<Checkbox
-					value={"1 Tb"}
+					value={
+						'256GB M.2 PCIe NVMe Solid State Drive (Boot) + 1TB 5400 rpm 2.5" SATA Hard Drive (Storage)'
+					}
 					onChange={handleStorageFilter}
-					checked={storage.includes("1 Tb")}
+					checked={storage.includes(
+						'256GB M.2 PCIe NVMe Solid State Drive (Boot) + 1TB 5400 rpm 2.5" SATA Hard Drive (Storage)'
+					)}
 				>
 					1 Tb
 				</Checkbox>
 				<Checkbox
-					value={"512 Gb"}
+					value={"512 GB, M.2, PCIe NVMe, SSD"}
 					onChange={handleStorageFilter}
-					checked={storage.includes("512 Gb")}
+					checked={storage.includes("512 GB, M.2, PCIe NVMe, SSD")}
 				>
 					512 Gb
 				</Checkbox>
 				<Checkbox
-					value={"256 Gb"}
+					value={"256 GB, M.2, PCIe NVMe, SSD"}
 					onChange={handleStorageFilter}
-					checked={storage.includes("256 Gb")}
+					checked={storage.includes("256 GB, M.2, PCIe NVMe, SSD")}
 				>
 					256 Gb
 				</Checkbox>

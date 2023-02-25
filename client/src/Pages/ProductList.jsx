@@ -49,11 +49,11 @@ const ProductList = () => {
 		const processor = searchParams.get("processor");
 		console.log("processor:", processor);
 		const discounted_price_lte = searchParams.get(
-			decodeURIComponent("discounted_price[lte]")
+			encodeURIComponent("discounted_price[lte]")
 		);
 		console.log("discounted_price_lte:", discounted_price_lte);
 		const discounted_price_gte = searchParams.get(
-			decodeURIComponent("discounted_price[gte]")
+			encodeURIComponent("discounted_price[gte]")
 		);
 		console.log("discounted_price_gte:", discounted_price_gte);
 		let paramObj = {
