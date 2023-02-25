@@ -32,16 +32,6 @@ const radio_input_container_style = {
 };
 
 const FilterSection = () => {
-	// const {
-	// 	state,
-	// 	actions,
-	// 	getInnerTrackProps,
-	// 	getInputProps,
-	// 	getMarkerProps,
-	// 	getRootProps,
-	// 	getThumbProps,
-	// 	getTrackProps,
-	// } = useRangeSlider(min, max, defaultValue, rest);
 	const [minPrice, setMinPrice] = useState(0);
 	const [maxPrice, setMaxPrice] = useState(300000);
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -88,7 +78,7 @@ const FilterSection = () => {
 		const params = {
 			category,
 			memory,
-			storage
+			storage,
 		};
 		processor && (params.processor = processor);
 		setSearchParams(params);
