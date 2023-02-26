@@ -37,9 +37,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { Link as Routerlink } from "react-router-dom";
 
-export default function Navbar() {
-
-
 import {
 	Link,
 	useLocation,
@@ -82,7 +79,6 @@ export default function Navbar() {
 
 
 	const [keyword, setKeyword] = useState("");
-	const dispatch = useDispatch();
 	const [isInputFocused, setIsInputFocused] = useState(false);
 
 	const handleInputFocus = () => {
