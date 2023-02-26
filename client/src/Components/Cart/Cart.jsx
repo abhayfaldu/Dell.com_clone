@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Flex,
   Heading,
   HStack,
@@ -10,30 +11,26 @@ import {
 import { useNavigate } from "react-router-dom";
 import { CartItem } from "./CartItem";
 import { CartOrderSummary } from "./CartOrderSummary";
-import { cartData } from "./_data";
-import axios from "axios";
-import { useEffect } from "react";
 
-const getProducts = () => {
-  axios
-    .get("http://localhost:8080/cart/singlecart", {
-      headers: {
-        Authorization: localStorage.getItem("token"),
-      },
-    })
-    .then((res) => {
-      console.log(res.data);
-    })
-    .catch((err) => {
-      console.log("something went wrong in getting products:", err);
-    });
-};
+import { useEffect } from "react";
+import { clearAllProducts, getProducts } from "../../Redux/Cart/action";
+import { useDispatch, useSelector } from "react-redux";
 
 export const Cart = () => {
+  const dispatch = useDispatch();
+  const { products } = useSelector((store) => store.CartReducer);
+  // console.log('products:', products)
+
   const navigate = useNavigate();
   useEffect(() => {
-    getProducts();
+    dispatch(getProducts);
   }, []);
+
+  const handleClear = () =>{
+    dispatch(clearAllProducts()).then((res) => {
+      dispatch(getProducts);
+  })
+}
   return (
     <Box
       maxW={{
@@ -73,12 +70,14 @@ export const Cart = () => {
           flex="2"
         >
           <Heading fontSize="2xl" fontWeight="extrabold">
-            Shopping Cart ({cartData.length} items)
+            Shopping Cart ({products.length} items)
           </Heading>
 
+          <Button onClick={() => handleClear()}>Clear All</Button>
+
           <Stack spacing="6">
-            {cartData.map((item) => (
-              <CartItem key={item.id} {...item} />
+            {products.map((item) => (
+              <CartItem key={item._id} {...item} />
             ))}
           </Stack>
         </Stack>
@@ -88,7 +87,12 @@ export const Cart = () => {
 
           <HStack mt="6" fontWeight="semibold">
             <p>or</p>
-            <Link onClick={()=>navigate("/")} color={mode("blue.500", "blue.200")}>Continue shopping</Link>
+            <Link
+              onClick={() => navigate("/")}
+              color={mode("blue.500", "blue.200")}
+            >
+              Continue shopping
+            </Link>
           </HStack>
         </Flex>
       </Stack>

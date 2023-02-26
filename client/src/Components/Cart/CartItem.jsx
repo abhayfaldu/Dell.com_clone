@@ -7,6 +7,10 @@ import {
 } from "@chakra-ui/react";
 import { PriceTag } from "./PriceTag";
 import { CartProductMeta } from "./CartProductMeta";
+import { useDispatch } from "react-redux";
+import { getProducts } from "../../Redux/Cart/action";
+import { deleteProduct } from "../../Redux/Cart/action";
+
 const QuantitySelect = (props) => {
   return (
     <Select
@@ -31,8 +35,17 @@ export const CartItem = (props) => {
     image_url,
     quantity,
     onChangeQuantity,
-    onClickDelete,
+    _id,
   } = props;
+  // console.log(_id);
+  const dispatch = useDispatch();
+
+  const handleDelete = (_id) => {
+    dispatch(deleteProduct(_id)).then((res) => {
+      dispatch(getProducts);
+    });
+  };
+
   return (
     <Flex
       direction={{
@@ -67,7 +80,7 @@ export const CartItem = (props) => {
         <PriceTag price={discounted_price} />
         <CloseButton
           aria-label={`Delete ${title} from cart`}
-          onClick={onClickDelete}
+          onClick={() => handleDelete(_id)}
         />
       </Flex>
 
