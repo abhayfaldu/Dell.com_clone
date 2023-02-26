@@ -1,22 +1,19 @@
 import { Box, Flex, Image, Text } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react'
 
-const Carousel = () => {
+const Carousel = ({data}) => {
     const slides = [
       {
-        img: "https://images.pexels.com/photos/2599537/pexels-photo-2599537.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        img: data[0],
       },
       {
-        img: "https://images.pexels.com/photos/2714581/pexels-photo-2714581.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        img: data[1],
       },
       {
-        img: "https://images.pexels.com/photos/2878019/pexels-photo-2878019.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
+        img: data[2],
       },
       {
-        img: "https://images.pexels.com/photos/1142950/pexels-photo-1142950.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      },
-      {
-        img: "https://images.pexels.com/photos/3124111/pexels-photo-3124111.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        img: data[3],
       },
     ];
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -44,7 +41,6 @@ const Carousel = () => {
     return (
       <Flex
         w="200px"
-        border={"1px solid red"}
         bg="#edf3f8"
         _dark={{
           bg: "#3e3e3e",
@@ -71,6 +67,7 @@ const Carousel = () => {
                   src={slide.img}
                   alt="carousel image"
                   boxSize="full"
+                  objectFit={"contain"}
                   backgroundSize="cover"
                 />
               </Box>

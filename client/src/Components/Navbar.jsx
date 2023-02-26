@@ -71,19 +71,19 @@ export default function Navbar() {
 
 
 	
-	 useEffect(() => {
-		const processor = searchParams.get("processor");
-		let paramObj = {
-			params: {
-				category: searchParams.getAll("category"),
-				memory: searchParams.getAll("memory"),
-				storage: searchParams.getAll("storage"),
-				processor,
-			},
-		};
-		dispatch(getProducts(paramObj));
-	}, [location.search]);
-	console.log(products)
+	//  useEffect(() => {
+	// 	const processor = searchParams.get("processor");
+	// 	let paramObj = {
+	// 		params: {
+	// 			category: searchParams.getAll("category"),
+	// 			memory: searchParams.getAll("memory"),
+	// 			storage: searchParams.getAll("storage"),
+	// 			processor,
+	// 		},
+	// 	};
+	// 	dispatch(getProducts(paramObj));
+	// }, [location.search]);
+	// console.log(products)
 	return (
 		<>
 			<Box>
@@ -517,33 +517,43 @@ const NAV_ITEMS  = [
 		children: [
 			{
 				label: "Laptops",
+				href:"/products"
 			},
 			{
 				label: "Desktops and All-in-One",
+				href:"/products"
 			},
 			{
 				label: "Gaming",
+				href:"/products"
 			},
 			{
 				label: "Workstations",
+				href:"/products"
 			},
 			{
 				label: "Thin Clients",
+				href:"/products"
 			},
 			{
 				label: "Server",
+				href:"/products"
 			},
 			{
 				label: "Data Storage",
+				href:"/products"
 			},
 			{
 				label: "Data Protection",
+				href:"/products"
 			},
 			{
 				label: "Networking",
+				href:"/products"
 			},
 			{
 				label: "Monitors",
+				href:"/products"
 			},
 		],
 	},

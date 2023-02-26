@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 const ProductCard = props => {
 	const {
-		key,
+		id,
 		title,
 		rating,
 		number_of_reviews,
@@ -24,7 +24,7 @@ const ProductCard = props => {
 	} = props;
 
 	return (
-		<Link to={`/products/${key}`}>
+		<Link to={`/products/${id}`}>
 			<Flex
 				flexDir={["column", "row"]}
 				shadow={"0 2px 2px #002A581a, 0 4px 4px #002A581a, 0 8px 8px #002A581a"}
