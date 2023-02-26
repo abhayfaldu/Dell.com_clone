@@ -19,15 +19,46 @@ import StarRatings from 'react-star-ratings';
 import Carousel from '../Components/Carousel';
 import { useSelector,useDispatch } from "react-redux";
 import { addToCart } from '../Redux/Cart/action';
+import { useToast } from "@chakra-ui/react";
+import { useParams } from 'react-router-dom';
+import axios from "axios";
+import { useEffect, useState } from 'react';
+
 
 export default function SingleProductPage() {
   const dispatch=useDispatch();
+  const [data,setData]=useState({});
+  const toast = useToast();
+  const {id}=useParams();
+  const getSingleProduct=()=>{
+    axios.get(`http//:localhost:8080/products/${id}`)
+    .then((res)=>{
+      console.log(res.data)
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+useEffect(()=>{
+  getSingleProduct()
+},[])
+
+  const getToast=(success,msg)=>{
+    console.log(success,msg)
+    toast({
+      title: "Cart Status" ,
+      description: msg,
+      status: success,
+      duration: 3000,
+      isClosable: true,
+    });
+  }
   
 
 
 
-  const handleCart=(title,original_price,discounted_price,image_url)=>{
-    dispatch(addToCart(title,original_price,discounted_price,image_url))
+  const handleCart=(title,original_price,discounted_price,image_url,)=>{
+    dispatch(addToCart(title,original_price,discounted_price,image_url,getToast))
   }
   return (
     <Container maxW={'7xl'}>
