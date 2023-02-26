@@ -9,6 +9,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 import { formatPrice } from "./PriceTag";
+import { useSelector } from "react-redux";
 const OrderSummaryItem = (props) => {
   const { label, value, children } = props;
   // console.log('value:', value)
@@ -23,15 +24,32 @@ const OrderSummaryItem = (props) => {
 };
 
 export const CartOrderSummary = () => {
+  const { products } = useSelector((store) => store.CartReducer);
+  console.log("products:", products);
+
+  const sum = products.reduce((accumulator, object) => {
+    return accumulator + Number(object.discounted_price);
+  }, 0);
+  console.log(sum);
+
+  let tax;
+  products.length === 0
+    ? (tax = 0)
+    : (tax = Math.floor(Math.random() * (400 - 100) + 50));
+
+  let total = tax + sum;
+  localStorage.setItem("tax", JSON.stringify(tax));
+
+
   const navigate = useNavigate();
   return (
     <Stack spacing="8" borderWidth="1px" rounded="lg" padding="8" width="full">
       <Heading size="md">Order Summary</Heading>
 
       <Stack spacing="6">
-        <OrderSummaryItem label="Subtotal" value={formatPrice(597)} />
+        <OrderSummaryItem label="Subtotal" value={formatPrice(sum)} />
         <OrderSummaryItem label="Shipping + Tax">
-          <Text>{Math.floor(Math.random() * (400 - 100) ) + 50}</Text>
+          <Text>{tax}</Text>
         </OrderSummaryItem>
         <OrderSummaryItem label="Coupon Code">
           <Text fontWeight={"bold"}>LAPDEN2023</Text>
@@ -41,7 +59,7 @@ export const CartOrderSummary = () => {
             Total
           </Text>
           <Text fontSize="xl" fontWeight="extrabold">
-            {formatPrice(597)}
+            {formatPrice(total)}
           </Text>
         </Flex>
       </Stack>
@@ -50,7 +68,7 @@ export const CartOrderSummary = () => {
         size="lg"
         fontSize="md"
         rightIcon={<FaArrowRight />}
-        onClick={()=>navigate("/checkout")}
+        onClick={() => navigate("/checkout")}
       >
         Checkout
       </Button>

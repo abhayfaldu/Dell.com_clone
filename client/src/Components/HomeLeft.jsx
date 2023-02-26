@@ -87,7 +87,8 @@ import {
                 alt={'Hero Image'}
                 fit={'cover'}
                 align={'center'}
-                w={'100%'}
+                w={'85%'}
+                m={"auto"}
                 h={'100%'}
                 src={
                   img

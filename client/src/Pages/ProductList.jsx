@@ -22,7 +22,8 @@ const ProductList = () => {
 	const [sortBy, setSortBy] = useState(localStorage.getItem("sortBy") || "");
 	const [order, setOrder] = useState(localStorage.getItem("order") || "");
 
-	const handleSelectChange = e => {
+	const handleSortChange = e => {
+		console.log('change triggered')
 		switch (e.target.value) {
 			case "priceHightToLow":
 				setSortBy("price");
@@ -96,6 +97,8 @@ const ProductList = () => {
 			products.sort((a, b) => {
 				return a.rating < b.rating ? 1 : a.rating > b.rating ? -1 : 0;
 			});
+		} else {
+			// dispatch(getProducts(paramObj));
 		}
 	}
 	console.log("products:", products);
@@ -123,9 +126,14 @@ const ProductList = () => {
 							size="md"
 							icon={<BsFillCaretDownFill />}
 							w="300px"
-							onChange={handleSelectChange}
+							onChange={handleSortChange}
 						>
-							<option value="none">Sort by</option>
+							<option
+								value=""
+								selected={sortBy === "" && order === ""}
+							>
+								Sort by
+							</option>
 							<option
 								value="priceLowToHigh"
 								selected={sortBy === "price" && order === "asc"}
@@ -160,10 +168,11 @@ const ProductList = () => {
 									</Heading>
 								</Flex>
 							) : (
-								products.map((product, i) => {
+								products.map((product) => {
 									return (
 										<ProductCard
-											key={i}
+											key={product._id}
+											id={product._id}
 											title={product.title}
 											rating={product.rating}
 											number_of_reviews={product.number_of_reviews}
