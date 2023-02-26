@@ -49,14 +49,8 @@ const ProductList = () => {
 	useEffect(() => {
 		const processor = searchParams.get("processor");
 		console.log("processor:", processor);
-		const discounted_price_lte = searchParams.get(
-			decodeURIComponent("discounted_price[lte]")
-		);
-		console.log("discounted_price_lte:", discounted_price_lte);
-		const discounted_price_gte = searchParams.get(
-			decodeURIComponent("discounted_price[gte]")
-		);
-		console.log("discounted_price_gte:", discounted_price_gte);
+		const discounted_price_lte = searchParams.get("discounted_price[lte]")
+		const discounted_price_gte = searchParams.get("discounted_price[gte]");
 		let paramObj = {
 			params: {
 				category: searchParams.getAll("category"),
@@ -78,6 +72,7 @@ const ProductList = () => {
 		localStorage.setItem("sortBy", sortBy);
 		localStorage.setItem("order", order);
 		if (sortBy === "price" && order === "asc") {
+			let newProduct = [...products];
 			products.sort((a, b) => {
 				return a.discounted_price > b.discounted_price
 					? 1

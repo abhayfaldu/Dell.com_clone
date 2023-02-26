@@ -1,5 +1,7 @@
+
 .logo{
     margin-right: 5px;
+    font-size: 20px;
 
 }
 .logo:nth-child(1){
@@ -8,20 +10,34 @@
 .tags{
     padding: 10px;
 }
+.inputbtn{
+    margin-left: 50px;
+    width: 600px;
+}
 .dropdown{
     z-index: 5;
 }
-
+.text{
+    font-size: 16px;
+}
+@media only screen and (max-width: 1024px) {
+    .inputbtn{
+        margin-left: 50px;
+        width: 50%;
+    }
+  }
 @media only screen and (max-width: 600px) {
     .text{
         display: none;
-   
     }
     .logo{
         font-size: 20px;
         margin-right: 5px;
     }
     .laplogo img{
-        width: 80%;
+        display: none;
+    }
+    .inputbtn{
+        display: none;
     }
   }
