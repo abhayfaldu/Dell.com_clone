@@ -37,6 +37,7 @@ import "./Navbar.modules.css";
 import { useEffect } from "react";
 import { getProducts } from "../Redux/Product/action";
 import { useDispatch, useSelector } from "react-redux";
+import {Link as Routerlink} from "react-router-dom"
 
 export default function Navbar() {
 	const { products, isLoading } = useSelector(store => store.ProductReducer);
@@ -45,6 +46,7 @@ export default function Navbar() {
 	const { isOpen, onToggle } = useDisclosure();
 	const navigate = useNavigate();
 	const token=localStorage.getItem("token");
+	const name=JSON.parse(localStorage.getItem("firstName"));
 	const dispatch = useDispatch();
 	const handleNavigate=()=>{
 		if(token){
@@ -53,6 +55,19 @@ export default function Navbar() {
 			navigate("/register")
 		}
 	}
+	const handleChpassword=()=>{
+		navigate("/changepassword")
+	}
+
+	
+	const handleLogout=()=>{
+		localStorage.clear();
+		navigate("/")
+	}
+	const handleCart=()=>{
+		navigate("/cart")
+	}
+
 
 
 	
@@ -102,7 +117,7 @@ export default function Navbar() {
 						/>
 					</Flex>
 					<Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }} width={"50%"}>
-						<div className="laplogo"><img src={logo} alt="" srcset="" width={"35%"} /></div>
+						<Routerlink to={"/"}><div className="laplogo"><img src={logo} alt="" srcset="" width={"35%"} /></div></Routerlink>
 						{/* <Flex display={{ base: "none", md: "flex" }} ml={10}  width={"500px"}> */}
 							<InputGroup>
 								<InputLeftElement pointerEvents="none">
@@ -119,7 +134,38 @@ export default function Navbar() {
 						direction={"row"}
 						spacing={6}
 					>
-						<Menu>
+						{token && name ?(<Menu>
+							<MenuButton>
+								<Button
+									as={"a"}
+									rightIcon={<ChevronDownIcon />}
+									fontSize={"sm"}
+									fontWeight={400}
+									variant={"link"}
+									href={"#"}
+								>
+									<div className="logo">
+										<MdOutlineAccountCircle />
+									</div>
+									<div className="text">{name}</div>
+								</Button>
+							</MenuButton>
+							<MenuList>
+								<MenuItem>
+									<Button
+									onClick={handleLogout}
+										backgroundColor={"#0672cb"}
+										width={"100%"}
+										color={"white"}
+									>
+										Logout
+									</Button>
+								</MenuItem>
+								<MenuItem>
+									<Button onClick={handleChpassword} width={"100%"}>Reset Password</Button>
+								</MenuItem>
+							</MenuList>
+						</Menu>):(<Menu>
 							<MenuButton>
 								<Button
 									as={"a"}
@@ -164,21 +210,14 @@ export default function Navbar() {
 									</Text>
 								</MenuItem>
 								<MenuItem>
-								{token?(<Button
-									onClick={handleNavigate}
-										width={"100%"}
-										backgroundColor={"#0672cb"}
-										color={"white"}
-									>
-										Login
-									</Button>):(<Button
+								<Button
 									onClick={handleNavigate}
 										width={"100%"}
 										backgroundColor={"#0672cb"}
 										color={"white"}
 									>
 										Sign In
-									</Button>)}
+									</Button>
 									
 								</MenuItem>
 								<MenuItem>
@@ -191,7 +230,7 @@ export default function Navbar() {
 									<Button width={"100%"}>Partner Program Sign In</Button>
 								</MenuItem>
 							</MenuList>
-						</Menu>
+						</Menu>)}
 						<Button
 							as={"a"}
 							fontSize={"sm"}
@@ -236,6 +275,7 @@ export default function Navbar() {
 						<Menu>
 							<MenuButton>
 								<Button
+								
 									as={"a"}
 									fontSize={"sm"}
 									fontWeight={400}
@@ -252,6 +292,7 @@ export default function Navbar() {
 							<MenuList>
 								<MenuItem>
 									<Button
+									onClick={handleCart}
 										backgroundColor={"#0672cb"}
 										width={"100%"}
 										color={"white"}
@@ -266,10 +307,13 @@ export default function Navbar() {
 									<Text></Text>
 								</MenuItem>
 								<MenuItem>
-									<Text>
+									{token && name ?(<Text>
+										<hr />
+										Hello {name}
+									</Text>):(<Text>
 										<hr />
 										Sign-in to view Saved Carts
-									</Text>
+									</Text>)}
 								</MenuItem>
 							</MenuList>
 						</Menu>
