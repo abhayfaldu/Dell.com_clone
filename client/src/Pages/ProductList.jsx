@@ -163,10 +163,11 @@ const ProductList = () => {
 									</Heading>
 								</Flex>
 							) : (
-								products.map((product, i) => {
+								products.map((product) => {
 									return (
 										<ProductCard
 											key={product._id}
+											id={product._id}
 											title={product.title}
 											rating={product.rating}
 											number_of_reviews={product.number_of_reviews}
