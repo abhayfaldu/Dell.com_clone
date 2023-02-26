@@ -128,38 +128,38 @@ export const deleteUserFailure = () => {
 export const getProductData = (page, setTotalCount) => (dispatch) => {
   dispatch(getProductRequest());
   axios
-    .get(`http://localhost:8080/products/all?page=${page}`)
-    .then((res) => {
-      setTotalCount(res.data.totalCount);
-      dispatch(getProductSuccess(res.data.products));
-    })
-    .catch((err) => {
-      dispatch(getProductFailure());
-    });
+		.get(`${process.env.server_URL}/products/all?page=${page}`)
+		.then(res => {
+			setTotalCount(res.data.totalCount);
+			dispatch(getProductSuccess(res.data.products));
+		})
+		.catch(err => {
+			dispatch(getProductFailure());
+		});
 };
 
 export const getProductCount = (dispatch) => {
   dispatch(getProductCountRequest());
   axios
-    .get(`http://localhost:8080/products/all`)
-    .then((res) => {
-      dispatch(getProductCountSuccess(res.data.totalCount));
-    })
-    .catch((err) => {
-      dispatch(getProductCountFailure());
-    });
+		.get(`${process.env.server_URL}/products/all`)
+		.then(res => {
+			dispatch(getProductCountSuccess(res.data.totalCount));
+		})
+		.catch(err => {
+			dispatch(getProductCountFailure());
+		});
 };
 
 export const postProductData = (data) => (dispatch) => {
   dispatch(postProductRequest());
   return axios
-    .post(`http://localhost:8080/products/create`, data)
-    .then((res) => {
-      dispatch(postProductSuccess());
-    })
-    .catch((err) => {
-      dispatch(postProductFailure());
-    });
+		.post(`${process.env.server_URL}/products/create`, data)
+		.then(res => {
+			dispatch(postProductSuccess());
+		})
+		.catch(err => {
+			dispatch(postProductFailure());
+		});
 };
 
 export const updateProductData =
@@ -175,28 +175,28 @@ export const updateProductData =
   (dispatch) => {
     dispatch(updateProductRequest());
     return axios
-      .patch(`http://localhost:8080/products/update/${id}`, {
-        discounted_price,
-        original_price,
-        graphics_card,
-        memory,
-        category,
-      })
-      .then((res) => {
-        res.data.success
-          ? getToast("success", res.data.message)
-          : getToast("error", res.data.message);
-        dispatch(updateProductSuccess());
-      })
-      .catch((err) => {
-        dispatch(updateProductFailure());
-      });
+			.patch(`${process.env.server_URL}/products/update/${id}`, {
+				discounted_price,
+				original_price,
+				graphics_card,
+				memory,
+				category,
+			})
+			.then(res => {
+				res.data.success
+					? getToast("success", res.data.message)
+					: getToast("error", res.data.message);
+				dispatch(updateProductSuccess());
+			})
+			.catch(err => {
+				dispatch(updateProductFailure());
+			});
   };
 
 export const deleteProductData = (id, getToast) => (dispatch) => {
   dispatch(deleteProductRequest());
   return axios
-    .delete(`http://localhost:8080/products/delete/${id}`)
+    .delete(`${process.env.server_URL}/products/delete/${id}`)
     .then((res) => {
       res.data.success
         ? getToast("success", res.data.message)
@@ -212,7 +212,7 @@ export const deleteProductData = (id, getToast) => (dispatch) => {
 export const getUserData = (dispatch) => {
   dispatch(getUserRequest());
   axios
-    .get(`http://localhost:8080/users`)
+    .get(`${process.env.server_URL}/users`)
     .then((res) => {
       dispatch(getUserSuccess(res.data.users));
     })
@@ -224,23 +224,23 @@ export const getUserData = (dispatch) => {
 export const deleteUserData = (id) => (dispatch) => {
   dispatch(deleteUserRequest());
   return axios
-    .delete(`http://localhost:8080/users/delete/${id}`)
-    .then((res) => {
-      dispatch(deleteUserSuccess());
-    })
-    .catch((err) => {
-      dispatch(deleteUserFailure());
-    });
+		.delete(`${process.env.server_URL}/users/delete/${id}`)
+		.then(res => {
+			dispatch(deleteUserSuccess());
+		})
+		.catch(err => {
+			dispatch(deleteUserFailure());
+		});
 };
 
 export const updateUserData = (id, role) => (dispatch) => {
   dispatch(updateUserRequest());
   return axios
-    .patch(`http://localhost:8080/users/update/${id}`, { role })
-    .then((res) => {
-      dispatch(updateUserSuccess());
-    })
-    .catch((err) => {
-      dispatch(updateUserFailure());
-    });
+		.patch(`${process.env.server_URL}/users/update/${id}`, { role })
+		.then(res => {
+			dispatch(updateUserSuccess());
+		})
+		.catch(err => {
+			dispatch(updateUserFailure());
+		});
 };

@@ -47,7 +47,7 @@ const SignUp = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(`http://localhost:8080/users/register`, data)
+      .post(`${process.env.server_url}/users/register`, data)
       .then((res) => {
         localStorage.setItem("token", res.data.token);
 

@@ -47,7 +47,7 @@ const ChangePw = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(`http://localhost:8080/users/resetpassword`, data, {
+      .post(`${process.env.server_url}/users/resetpassword`, data, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },

@@ -37,7 +37,7 @@ const ForgotPw = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(`http://localhost:8080/users/forgotpassword`, data)
+      .post(`${process.env.server_url}/users/forgotpassword`, data)
       .then((res) => {
         console.log("res:", res);
         // alert(res.data.message);
