@@ -47,7 +47,7 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-			.post(`${process.env.server_URL}/users/login`, data)
+			.post(`${process.env.REACT_APP_SERVER_URL}/users/login`, data)
 			.then(res => {
 				// alert(res.data.message);
 

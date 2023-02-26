@@ -37,42 +37,42 @@ const ForgotPw = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(`${process.env.server_url}/users/forgotpassword`, data)
-      .then((res) => {
-        console.log("res:", res);
-        // alert(res.data.message);
+			.post(`${process.env.REACT_APP_SERVER_URL}/users/forgotpassword`, data)
+			.then(res => {
+				console.log("res:", res);
+				// alert(res.data.message);
 
-        if (res.data.success) {
-          // alert(res.data.message);
-          toast({
-            title: "Successfully Sent.",
-            description: "Check Your Email For Reset Password",
-            status: "success",
-            duration: 9000,
-            isClosable: true,
-          });
-          // navigate("/saveforgotpassword")
-        } else {
-          // alert(res.data.message);
-          toast({
-            title: "Something Went Wrong.",
-            description: res.data.message,
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        toast({
-          title: "User Not Exists.",
-          description: "Invalid Username or Password",
-          status: "error",
-          duration: 9000,
-          isClosable: true,
-        });
-      });
+				if (res.data.success) {
+					// alert(res.data.message);
+					toast({
+						title: "Successfully Sent.",
+						description: "Check Your Email For Reset Password",
+						status: "success",
+						duration: 9000,
+						isClosable: true,
+					});
+					// navigate("/saveforgotpassword")
+				} else {
+					// alert(res.data.message);
+					toast({
+						title: "Something Went Wrong.",
+						description: res.data.message,
+						status: "error",
+						duration: 9000,
+						isClosable: true,
+					});
+				}
+			})
+			.catch(err => {
+				console.log(err);
+				toast({
+					title: "User Not Exists.",
+					description: "Invalid Username or Password",
+					status: "error",
+					duration: 9000,
+					isClosable: true,
+				});
+			});
   };
 
   return (

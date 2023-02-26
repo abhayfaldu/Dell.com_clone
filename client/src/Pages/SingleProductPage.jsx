@@ -16,7 +16,7 @@ import {
 import { MdLocalShipping } from "react-icons/md";
 import StarRatings from "react-star-ratings";
 import Carousel from "../Components/Carousel";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addToCart } from "../Redux/Cart/action";
 import { useToast } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
@@ -35,7 +35,9 @@ export default function SingleProductPage() {
 	const getSingleProduct = async () => {
 		setLoader(true);
 		try {
-			const data = await axios.get(`${process.env.server_URL}/products/${id}`);
+			const data = await axios.get(
+				`${process.env.REACT_APP_SERVER_URL}/products/${id}`
+			);
 			setLoader(false);
 			setData(data.data.product);
       setImage(data.data.product.image_url[0])

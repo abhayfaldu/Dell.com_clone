@@ -128,7 +128,7 @@ export const deleteUserFailure = () => {
 export const getProductData = (page, setTotalCount) => (dispatch) => {
   dispatch(getProductRequest());
   axios
-		.get(`${process.env.server_URL}/products/all?page=${page}`)
+		.get(`${process.env.REACT_APP_SERVER_URL}/products/all?page=${page}`)
 		.then(res => {
 			setTotalCount(res.data.totalCount);
 			dispatch(getProductSuccess(res.data.products));
@@ -141,7 +141,7 @@ export const getProductData = (page, setTotalCount) => (dispatch) => {
 export const getProductCount = (dispatch) => {
   dispatch(getProductCountRequest());
   axios
-		.get(`${process.env.server_URL}/products/all`)
+		.get(`${process.env.REACT_APP_SERVER_URL}/products/all`)
 		.then(res => {
 			dispatch(getProductCountSuccess(res.data.totalCount));
 		})
@@ -153,7 +153,7 @@ export const getProductCount = (dispatch) => {
 export const postProductData = (data) => (dispatch) => {
   dispatch(postProductRequest());
   return axios
-		.post(`${process.env.server_URL}/products/create`, data)
+		.post(`${process.env.REACT_APP_SERVER_URL}/products/create`, data)
 		.then(res => {
 			dispatch(postProductSuccess());
 		})
@@ -175,7 +175,7 @@ export const updateProductData =
   (dispatch) => {
     dispatch(updateProductRequest());
     return axios
-			.patch(`${process.env.server_URL}/products/update/${id}`, {
+			.patch(`${process.env.REACT_APP_SERVER_URL}/products/update/${id}`, {
 				discounted_price,
 				original_price,
 				graphics_card,
@@ -196,35 +196,35 @@ export const updateProductData =
 export const deleteProductData = (id, getToast) => (dispatch) => {
   dispatch(deleteProductRequest());
   return axios
-    .delete(`${process.env.server_URL}/products/delete/${id}`)
-    .then((res) => {
-      res.data.success
-        ? getToast("success", res.data.message)
-        : getToast("error", res.data.message);
-      dispatch(deleteProductSuccess());
-    })
-    .catch((err) => {
-      dispatch(deleteProductFailure());
-    });
+		.delete(`${process.env.REACT_APP_SERVER_URL}/products/delete/${id}`)
+		.then(res => {
+			res.data.success
+				? getToast("success", res.data.message)
+				: getToast("error", res.data.message);
+			dispatch(deleteProductSuccess());
+		})
+		.catch(err => {
+			dispatch(deleteProductFailure());
+		});
 };
 
 //-------------------------------------------------------------------User Action-------------------------------------------------------------//
 export const getUserData = (dispatch) => {
   dispatch(getUserRequest());
   axios
-    .get(`${process.env.server_URL}/users`)
-    .then((res) => {
-      dispatch(getUserSuccess(res.data.users));
-    })
-    .catch((err) => {
-      dispatch(getUserFailure());
-    });
+		.get(`${process.env.REACT_APP_SERVER_URL}/users`)
+		.then(res => {
+			dispatch(getUserSuccess(res.data.users));
+		})
+		.catch(err => {
+			dispatch(getUserFailure());
+		});
 };
 
 export const deleteUserData = (id) => (dispatch) => {
   dispatch(deleteUserRequest());
   return axios
-		.delete(`${process.env.server_URL}/users/delete/${id}`)
+		.delete(`${process.env.REACT_APP_SERVER_URL}/users/delete/${id}`)
 		.then(res => {
 			dispatch(deleteUserSuccess());
 		})
@@ -236,7 +236,7 @@ export const deleteUserData = (id) => (dispatch) => {
 export const updateUserData = (id, role) => (dispatch) => {
   dispatch(updateUserRequest());
   return axios
-		.patch(`${process.env.server_URL}/users/update/${id}`, { role })
+		.patch(`${process.env.REACT_APP_SERVER_URL}/users/update/${id}`, { role })
 		.then(res => {
 			dispatch(updateUserSuccess());
 		})
