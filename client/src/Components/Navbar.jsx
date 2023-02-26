@@ -1,52 +1,63 @@
 import {
+	ChevronDownIcon,
+	ChevronRightIcon,
+	CloseIcon,
+	HamburgerIcon,
+} from "@chakra-ui/icons";
+import {
 	Box,
-	Flex,
-	Text,
-	IconButton,
 	Button,
-	Stack,
 	Collapse,
+	Flex,
 	Icon,
-	Link,
-	Popover,
-	PopoverTrigger,
-	PopoverContent,
-	useColorModeValue,
-	useDisclosure,
+	IconButton,
+	Input,
 	InputGroup,
 	InputLeftElement,
-	Input,
-	MenuList,
-	MenuItem,
 	Menu,
 	MenuButton,
 	Center,
+	MenuItem,
+	MenuList,
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+	Stack,
+	Text,
+	useColorModeValue,
+	useDisclosure,
 } from "@chakra-ui/react";
-import {
-	HamburgerIcon,
-	CloseIcon,
-	ChevronDownIcon,
-	ChevronRightIcon,
-} from "@chakra-ui/icons";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import logo from "../Utils/logo.png";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { MdOutlineAccountCircle } from "react-icons/md";
 import { RiCustomerService2Fill } from "react-icons/ri";
 import { TbWorld } from "react-icons/tb";
-import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
-import "./Navbar.modules.css";
-import { useEffect } from "react";
-import { getProducts } from "../Redux/Product/action";
 import { useDispatch, useSelector } from "react-redux";
+
 import { Link as Routerlink } from "react-router-dom";
 
 export default function Navbar() {
-	const { products, isLoading } = useSelector((store) => store.ProductReducer);
+
+
+import {
+	Link,
+	useLocation,
+	useNavigate,
+	useSearchParams,
+} from "react-router-dom";
+import logo from "../Utils/logo.png";
+import "./Navbar.modules.css";
+
+export default function Navbar() {
+	const [products, setProducts] = useState([]);
+
 	const location = useLocation();
-	const [searchParams] = useSearchParams();
+	const [searchParams, setSearchParams] = useSearchParams();
 	const { isOpen, onToggle } = useDisclosure();
 	const navigate = useNavigate();
 	const token = localStorage.getItem("token");
+
 	const name = JSON.parse(localStorage.getItem("firstName"));
 	const role = JSON.parse(localStorage.getItem("role"));
 	const dispatch = useDispatch();
@@ -68,19 +79,106 @@ export default function Navbar() {
 		navigate("/cart");
 	};
 
-	//  useEffect(() => {
-	// 	const processor = searchParams.get("processor");
-	// 	let paramObj = {
-	// 		params: {
-	// 			category: searchParams.getAll("category"),
-	// 			memory: searchParams.getAll("memory"),
-	// 			storage: searchParams.getAll("storage"),
-	// 			processor,
-	// 		},
-	// 	};
-	// 	dispatch(getProducts(paramObj));
-	// }, [location.search]);
-	// console.log(products)
+
+
+	const [keyword, setKeyword] = useState("");
+	const dispatch = useDispatch();
+	const [isInputFocused, setIsInputFocused] = useState(false);
+
+	const handleInputFocus = () => {
+		setIsInputFocused(true);
+	};
+
+	const handleInputBlur = () => {
+		setIsInputFocused(false);
+	};
+
+	const renderSuggestions = () => {
+		if (isInputFocused) {
+			return (
+				<Flex
+					flexDir={"column"}
+					border="1px solid lightgray"
+					position="relative"
+					bgColor={"#fff"}
+					shadow={"lg"}
+					borderRadius="8px"
+					mt={"8px"}
+					textAlign="left"
+				>
+					{products.map(product => (
+						<Text
+							onClick={() => navigate(`/products/${product._id}`)}
+							p={2}
+							curser={"pointer"}
+						>
+							{product.title}
+						</Text>
+					))}
+				</Flex>
+			);
+		}
+		return null;
+	};
+
+	
+
+	const getSearchResults = params => {
+		axios("http://localhost:8080/products/all", params)
+			.then(res => {
+				console.log("res.data", res.data.products);
+				setProducts(res.data.products);
+			})
+			.catch(err =>
+				console.log("something went wrong in getting search results", err)
+			);
+	};
+
+	
+
+	useEffect(() => {
+		const params = {
+			// 	category,
+			// 	memory,
+			// 	storage,
+		};
+		if (keyword !== "") params.keyword = keyword;
+		// if (minPrice) params["discounted_price[gte]"] = minPrice;
+		// if (maxPrice) params["discounted_price[lte]"] = maxPrice;
+		// processor && (params.processor = processor);
+		setSearchParams(params);
+	}, [
+		keyword,
+		// category, processor, memory, storage, isPriceFilterApplied
+	]);
+
+	useEffect(() => {
+		// const processor = searchParams.get("processor");
+		// console.log("processor:", processor);
+		// const discounted_price_lte = searchParams.get("discounted_price[lte]");
+		// const discounted_price_gte = searchParams.get("discounted_price[gte]");
+		const keyword = searchParams.get("keyword");
+		console.log("keyword:", keyword);
+		let paramObj = {
+			params: {
+				// category: searchParams.getAll("category"),
+				// memory: searchParams.getAll("memory"),
+				// storage: searchParams.getAll("storage"),
+				// "discounted_price[lte]": discounted_price_lte,
+				// "discounted_price[gte]": discounted_price_gte,
+			},
+		};
+		if (keyword !== "") {
+			paramObj.params.keyword = keyword;
+		}
+		// if (processor) {
+		// 	paramObj.params.processor = process	or;
+		// }
+		if (keyword !== "") {
+			getSearchResults(paramObj);
+		}
+	}, [location.search]);
+
 	return (
 		<>
 			<Box>
@@ -139,12 +237,26 @@ export default function Navbar() {
 						</Center>
 						<Center>
 							<Box className="inputbtn">
-								<InputGroup>
-									<InputLeftElement pointerEvents="none">
-										<AiOutlineSearch />
-									</InputLeftElement>
-									<Input type="tel" placeholder="Search LAP-DEN" />
-								</InputGroup>
+								<InputGroup
+								flexDir={"column"}
+								w="350px"
+								zIndex={1000}
+								position="absolute"
+								top={"13px"}
+							>
+								<InputLeftElement pointerEvents="none">
+									<AiOutlineSearch />
+								</InputLeftElement>
+								<Input
+									type="text"
+									onFocus={handleInputFocus}
+									onBlur={handleInputBlur}
+									placeholder="Search LAP-DEN"
+									value={keyword}
+									onChange={e => setKeyword(e.target.value)}
+								/>
+								{renderSuggestions()}
+							</InputGroup>
 							</Box>
 						</Center>
 					</Flex>
@@ -386,7 +498,7 @@ const DesktopNav = () => {
 
 	return (
 		<Stack direction={"row"} spacing={4}>
-			{NAV_ITEMS.map((navItem) => (
+			{NAV_ITEMS.map(navItem => (
 				<Box key={navItem.label}>
 					<Popover trigger={"hover"} placement={"bottom-start"}>
 						<PopoverTrigger>
@@ -415,7 +527,7 @@ const DesktopNav = () => {
 								minW={"sm"}
 							>
 								<Stack>
-									{navItem.children.map((child) => (
+									{navItem.children.map(child => (
 										<DesktopSubNav key={child.label} {...child} />
 									))}
 								</Stack>
@@ -472,7 +584,7 @@ const MobileNav = () => {
 			p={4}
 			display={{ md: "none" }}
 		>
-			{NAV_ITEMS.map((navItem) => (
+			{NAV_ITEMS.map(navItem => (
 				<MobileNavItem key={navItem.label} {...navItem} />
 			))}
 		</Stack>
@@ -521,7 +633,7 @@ const MobileNavItem = ({ label, children, href }) => {
 					align={"start"}
 				>
 					{children &&
-						children.map((child) => (
+						children.map(child => (
 							<Link key={child.label} py={2} href={child.href}>
 								{child.label}
 							</Link>
@@ -561,6 +673,7 @@ const NAV_ITEMS = [
 		children: [
 			{
 				label: "Laptops",
+
 				href: "/products",
 			},
 			{
