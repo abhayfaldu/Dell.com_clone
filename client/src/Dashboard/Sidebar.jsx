@@ -152,6 +152,7 @@ const NavItem = ({ icon, children, item, ...rest }) => {
 
 const MobileNav = ({ onOpen, ...rest }) => {
   const Navigate = useNavigate();
+  const name = JSON.parse(localStorage.getItem("firstName"));
   const handleClick = () => {
     localStorage.clear();
     Navigate("/");
@@ -220,7 +221,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Gaurav Singh</Text>
+                  <Text fontSize="sm">{name}</Text>
                   <Text fontSize="xs" color="gray.300">
                     Admin
                   </Text>
