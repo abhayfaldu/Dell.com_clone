@@ -58,7 +58,7 @@ const handleSubmit = (e) => {
 
         axios
 					.post(
-						`${process.env.server_URL}/users/saveforgotpassword/${id}/${token}`,
+						`${process.env.REACT_APP_SERVER_URL}/users/saveforgotpassword/${id}/${token}`,
 						data
 					)
 					.then(res => {

@@ -47,34 +47,34 @@ const SignUp = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(`${process.env.server_url}/users/register`, data)
-      .then((res) => {
-        localStorage.setItem("token", res.data.token);
+			.post(`${process.env.REACT_APP_SERVER_URL}/users/register`, data)
+			.then(res => {
+				localStorage.setItem("token", res.data.token);
 
-        console.log(res);
+				console.log(res);
 
-        if (res.data.success) {
-          // alert(res.data.message);
-          toast({
-            title: "Account Created.",
-            description: res.data.message,
-            status: "success",
-            duration: 9000,
-            isClosable: true,
-          });
-          navigate("/login");
-        } else {
-          // alert(res.data.message);
-          toast({
-            title: "Existing User.",
-            description: res.data.message,
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          });
-        }
-      })
-      .catch((err) => console.log(err));
+				if (res.data.success) {
+					// alert(res.data.message);
+					toast({
+						title: "Account Created.",
+						description: res.data.message,
+						status: "success",
+						duration: 9000,
+						isClosable: true,
+					});
+					navigate("/login");
+				} else {
+					// alert(res.data.message);
+					toast({
+						title: "Existing User.",
+						description: res.data.message,
+						status: "error",
+						duration: 9000,
+						isClosable: true,
+					});
+				}
+			})
+			.catch(err => console.log(err));
   };
 
   return (

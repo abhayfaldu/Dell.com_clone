@@ -1,7 +1,7 @@
 import { Badge, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 
-console.log("hello",process.env.server_URL)
+console.log("hello", process.env.REACT_APP_SERVER_URL);
 
 const calculatePercentDifference = (num1, num2) => {
 	const diff = Math.abs(num1 - num2);

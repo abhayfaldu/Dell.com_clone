@@ -22,7 +22,7 @@ export const getProducts =
 	dispatch => {
 		dispatch(getProductsRequestAction());
 		axios
-			.get(`${process.env.server_url}/products/all`, params)
+			.get(`${process.env.REACT_APP_SERVER_URL}/products/all`, params)
 			.then(res => {
 				console.log(res.data);
 				dispatch(getProductsSuccessAction(res.data.products));
