@@ -68,7 +68,7 @@ export const clearCartProductsFailureAction = () => {
 };
 
 export const addToCart =
-	(title, original_price, discounted_price, image_url) => (dispatch) => {
+	(title, original_price, discounted_price, image_url,getToast) => (dispatch) => {
 		dispatch(postCartProductsRequestAction());
 		return axios
 			.post(
@@ -81,11 +81,15 @@ export const addToCart =
 				}
 			)
 			.then((res) => {
-                console.log(res)
+                
+                res.data.success?getToast("success",res.data.message):getToast("error",res.data.message)
 				dispatch(postCartProductsSuccessAction());
 			})
 			.catch((err) => {
-				console.log("something went wrong in getting products:", err);
+                if(!localStorage.getItem("token")){
+                    return getToast("error","Please Login First")
+                }
+                getToast("error","something went wrong in getting products")
 				dispatch(postCartProductsFailureAction());
 			});
 	};
