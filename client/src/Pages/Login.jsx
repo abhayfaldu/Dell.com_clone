@@ -93,7 +93,7 @@ const Login = () => {
     <Container maxW="full" p={0}>
       <Flex
         h={{ base: "auto", md: "115vh" }}
-        py={[0, 10, 20]}
+        py={0}
         direction={{ base: "column-reverse", md: "row" }}
       >
         <VStack w="full" h="full" p={10} spacing={10} /*bg={"red.50"}*/>
@@ -114,7 +114,7 @@ const Login = () => {
               </Center>
             </Button>
             <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-              <FormControl mb={10}>
+              <FormControl mb={10} isRequired>
                 <Input
                   type="email"
                   name="email"
@@ -122,7 +122,7 @@ const Login = () => {
                   onChange={handleChange}
                 ></Input>
               </FormControl>
-              <FormControl mb={10}>
+              <FormControl mb={10} isRequired>
                 <InputGroup>
                   <Input
                     placeholder="Password"

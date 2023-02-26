@@ -1,48 +1,73 @@
-import { CloseButton, Flex, Link, Select, useColorModeValue } from '@chakra-ui/react'
-import { PriceTag } from './PriceTag'
-import { CartProductMeta } from './CartProductMeta'
-const QuantitySelect = (props) => {
-  return (
-    <Select
-      maxW="64px"
-      aria-label="Select quantity"
-      focusBorderColor={useColorModeValue('blue.500', 'blue.200')}
-      {...props}
-    >
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-    </Select>
-  )
-}
+import {
+  CloseButton,
+  Flex,
+  Image,
+  Link,
+  Select,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import { PriceTag } from "./PriceTag";
+import { CartProductMeta } from "./CartProductMeta";
+import { useDispatch, useSelector } from "react-redux";
+import { getProducts } from "../../Redux/Cart/action";
+import { deleteProduct } from "../../Redux/Cart/action";
+import { useState } from "react";
+import Quantity from "./Quantity";
+
+// const QuantitySelect = (props) => {
+//   console.log('props:', props)
+//   const [qty,setQty] = useState(1);
+
+//   return (
+//     <Select
+//       maxW="64px"
+//       aria-label="Select quantity"
+//       focusBorderColor={useColorModeValue("blue.500", "blue.200")}
+//       {...props}
+//       onChange={(e) =>setQty(e.target.value)}
+//     >
+//       <option value="1">1</option>
+//       <option value="2">2</option>
+//       <option value="3">3</option>
+//       <option value="4">4</option>
+//     </Select>
+//   );
+// };
 
 export const CartItem = (props) => {
+  const [qty,setQty] = useState(1);
+  console.log('qty:', qty)
+  const { products } = useSelector((store) => store.CartReducer);
   const {
-    isGiftWrapping,
-    name,
-    description,
-    quantity,
-    imageUrl,
-    currency,
-    price,
-    onChangeQuantity,
-    onClickDelete,
-  } = props
+    title,
+    original_price,
+    discounted_price,
+    image_url,
+    _id,
+  } = props;
+  // console.log(_id);
+  const dispatch = useDispatch();
+
+  const handleDelete = (_id) => {
+    dispatch(deleteProduct(_id)).then((res) => {
+      dispatch(getProducts);
+    });
+  };
+
   return (
     <Flex
       direction={{
-        base: 'column',
-        md: 'row',
+        base: "column",
+        md: "row",
       }}
       justify="space-between"
       align="center"
     >
       <CartProductMeta
-        name={name}
-        description={description}
-        image={imageUrl}
-        isGiftWrapping={isGiftWrapping}
+        name={title}
+        image={image_url}
+        original_price={original_price}
+        discounted_price={discounted_price}
       />
 
       {/* Desktop */}
@@ -50,18 +75,22 @@ export const CartItem = (props) => {
         width="full"
         justify="space-between"
         display={{
-          base: 'none',
-          md: 'flex',
+          base: "none",
+          md: "flex",
         }}
       >
-        <QuantitySelect
+        {/* <QuantitySelect
           value={quantity}
           onChange={(e) => {
-            onChangeQuantity?.(+e.currentTarget.value)
+            onChangeQuantity(+e.target.value);
           }}
+        /> */}
+        <Quantity qty={qty} setQty={setQty}  />
+        <PriceTag price={discounted_price} />
+        <CloseButton
+          aria-label={`Delete ${title} from cart`}
+          onClick={() => handleDelete(_id)}
         />
-        <PriceTag price={price} currency={currency} />
-        <CloseButton aria-label={`Delete ${name} from cart`} onClick={onClickDelete} />
       </Flex>
 
       {/* Mobile */}
@@ -71,21 +100,22 @@ export const CartItem = (props) => {
         width="full"
         justify="space-between"
         display={{
-          base: 'flex',
-          md: 'none',
+          base: "flex",
+          md: "none",
         }}
       >
         <Link fontSize="sm" textDecor="underline">
           Delete
         </Link>
-        <QuantitySelect
+        {/* <QuantitySelect
           value={quantity}
           onChange={(e) => {
-            onChangeQuantity?.(+e.currentTarget.value)
+            onChangeQuantity(+e.target.value);
           }}
-        />
-        <PriceTag price={price} currency={currency} />
+        /> */}
+        <PriceTag price={discounted_price} />
       </Flex>
     </Flex>
-  )
-}
+  );
+
+};

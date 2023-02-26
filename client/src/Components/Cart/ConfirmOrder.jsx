@@ -6,10 +6,15 @@ import {
   Text,
   useColorModeValue as mode,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+
 import { FaArrowRight } from "react-icons/fa";
 import { formatPrice } from "./PriceTag";
+
 import { useSelector } from "react-redux";
+import { OrderS } from "../Order_Confirm/OrderS";
+import Popup from "reactjs-popup";
+import "reactjs-popup/dist/index.css";
+
 const OrderSummaryItem = (props) => {
   const { label, value, children } = props;
   // console.log('value:', value)
@@ -23,7 +28,7 @@ const OrderSummaryItem = (props) => {
   );
 };
 
-export const CartOrderSummary = () => {
+export const ConfirmOrder = () => {
   const { products } = useSelector((store) => store.CartReducer);
   console.log("products:", products);
 
@@ -31,17 +36,12 @@ export const CartOrderSummary = () => {
     return accumulator + Number(object.discounted_price);
   }, 0);
   console.log(sum);
+  
 
-  let tax;
-  products.length === 0
-    ? (tax = 0)
-    : (tax = Math.floor(Math.random() * (400 - 100) + 50));
-
-  let total = tax + sum;
-  localStorage.setItem("tax", JSON.stringify(tax));
-
-
-  const navigate = useNavigate();
+  let x = localStorage.getItem("tax");
+  console.log('x:', x)
+  let total = Number(x) + sum;
+ 
   return (
     <Stack spacing="8" borderWidth="1px" rounded="lg" padding="8" width="full">
       <Heading size="md">Order Summary</Heading>
@@ -49,7 +49,7 @@ export const CartOrderSummary = () => {
       <Stack spacing="6">
         <OrderSummaryItem label="Subtotal" value={formatPrice(sum)} />
         <OrderSummaryItem label="Shipping + Tax">
-          <Text>{tax}</Text>
+          <Text>{x}</Text>
         </OrderSummaryItem>
         <OrderSummaryItem label="Coupon Code">
           <Text fontWeight={"bold"}>LAPDEN2023</Text>
@@ -63,15 +63,20 @@ export const CartOrderSummary = () => {
           </Text>
         </Flex>
       </Stack>
-      <Button
-        colorScheme="blue"
-        size="lg"
-        fontSize="md"
-        rightIcon={<FaArrowRight />}
-        onClick={() => navigate("/checkout")}
+      <Popup
+        trigger={
+          <Button
+            colorScheme="blue"
+            size="lg"
+            fontSize="md"
+            rightIcon={<FaArrowRight />}
+          >
+            Place Order
+          </Button>
+        }
       >
-        Checkout
-      </Button>
+        <OrderS />
+      </Popup>
     </Stack>
   );
 };
