@@ -1,184 +1,89 @@
 import {
-	ChevronDownIcon,
-	ChevronRightIcon,
-	CloseIcon,
-	HamburgerIcon,
-} from "@chakra-ui/icons";
-import {
 	Box,
-	Button,
-	Collapse,
 	Flex,
-	Icon,
+	Text,
 	IconButton,
-	Input,
+	Button,
+	Stack,
+	Collapse,
+	Icon,
+	Link,
+	Popover,
+	PopoverTrigger,
+	PopoverContent,
+	useColorModeValue,
+	useDisclosure,
 	InputGroup,
 	InputLeftElement,
+	Input,
+	MenuList,
+	MenuItem,
 	Menu,
 	MenuButton,
 	Center,
-	MenuItem,
-	MenuList,
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-	Stack,
-	Text,
-	useColorModeValue,
-	useDisclosure,
 } from "@chakra-ui/react";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
+import {
+	HamburgerIcon,
+	CloseIcon,
+	ChevronDownIcon,
+	ChevronRightIcon,
+} from "@chakra-ui/icons";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import logo from "../Utils/logo.png";
 import { MdOutlineAccountCircle } from "react-icons/md";
 import { RiCustomerService2Fill } from "react-icons/ri";
 import { TbWorld } from "react-icons/tb";
-import { useDispatch, useSelector } from "react-redux";
-
-import { Link as Routerlink } from "react-router-dom";
-
-export default function Navbar() {
-
-
-import {
-	Link,
-	useLocation,
-	useNavigate,
-	useSearchParams,
-} from "react-router-dom";
-import logo from "../Utils/logo.png";
+import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import "./Navbar.modules.css";
+import { useEffect } from "react";
+import { getProducts } from "../Redux/Product/action";
+import { useDispatch, useSelector } from "react-redux";
+import {Link as Routerlink} from "react-router-dom"
 
 export default function Navbar() {
-	const [products, setProducts] = useState([]);
-
+	const { products, isLoading } = useSelector(store => store.ProductReducer);
 	const location = useLocation();
-	const [searchParams, setSearchParams] = useSearchParams();
+	const [searchParams] = useSearchParams();
 	const { isOpen, onToggle } = useDisclosure();
 	const navigate = useNavigate();
-	const token = localStorage.getItem("token");
-
-	const name = JSON.parse(localStorage.getItem("firstName"));
-	const role = JSON.parse(localStorage.getItem("role"));
+	const token=localStorage.getItem("token");
+	const name=JSON.parse(localStorage.getItem("firstName"));
+	const role=JSON.parse(localStorage.getItem("role"));
 	const dispatch = useDispatch();
+	const handleNavigate=()=>{
+		
+			navigate("/login")
+		
+	}
+	const handleChpassword=()=>{
+		navigate("/changepassword")
+	}
 
-	const handleNavigate = () => {
-		navigate("/login");
-	};
-
-	const handleChpassword = () => {
-		navigate("/changepassword");
-	};
-
-	const handleLogout = () => {
+	
+	const handleLogout=()=>{
 		localStorage.clear();
-		navigate("/");
-	};
-	
-	const handleCart = () => {
-		navigate("/cart");
-	};
+		navigate("/")
+	}
+	const handleCart=()=>{
+		navigate("/cart")
+	}
 
 
-
-	const [keyword, setKeyword] = useState("");
-	const dispatch = useDispatch();
-	const [isInputFocused, setIsInputFocused] = useState(false);
-
-	const handleInputFocus = () => {
-		setIsInputFocused(true);
-	};
-
-	const handleInputBlur = () => {
-		setIsInputFocused(false);
-	};
-
-	const renderSuggestions = () => {
-		if (isInputFocused) {
-			return (
-				<Flex
-					flexDir={"column"}
-					border="1px solid lightgray"
-					position="relative"
-					bgColor={"#fff"}
-					shadow={"lg"}
-					borderRadius="8px"
-					mt={"8px"}
-					textAlign="left"
-				>
-					{products.map(product => (
-						<Text
-							onClick={() => navigate(`/products/${product._id}`)}
-							p={2}
-							curser={"pointer"}
-						>
-							{product.title}
-						</Text>
-					))}
-				</Flex>
-			);
-		}
-		return null;
-	};
 
 	
-
-	const getSearchResults = params => {
-		axios("http://localhost:8080/products/all", params)
-			.then(res => {
-				console.log("res.data", res.data.products);
-				setProducts(res.data.products);
-			})
-			.catch(err =>
-				console.log("something went wrong in getting search results", err)
-			);
-	};
-
-	
-
-	useEffect(() => {
-		const params = {
-			// 	category,
-			// 	memory,
-			// 	storage,
-		};
-		if (keyword !== "") params.keyword = keyword;
-		// if (minPrice) params["discounted_price[gte]"] = minPrice;
-		// if (maxPrice) params["discounted_price[lte]"] = maxPrice;
-		// processor && (params.processor = processor);
-		setSearchParams(params);
-	}, [
-		keyword,
-		// category, processor, memory, storage, isPriceFilterApplied
-	]);
-
-	useEffect(() => {
-		// const processor = searchParams.get("processor");
-		// console.log("processor:", processor);
-		// const discounted_price_lte = searchParams.get("discounted_price[lte]");
-		// const discounted_price_gte = searchParams.get("discounted_price[gte]");
-		const keyword = searchParams.get("keyword");
-		console.log("keyword:", keyword);
-		let paramObj = {
-			params: {
-				// category: searchParams.getAll("category"),
-				// memory: searchParams.getAll("memory"),
-				// storage: searchParams.getAll("storage"),
-				// "discounted_price[lte]": discounted_price_lte,
-				// "discounted_price[gte]": discounted_price_gte,
-			},
-		};
-		if (keyword !== "") {
-			paramObj.params.keyword = keyword;
-		}
-		// if (processor) {
-		// 	paramObj.params.processor = process	or;
-		// }
-		if (keyword !== "") {
-			getSearchResults(paramObj);
-		}
-	}, [location.search]);
-
+	//  useEffect(() => {
+	// 	const processor = searchParams.get("processor");
+	// 	let paramObj = {
+	// 		params: {
+	// 			category: searchParams.getAll("category"),
+	// 			memory: searchParams.getAll("memory"),
+	// 			storage: searchParams.getAll("storage"),
+	// 			processor,
+	// 		},
+	// 	};
+	// 	dispatch(getProducts(paramObj));
+	// }, [location.search]);
+	// console.log(products)
 	return (
 		<>
 			<Box>
@@ -221,171 +126,128 @@ export default function Navbar() {
 								<Input type="tel" placeholder="Search LAP-DEN"  />
 							</InputGroup></Box>
 					</Flex> */}
-					<Flex
-						color="white"
-						flex={{ base: 1 }}
-						justify={{ base: "center", md: "start" }}
-					>
-						<Center w="100px">
-							<Box>
-								<Routerlink to={"/"}>
-									<div className="laplogo">
-										<img src={logo} alt="" srcset="" />
-									</div>
-								</Routerlink>
-							</Box>
-						</Center>
-						<Center>
-							<Box className="inputbtn">
-								<InputGroup
-								flexDir={"column"}
-								w="350px"
-								zIndex={1000}
-								position="absolute"
-								top={"13px"}
-							>
+					<Flex color='white' flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
+					<Center w='100px'>
+    				<Box><Routerlink to={"/"}><div className="laplogo"><img src={logo} alt="" srcset="" /></div></Routerlink></Box>
+  					</Center>
+					  <Center >
+					  <Box className="inputbtn">
+					  		<InputGroup  >
 								<InputLeftElement pointerEvents="none">
 									<AiOutlineSearch />
 								</InputLeftElement>
-								<Input
-									type="text"
-									onFocus={handleInputFocus}
-									onBlur={handleInputBlur}
-									placeholder="Search LAP-DEN"
-									value={keyword}
-									onChange={e => setKeyword(e.target.value)}
-								/>
-								{renderSuggestions()}
+								<Input type="tel" placeholder="Search LAP-DEN"  />
 							</InputGroup>
-							</Box>
-						</Center>
-					</Flex>
+					</Box>
+					</Center>
+				</Flex>
 					<Stack
-						className="dropdown"
+					className="dropdown"
 						flex={{ base: 1, md: 0 }}
 						justify={"flex-end"}
 						direction={"row"}
 						spacing={6}
 					>
-						{token && name ? (
-							<Menu zIndex={"100"}>
-								<MenuButton>
+						{token && name ?(<Menu zIndex={"100"}>
+							<MenuButton >
+								<Button
+									as={"a"}
+									rightIcon={<ChevronDownIcon />}
+									fontSize={"sm"}
+									fontWeight={400}
+									variant={"link"}
+									href={"#"}
+								>
+									<div className="logo">
+										<MdOutlineAccountCircle />
+									</div>
+									<div className="text">{name}</div>
+								</Button>
+							</MenuButton>
+							<MenuList >
+								<MenuItem>
 									<Button
-										as={"a"}
-										rightIcon={<ChevronDownIcon />}
-										fontSize={"sm"}
-										fontWeight={400}
-										variant={"link"}
-										href={"#"}
+									onClick={handleLogout}
+										backgroundColor={"#0672cb"}
+										width={"100%"}
+										color={"white"}
 									>
-										<div className="logo">
-											<MdOutlineAccountCircle />
-										</div>
-										<div className="text">{name}</div>
+										Logout
 									</Button>
-								</MenuButton>
-								<MenuList>
-									<MenuItem>
-										<Button
-											onClick={handleLogout}
-											backgroundColor={"#0672cb"}
-											width={"100%"}
-											color={"white"}
-										>
-											Logout
-										</Button>
-									</MenuItem>
-									<MenuItem>
-										<Button onClick={handleChpassword} width={"100%"}>
-											Reset Password
-										</Button>
-									</MenuItem>
-									<MenuItem
-										display={
-											role === "admin" && token && name ? "block" : "none"
-										}
-									>
-										<Button
-											onClick={() => navigate("/dashboard")}
-											width={"100%"}
-										>
-											Admin
-										</Button>
-									</MenuItem>
-								</MenuList>
-							</Menu>
-						) : (
-							<Menu zIndex={"100"}>
-								<MenuButton>
+								</MenuItem>
+								<MenuItem>
+									<Button onClick={handleChpassword} width={"100%"}>Reset Password</Button>
+								</MenuItem>
+								<MenuItem display={role==="admin" && token && name ?"block":"none"}>
+									<Button onClick={()=>navigate("/register")} width={"100%"}>Admin</Button>
+								</MenuItem>
+							</MenuList>
+						</Menu>):(<Menu zIndex={"100"}>
+							<MenuButton>
+								<Button
+									as={"a"}
+									rightIcon={<ChevronDownIcon />}
+									fontSize={"sm"}
+									fontWeight={400}
+									variant={"link"}
+									href={"#"}
+								>
+									<div className="logo">
+										<MdOutlineAccountCircle />
+									</div>
+									<div className="text">Sign In</div>
+								</Button>
+							</MenuButton>
+							<MenuList>
+								<MenuItem>
 									<Button
-										as={"a"}
-										rightIcon={<ChevronDownIcon />}
-										fontSize={"sm"}
-										fontWeight={400}
-										variant={"link"}
-										href={"#"}
+										backgroundColor={"#0672cb"}
+										width={"100%"}
+										color={"white"}
 									>
-										<div className="logo">
-											<MdOutlineAccountCircle />
-										</div>
-										<div className="text">Sign In</div>
+										Welcome to LAP-DEN
 									</Button>
-								</MenuButton>
-								<MenuList>
-									<MenuItem>
-										<Button
-											backgroundColor={"#0672cb"}
-											width={"100%"}
-											color={"white"}
-										>
-											Welcome to LAP-DEN
-										</Button>
-									</MenuItem>
-									<MenuItem>
-										<Text>My Account</Text>
-									</MenuItem>
-									<MenuItem>
-										<Text>
-											<li>Place orders quickly and easily</li>
-										</Text>
-									</MenuItem>
-									<MenuItem>
-										<Text>
-											<li>View orders and track your shipping status</li>
-										</Text>
-									</MenuItem>
-									<MenuItem>
-										<Text>
-											<li>Create and access a list of your products</li>
-										</Text>
-									</MenuItem>
-									<MenuItem>
-										<Button
-											onClick={handleNavigate}
-											width={"100%"}
-											backgroundColor={"#0672cb"}
-											color={"white"}
-										>
-											Sign In
-										</Button>
-									</MenuItem>
-									<MenuItem>
-										<Button
-											onClick={() => navigate("/register")}
-											width={"100%"}
-										>
-											Create an Account
-										</Button>
-									</MenuItem>
-									<MenuItem>
-										<Button width={"100%"}> Premier Sign In</Button>
-									</MenuItem>
-									<MenuItem>
-										<Button width={"100%"}>Partner Program Sign In</Button>
-									</MenuItem>
-								</MenuList>
-							</Menu>
-						)}
+								</MenuItem>
+								<MenuItem>
+									<Text>My Account</Text>
+								</MenuItem>
+								<MenuItem>
+									<Text>
+										<li>Place orders quickly and easily</li>
+									</Text>
+								</MenuItem>
+								<MenuItem>
+									<Text>
+										<li>View orders and track your shipping status</li>
+									</Text>
+								</MenuItem>
+								<MenuItem>
+									<Text>
+										<li>Create and access a list of your products</li>
+									</Text>
+								</MenuItem>
+								<MenuItem>
+								<Button
+									onClick={handleNavigate}
+										width={"100%"}
+										backgroundColor={"#0672cb"}
+										color={"white"}
+									>
+										Sign In
+									</Button>
+									
+								</MenuItem>
+								<MenuItem>
+									<Button onClick={()=>navigate("/register")} width={"100%"}>Create an Account</Button>
+								</MenuItem>
+								<MenuItem>
+									<Button width={"100%"}> Premier Sign In</Button>
+								</MenuItem>
+								<MenuItem>
+									<Button width={"100%"}>Partner Program Sign In</Button>
+								</MenuItem>
+							</MenuList>
+						</Menu>)}
 						<Button
 							as={"a"}
 							fontSize={"sm"}
@@ -394,7 +256,7 @@ export default function Navbar() {
 							href={"#"}
 						>
 							<div className="logo">
-								<RiCustomerService2Fill />
+								<RiCustomerService2Fill  />
 							</div>
 
 							<div className="text">Contact Us</div>
@@ -430,6 +292,7 @@ export default function Navbar() {
 						<Menu>
 							<MenuButton>
 								<Button
+								
 									as={"a"}
 									fontSize={"sm"}
 									fontWeight={400}
@@ -446,7 +309,7 @@ export default function Navbar() {
 							<MenuList>
 								<MenuItem>
 									<Button
-										onClick={handleCart}
+									onClick={handleCart}
 										backgroundColor={"#0672cb"}
 										width={"100%"}
 										color={"white"}
@@ -461,17 +324,13 @@ export default function Navbar() {
 									<Text></Text>
 								</MenuItem>
 								<MenuItem>
-									{token && name ? (
-										<Text>
-											<hr />
-											Hello {name}
-										</Text>
-									) : (
-										<Text>
-											<hr />
-											Sign-in to view Saved Carts
-										</Text>
-									)}
+									{token && name ?(<Text>
+										<hr />
+										Hello {name}
+									</Text>):(<Text>
+										<hr />
+										Sign-in to view Saved Carts
+									</Text>)}
 								</MenuItem>
 							</MenuList>
 						</Menu>
@@ -498,7 +357,7 @@ const DesktopNav = () => {
 
 	return (
 		<Stack direction={"row"} spacing={4}>
-			{NAV_ITEMS.map(navItem => (
+			{NAV_ITEMS.map((navItem) => (
 				<Box key={navItem.label}>
 					<Popover trigger={"hover"} placement={"bottom-start"}>
 						<PopoverTrigger>
@@ -527,7 +386,7 @@ const DesktopNav = () => {
 								minW={"sm"}
 							>
 								<Stack>
-									{navItem.children.map(child => (
+									{navItem.children.map((child) => (
 										<DesktopSubNav key={child.label} {...child} />
 									))}
 								</Stack>
@@ -584,7 +443,7 @@ const MobileNav = () => {
 			p={4}
 			display={{ md: "none" }}
 		>
-			{NAV_ITEMS.map(navItem => (
+			{NAV_ITEMS.map((navItem) => (
 				<MobileNavItem key={navItem.label} {...navItem} />
 			))}
 		</Stack>
@@ -633,7 +492,7 @@ const MobileNavItem = ({ label, children, href }) => {
 					align={"start"}
 				>
 					{children &&
-						children.map(child => (
+						children.map((child) => (
 							<Link key={child.label} py={2} href={child.href}>
 								{child.label}
 							</Link>
@@ -644,7 +503,9 @@ const MobileNavItem = ({ label, children, href }) => {
 	);
 };
 
-const NAV_ITEMS = [
+
+
+const NAV_ITEMS  = [
 	{
 		label: "APEX",
 		children: [
@@ -673,44 +534,43 @@ const NAV_ITEMS = [
 		children: [
 			{
 				label: "Laptops",
-
-				href: "/products",
+				href:"/products"
 			},
 			{
 				label: "Desktops and All-in-One",
-				href: "/products",
+				href:"/products"
 			},
 			{
 				label: "Gaming",
-				href: "/products",
+				href:"/products"
 			},
 			{
 				label: "Workstations",
-				href: "/products",
+				href:"/products"
 			},
 			{
 				label: "Thin Clients",
-				href: "/products",
+				href:"/products"
 			},
 			{
 				label: "Server",
-				href: "/products",
+				href:"/products"
 			},
 			{
 				label: "Data Storage",
-				href: "/products",
+				href:"/products"
 			},
 			{
 				label: "Data Protection",
-				href: "/products",
+				href:"/products"
 			},
 			{
 				label: "Networking",
-				href: "/products",
+				href:"/products"
 			},
 			{
 				label: "Monitors",
-				href: "/products",
+				href:"/products"
 			},
 		],
 	},
