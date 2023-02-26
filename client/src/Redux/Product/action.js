@@ -22,7 +22,7 @@ export const getProducts =
 	dispatch => {
 		dispatch(getProductsRequestAction());
 		axios
-			.get("http://localhost:8080/products/all", params)
+			.get(`${process.env.server_url}/products/all`, params)
 			.then(res => {
 				console.log(res.data);
 				dispatch(getProductsSuccessAction(res.data.products));

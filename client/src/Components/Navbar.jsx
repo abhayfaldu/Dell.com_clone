@@ -120,7 +120,7 @@ export default function Navbar() {
 	
 
 	const getSearchResults = params => {
-		axios("http://localhost:8080/products/all", params)
+		axios(`${process.env.server_URL}/products/all`, params)
 			.then(res => {
 				console.log("res.data", res.data.products);
 				setProducts(res.data.products);

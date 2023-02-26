@@ -57,42 +57,44 @@ const handleSubmit = (e) => {
     if(data.password===data.confirmPassword){
 
         axios
-          .post(`http://localhost:8080/users/saveforgotpassword/${id}/${token}`, data)
-          .then((res) => {
-            // alert(res.data.message);
-    
-            if (res.data.success) {
-              // alert(res.data.message);
-              toast({
-                title: "Password Saved.",
-                description: res.data.message,
-                status: "success",
-                duration: 9000,
-                isClosable: true,
-              });
-              navigate("/login")
-    
-            } else {
-              // alert(res.data.message);
-              toast({
-                title: "Password Not Saved.",
-                description: res.data.message,
-                status: "error",
-                duration: 9000,
-                isClosable: true,
-              });
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-            toast({
-              title: "Something Went Wrong.",
-              description: "Please Try Again Later",
-              status: "error",
-              duration: 9000,
-              isClosable: true,
-            });
-          });
+					.post(
+						`${process.env.server_URL}/users/saveforgotpassword/${id}/${token}`,
+						data
+					)
+					.then(res => {
+						// alert(res.data.message);
+
+						if (res.data.success) {
+							// alert(res.data.message);
+							toast({
+								title: "Password Saved.",
+								description: res.data.message,
+								status: "success",
+								duration: 9000,
+								isClosable: true,
+							});
+							navigate("/login");
+						} else {
+							// alert(res.data.message);
+							toast({
+								title: "Password Not Saved.",
+								description: res.data.message,
+								status: "error",
+								duration: 9000,
+								isClosable: true,
+							});
+						}
+					})
+					.catch(err => {
+						console.log(err);
+						toast({
+							title: "Something Went Wrong.",
+							description: "Please Try Again Later",
+							status: "error",
+							duration: 9000,
+							isClosable: true,
+						});
+					});
     }
     else{
         toast({

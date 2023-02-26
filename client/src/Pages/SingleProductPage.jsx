@@ -35,7 +35,7 @@ export default function SingleProductPage() {
 	const getSingleProduct = async () => {
 		setLoader(true);
 		try {
-			const data = await axios.get(`http://localhost:8080/products/${id}`);
+			const data = await axios.get(`${process.env.server_URL}/products/${id}`);
 			setLoader(false);
 			setData(data.data.product);
       setImage(data.data.product.image_url[0])
