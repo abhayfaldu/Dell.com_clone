@@ -19,7 +19,6 @@ import { Cart } from "../Components/Cart/Cart";
 import CartLogo from "../Components/Cart/CartLogo";
 import KeyboardMouse from "../Pages/KeyboardMouse";
 import ProductList from "../Pages/ProductList";
-import Checkout from "../Components/Cart/Checkout";
 
 const AllRoutes = () => {
   return (
@@ -32,7 +31,7 @@ const AllRoutes = () => {
           </>
         }
       ></Route>
-      <Route path="/products" element={<ProductList />}></Route>
+      <Route path="/products" element={<><Navbar /><ProductList /><Footer /></>}></Route>
       <Route path="/dashboard" element={<Dashboard />}></Route>
       <Route path="/addproduct" element={<AddProduct />}></Route>
       <Route path="/adminstore" element={<AdminStore />}></Route>
@@ -43,7 +42,6 @@ const AllRoutes = () => {
       <Route path="/register" element={<SignUp />}></Route>
       <Route path="/changepassword" element={<ChangePw />}></Route>
       <Route path="/forgotpassword" element={<ForgotPw />}></Route>
-      <Route path="/checkout" element={<Checkout />}></Route>
       <Route
         path="/users/saveforgotpassword/:id/:token"
         element={<CreatePw />}
