@@ -42,6 +42,7 @@ const AllRoutes = () => {
       <Route path="/register" element={<SignUp />}></Route>
       <Route path="/changepassword" element={<ChangePw />}></Route>
       <Route path="/forgotpassword" element={<ForgotPw />}></Route>
+      <Route path="/checkout" element={<Checkout />}></Route>
       <Route
         path="/users/saveforgotpassword/:id/:token"
         element={<CreatePw />}

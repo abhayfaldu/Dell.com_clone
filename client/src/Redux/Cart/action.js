@@ -93,7 +93,7 @@ export const clearCartProductsFailureAction = () => {
 export const getProducts = (dispatch) => {
   dispatch(getCartProductsRequestAction());
   axios
-    .get("http://localhost:8080/cart/singlecart", {
+    .get(`${process.env.REACT_APP_SERVER_URL}/cart/singlecart`, {
       headers: {
         Authorization: localStorage.getItem("token"),
       },
@@ -114,18 +114,21 @@ export const getProducts = (dispatch) => {
 export const deleteProduct = (id) => (dispatch) => {
   dispatch(deleteCartProductsRequestAction());
   return axios
-    .delete(`http://localhost:8080/cart/deletecart/${id}`, {
-      headers: {
-        Authorization: localStorage.getItem("token"),
-      },
-    })
-    .then((res) => {
-      dispatch(deleteCartProductsSuccessAction());
-    })
-    .catch((err) => {
-      console.log("something went wrong in getting products:", err);
-      dispatch(deleteCartProductsFailureAction());
-    });
+		.delete(
+			`${process.env.REACT_APP_SERVER_URL}/cart/deletecart/${id}`,
+			{
+				headers: {
+					Authorization: localStorage.getItem("token"),
+				},
+			}
+		)
+		.then(res => {
+			dispatch(deleteCartProductsSuccessAction());
+		})
+		.catch(err => {
+			console.log("something went wrong in getting products:", err);
+			dispatch(deleteCartProductsFailureAction());
+		});
 };
 
 // clear cart
@@ -133,18 +136,18 @@ export const deleteProduct = (id) => (dispatch) => {
 export const clearAllProducts = (id) => (dispatch) => {
   dispatch(clearCartProductsRequestAction());
   return axios
-    .delete(`http://localhost:8080/cart/clearcart`, {
-      headers: {
-        Authorization: localStorage.getItem("token"),
-      },
-    })
-    .then((res) => {
-      dispatch(clearCartProductsSuccessAction());
-    })
-    .catch((err) => {
-      console.log("something went wrong in getting products:", err);
-      dispatch(clearCartProductsFailureAction());
-    });
+		.delete(`${process.env.REACT_APP_SERVER_URL}/cart/clearcart`, {
+			headers: {
+				Authorization: localStorage.getItem("token"),
+			},
+		})
+		.then(res => {
+			dispatch(clearCartProductsSuccessAction());
+		})
+		.catch(err => {
+			console.log("something went wrong in getting products:", err);
+			dispatch(clearCartProductsFailureAction());
+		});
 };
 
 export const addToCart =
@@ -153,26 +156,26 @@ export const addToCart =
 	  console.log('image_url:', image_url)
     dispatch(postCartProductsRequestAction());
     return axios
-      .post(
-        "http://localhost:8080/cart/create",
-        { title, original_price, discounted_price, image_url },
-        {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        }
-      )
-      .then((res) => {
-        res.data.success
-          ? getToast("success", res.data.message)
-          : getToast("error", res.data.message);
-        dispatch(postCartProductsSuccessAction());
-      })
-      .catch((err) => {
-        if (!localStorage.getItem("token")) {
-          return getToast("error", "Please Login First");
-        }
-        getToast("error", "something went wrong in getting products");
-        dispatch(postCartProductsFailureAction());
-      });
+			.post(
+				`${process.env.REACT_APP_SERVER_URL}/cart/create`,
+				{ title, original_price, discounted_price, image_url },
+				{
+					headers: {
+						Authorization: localStorage.getItem("token"),
+					},
+				}
+			)
+			.then(res => {
+				res.data.success
+					? getToast("success", res.data.message)
+					: getToast("error", res.data.message);
+				dispatch(postCartProductsSuccessAction());
+			})
+			.catch(err => {
+				if (!localStorage.getItem("token")) {
+					return getToast("error", "Please Login First");
+				}
+				getToast("error", "something went wrong in getting products");
+				dispatch(postCartProductsFailureAction());
+			});
   };
