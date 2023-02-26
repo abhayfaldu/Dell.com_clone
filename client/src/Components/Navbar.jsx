@@ -1,74 +1,165 @@
 import {
-	Box,
-	Flex,
-	Text,
-	IconButton,
-	Button,
-	Stack,
-	Collapse,
-	Icon,
-	Link,
-	Popover,
-	PopoverTrigger,
-	PopoverContent,
-	useColorModeValue,
-	useDisclosure,
-	InputGroup,
-	InputLeftElement,
-	Input,
-	MenuList,
-	MenuItem,
-	Menu,
-	MenuButton,
-} from "@chakra-ui/react";
-import {
-	HamburgerIcon,
-	CloseIcon,
 	ChevronDownIcon,
 	ChevronRightIcon,
+	CloseIcon,
+	HamburgerIcon,
 } from "@chakra-ui/icons";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import logo from "../Utils/logo.png";
+import {
+	Box,
+	Button,
+	Collapse,
+	Flex,
+	Icon,
+	IconButton,
+	Input,
+	InputGroup,
+	InputLeftElement,
+	// Link,
+	Menu,
+	MenuButton,
+	MenuItem,
+	MenuList,
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+	Stack,
+	Text,
+	useColorModeValue,
+	useDisclosure,
+} from "@chakra-ui/react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { MdOutlineAccountCircle } from "react-icons/md";
 import { RiCustomerService2Fill } from "react-icons/ri";
 import { TbWorld } from "react-icons/tb";
-import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
-import "./Navbar.modules.css";
-import { useEffect } from "react";
-import { getProducts } from "../Redux/Product/action";
 import { useDispatch, useSelector } from "react-redux";
+import {
+	Link,
+	useLocation,
+	useNavigate,
+	useSearchParams,
+} from "react-router-dom";
+import logo from "../Utils/logo.png";
+import "./Navbar.modules.css";
 
 export default function Navbar() {
-	const { products, isLoading } = useSelector(store => store.ProductReducer);
+	const [products, setProducts] = useState([]);
+	console.log("products:", products);
 	const location = useLocation();
-	const [searchParams] = useSearchParams();
+	const [searchParams, setSearchParams] = useSearchParams();
 	const { isOpen, onToggle } = useDisclosure();
 	const navigate = useNavigate();
-	const token=localStorage.getItem("token");
+	const token = localStorage.getItem("token");
+	const [keyword, setKeyword] = useState("");
 	const dispatch = useDispatch();
-	const handleNavigate=()=>{
-		if(token){
-			navigate("/login")
-		}else{
-			navigate("/register")
+	const [isInputFocused, setIsInputFocused] = useState(false);
+
+	const handleInputFocus = () => {
+		setIsInputFocused(true);
+	};
+
+	const handleInputBlur = () => {
+		setIsInputFocused(false);
+	};
+
+	const renderSuggestions = () => {
+		if (isInputFocused) {
+			return (
+				<Flex
+					flexDir={"column"}
+					border="1px solid lightgray"
+					position="relative"
+					bgColor={"#fff"}
+					shadow={"lg"}
+					borderRadius="8px"
+					mt={"8px"}
+					textAlign="left"
+				>
+					{products.map(product => (
+						<Text
+							onClick={() => navigate(`/products/${product._id}`)}
+							p={2}
+							curser={"pointer"}
+						>
+							{product.title}
+						</Text>
+					))}
+				</Flex>
+			);
 		}
-	}
+		return null;
+	};
 
+	// const handleActive = () => {
+	// 	setIsInputActive(prev => !prev)
+	// }
 
-	
-	 useEffect(() => {
-		const processor = searchParams.get("processor");
+	const getSearchResults = params => {
+		axios("http://localhost:8080/products/all", params)
+			.then(res => {
+				console.log("res.data", res.data.products);
+				setProducts(res.data.products);
+			})
+			.catch(err =>
+				console.log("something went wrong in getting search results", err)
+			);
+	};
+
+	const handleNavigate = () => {
+		if (token) {
+			navigate("/login");
+		} else {
+			navigate("/register");
+		}
+	};
+
+	useEffect(() => {
+		const params = {
+			// 	category,
+			// 	memory,
+			// 	storage,
+		};
+		if (keyword !== "") params.keyword = keyword;
+		// if (minPrice) params["discounted_price[gte]"] = minPrice;
+		// if (maxPrice) params["discounted_price[lte]"] = maxPrice;
+		// processor && (params.processor = processor);
+		setSearchParams(params);
+	}, [
+		keyword,
+		// category, processor, memory, storage, isPriceFilterApplied
+	]);
+
+	useEffect(() => {
+		// const processor = searchParams.get("processor");
+		// console.log("processor:", processor);
+		// const discounted_price_lte = searchParams.get("discounted_price[lte]");
+		// const discounted_price_gte = searchParams.get("discounted_price[gte]");
+		const keyword = searchParams.get("keyword");
+		console.log("keyword:", keyword);
 		let paramObj = {
 			params: {
-				category: searchParams.getAll("category"),
-				memory: searchParams.getAll("memory"),
-				storage: searchParams.getAll("storage"),
-				processor,
+				// category: searchParams.getAll("category"),
+				// memory: searchParams.getAll("memory"),
+				// storage: searchParams.getAll("storage"),
+				// "discounted_price[lte]": discounted_price_lte,
+				// "discounted_price[gte]": discounted_price_gte,
 			},
 		};
-		dispatch(getProducts(paramObj));
+		if (keyword !== "") {
+			paramObj.params.keyword = keyword;
+		}
+		// if (processor) {
+		// 	paramObj.params.processor = process	or;
+		// }
+		if (keyword !== "") {
+			getSearchResults(paramObj);
+		}
 	}, [location.search]);
-	console.log(products)
+
+	// useEffect(() => {}, []);
+
+	// console.log(products.forEach(el => console.log(el.title)));
 	return (
 		<>
 			<Box>
@@ -101,179 +192,228 @@ export default function Navbar() {
 							aria-label={"Toggle Navigation"}
 						/>
 					</Flex>
-					<Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }} width={"50%"}>
-						<div className="laplogo"><img src={logo} alt="" srcset="" width={"35%"} /></div>
-						{/* <Flex display={{ base: "none", md: "flex" }} ml={10}  width={"500px"}> */}
-							<InputGroup>
+					<Flex
+						flex={{ base: 1 }}
+						justify={{ base: "center", md: "start" }}
+						width={"50%"}
+					>
+						<div className="laplogo">
+							<img src={logo} alt="" srcset="" width={"35%"} />
+						</div>
+						<Flex
+							display={{ base: "none", md: "flex" }}
+							ml={10}
+							width={"500px"}
+						>
+							<InputGroup
+								flexDir={"column"}
+								w="350px"
+								zIndex={1000}
+								position="absolute"
+								top={"13px"}
+							>
 								<InputLeftElement pointerEvents="none">
 									<AiOutlineSearch />
 								</InputLeftElement>
-								<Input type="tel" placeholder="Search LAP-DEN"  />
+								<Input
+									type="text"
+									onFocus={handleInputFocus}
+									onBlur={handleInputBlur}
+									placeholder="Search LAP-DEN"
+									value={keyword}
+									onChange={e => setKeyword(e.target.value)}
+								/>
+								{renderSuggestions()}
+								{/* {products.length && (
+									<Flex
+										flexDir={"column"}
+										border="1px solid lightgray"
+										position="relative"
+										bgColor={"#fff"}
+										shadow={"lg"}
+										borderRadius="8px"
+										mt={"8px"}
+										textAlign="left"
+									>
+										{products.map(product => (
+											<Text
+												// borderBottom={"1px solid lightGray"}
+												p={2}
+											>
+												{product.title}
+											</Text>
+										))}
+									</Flex>
+								)} */}
 							</InputGroup>
-						{/* </Flex> */}
-					</Flex>
-					<Stack
-					className="dropdown"
-						flex={{ base: 1, md: 0 }}
-						justify={"flex-end"}
-						direction={"row"}
-						spacing={6}
-					>
-						<Menu>
-							<MenuButton>
-								<Button
-									as={"a"}
-									rightIcon={<ChevronDownIcon />}
-									fontSize={"sm"}
-									fontWeight={400}
-									variant={"link"}
-									href={"#"}
-								>
-									<div className="logo">
-										<MdOutlineAccountCircle />
-									</div>
-									<div className="text">Sign In</div>
-								</Button>
-							</MenuButton>
-							<MenuList>
-								<MenuItem>
-									<Button
-										backgroundColor={"#0672cb"}
-										width={"100%"}
-										color={"white"}
-									>
-										Welcome to LAP-DEN
-									</Button>
-								</MenuItem>
-								<MenuItem>
-									<Text>My Account</Text>
-								</MenuItem>
-								<MenuItem>
-									<Text>
-										<li>Place orders quickly and easily</li>
-									</Text>
-								</MenuItem>
-								<MenuItem>
-									<Text>
-										<li>View orders and track your shipping status</li>
-									</Text>
-								</MenuItem>
-								<MenuItem>
-									<Text>
-										<li>Create and access a list of your products</li>
-									</Text>
-								</MenuItem>
-								<MenuItem>
-								{token?(<Button
-									onClick={handleNavigate}
-										width={"100%"}
-										backgroundColor={"#0672cb"}
-										color={"white"}
-									>
-										Login
-									</Button>):(<Button
-									onClick={handleNavigate}
-										width={"100%"}
-										backgroundColor={"#0672cb"}
-										color={"white"}
-									>
-										Sign In
-									</Button>)}
-									
-								</MenuItem>
-								<MenuItem>
-									<Button width={"100%"}>Create an Account</Button>
-								</MenuItem>
-								<MenuItem>
-									<Button width={"100%"}> Premier Sign In</Button>
-								</MenuItem>
-								<MenuItem>
-									<Button width={"100%"}>Partner Program Sign In</Button>
-								</MenuItem>
-							</MenuList>
-						</Menu>
-						<Button
-							as={"a"}
-							fontSize={"sm"}
-							fontWeight={400}
-							variant={"link"}
-							href={"#"}
+						</Flex>
+
+						<Stack
+							className="dropdown"
+							flex={{ base: 1, md: 0 }}
+							justify={"flex-end"}
+							direction={"row"}
+							spacing={6}
 						>
-							<div className="logo">
-								<RiCustomerService2Fill  />
-							</div>
-
-							<div className="text">Contact Us</div>
-						</Button>
-						<Menu>
-							<MenuButton>
-								<Button
-									as={"a"}
-									fontSize={"sm"}
-									fontWeight={400}
-									variant={"link"}
-									href={"#"}
-								>
-									<div className="logo">
-										<TbWorld />
-									</div>
-
-									<div className="text">IN/EN</div>
-								</Button>
-							</MenuButton>
-							<MenuList display={"grid"} gridTemplateColumns={"3"}>
-								<MenuItem>
-									<Text>Your cart is empty!</Text>
-								</MenuItem>
-								<MenuItem>
-									<Text>Your cart is empty!</Text>
-								</MenuItem>
-								<MenuItem>
-									<Text>Your cart is empty!</Text>
-								</MenuItem>
-							</MenuList>
-						</Menu>
-						<Menu>
-							<MenuButton>
-								<Button
-									as={"a"}
-									fontSize={"sm"}
-									fontWeight={400}
-									variant={"link"}
-									href={"#"}
-								>
-									<div className="logo">
-										<AiOutlineShoppingCart />
-									</div>
-
-									<div className="text">Cart</div>
-								</Button>
-							</MenuButton>
-							<MenuList>
-								<MenuItem>
+							<Menu>
+								<MenuButton>
 									<Button
-										backgroundColor={"#0672cb"}
-										width={"100%"}
-										color={"white"}
+										as={"a"}
+										rightIcon={<ChevronDownIcon />}
+										fontSize={"sm"}
+										fontWeight={400}
+										variant={"link"}
+										href={"#"}
 									>
-										Your LAP-DEN Carts
+										<div className="logo">
+											<MdOutlineAccountCircle />
+										</div>
+										<div className="text">Sign In</div>
 									</Button>
-								</MenuItem>
-								<MenuItem>
-									<Text>Your cart is empty!</Text>
-								</MenuItem>
-								<MenuItem>
-									<Text></Text>
-								</MenuItem>
-								<MenuItem>
-									<Text>
-										<hr />
-										Sign-in to view Saved Carts
-									</Text>
-								</MenuItem>
-							</MenuList>
-						</Menu>
-					</Stack>
+								</MenuButton>
+								<MenuList>
+									<MenuItem>
+										<Button
+											backgroundColor={"#0672cb"}
+											width={"100%"}
+											color={"white"}
+										>
+											Welcome to LAP-DEN
+										</Button>
+									</MenuItem>
+									<MenuItem>
+										<Text>My Account</Text>
+									</MenuItem>
+									<MenuItem>
+										<Text>
+											<li>Place orders quickly and easily</li>
+										</Text>
+									</MenuItem>
+									<MenuItem>
+										<Text>
+											<li>View orders and track your shipping status</li>
+										</Text>
+									</MenuItem>
+									<MenuItem>
+										<Text>
+											<li>Create and access a list of your products</li>
+										</Text>
+									</MenuItem>
+									<MenuItem>
+										{token ? (
+											<Button
+												onClick={handleNavigate}
+												width={"100%"}
+												backgroundColor={"#0672cb"}
+												color={"white"}
+											>
+												Login
+											</Button>
+										) : (
+											<Button
+												onClick={handleNavigate}
+												width={"100%"}
+												backgroundColor={"#0672cb"}
+												color={"white"}
+											>
+												Sign In
+											</Button>
+										)}
+									</MenuItem>
+									<MenuItem>
+										<Button width={"100%"}>Create an Account</Button>
+									</MenuItem>
+									<MenuItem>
+										<Button width={"100%"}> Premier Sign In</Button>
+									</MenuItem>
+									<MenuItem>
+										<Button width={"100%"}>Partner Program Sign In</Button>
+									</MenuItem>
+								</MenuList>
+							</Menu>
+							<Button
+								as={"a"}
+								fontSize={"sm"}
+								fontWeight={400}
+								variant={"link"}
+								href={"#"}
+							>
+								<div className="logo">
+									<RiCustomerService2Fill />
+								</div>
+
+								<div className="text">Contact Us</div>
+							</Button>
+							<Menu>
+								<MenuButton>
+									<Button
+										as={"a"}
+										fontSize={"sm"}
+										fontWeight={400}
+										variant={"link"}
+										href={"#"}
+									>
+										<div className="logo">
+											<TbWorld />
+										</div>
+
+										<div className="text">IN/EN</div>
+									</Button>
+								</MenuButton>
+								<MenuList display={"grid"} gridTemplateColumns={"3"}>
+									<MenuItem>
+										<Text>Your cart is empty!</Text>
+									</MenuItem>
+									<MenuItem>
+										<Text>Your cart is empty!</Text>
+									</MenuItem>
+									<MenuItem>
+										<Text>Your cart is empty!</Text>
+									</MenuItem>
+								</MenuList>
+							</Menu>
+							<Menu>
+								<MenuButton>
+									<Button
+										as={"a"}
+										fontSize={"sm"}
+										fontWeight={400}
+										variant={"link"}
+										href={"#"}
+									>
+										<div className="logo">
+											<AiOutlineShoppingCart />
+										</div>
+
+										<div className="text">Cart</div>
+									</Button>
+								</MenuButton>
+								<MenuList>
+									<MenuItem>
+										<Button
+											backgroundColor={"#0672cb"}
+											width={"100%"}
+											color={"white"}
+										>
+											Your LAP-DEN Carts
+										</Button>
+									</MenuItem>
+									<MenuItem>
+										<Text>Your cart is empty!</Text>
+									</MenuItem>
+									<MenuItem>
+										<Text></Text>
+									</MenuItem>
+									<MenuItem>
+										<Text>
+											<hr />
+											Sign-in to view Saved Carts
+										</Text>
+									</MenuItem>
+								</MenuList>
+							</Menu>
+						</Stack>
+					</Flex>
 				</Flex>
 
 				<Collapse in={isOpen} animateOpacity>
@@ -296,7 +436,7 @@ const DesktopNav = () => {
 
 	return (
 		<Stack direction={"row"} spacing={4}>
-			{NAV_ITEMS.map((navItem) => (
+			{NAV_ITEMS.map(navItem => (
 				<Box key={navItem.label}>
 					<Popover trigger={"hover"} placement={"bottom-start"}>
 						<PopoverTrigger>
@@ -325,7 +465,7 @@ const DesktopNav = () => {
 								minW={"sm"}
 							>
 								<Stack>
-									{navItem.children.map((child) => (
+									{navItem.children.map(child => (
 										<DesktopSubNav key={child.label} {...child} />
 									))}
 								</Stack>
@@ -382,7 +522,7 @@ const MobileNav = () => {
 			p={4}
 			display={{ md: "none" }}
 		>
-			{NAV_ITEMS.map((navItem) => (
+			{NAV_ITEMS.map(navItem => (
 				<MobileNavItem key={navItem.label} {...navItem} />
 			))}
 		</Stack>
@@ -431,7 +571,7 @@ const MobileNavItem = ({ label, children, href }) => {
 					align={"start"}
 				>
 					{children &&
-						children.map((child) => (
+						children.map(child => (
 							<Link key={child.label} py={2} href={child.href}>
 								{child.label}
 							</Link>
@@ -442,9 +582,7 @@ const MobileNavItem = ({ label, children, href }) => {
 	);
 };
 
-
-
-const NAV_ITEMS  = [
+const NAV_ITEMS = [
 	{
 		label: "APEX",
 		children: [

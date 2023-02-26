@@ -25,13 +25,9 @@ const FilterSection = () => {
 	const initialCategory = searchParams.getAll("category");
 	const [category, setCategory] = useState(initialCategory || []);
 	const [processor, setProcessor] = useState(searchParams.getAll("processor"));
-	const initialMinPrice = searchParams.get(
-		encodeURIComponent("discounted_price[gte]")
-	);
+	const initialMinPrice = searchParams.get("discounted_price[gte]")
 	const [minPrice, setMinPrice] = useState(initialMinPrice);
-	const initialMaxPrice = searchParams.get(
-		encodeURIComponent("discounted_price[lte]")
-	);
+	const initialMaxPrice = searchParams.get("discounted_price[lte]");
 	const [maxPrice, setMaxPrice] = useState(initialMaxPrice);
 	const [isPriceFilterApplied, setIsPriceFilterApplied] = useState(1);
 	const initialMemory = searchParams.getAll("memory");
