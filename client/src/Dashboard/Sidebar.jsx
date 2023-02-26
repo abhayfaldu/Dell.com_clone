@@ -153,6 +153,7 @@ const NavItem = ({ icon, children, item, ...rest }) => {
 const MobileNav = ({ onOpen, ...rest }) => {
   const Navigate = useNavigate();
   const handleClick = () => {
+    localStorage.clear();
     Navigate("/");
   };
   return (

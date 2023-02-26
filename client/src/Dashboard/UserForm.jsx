@@ -51,11 +51,22 @@ const Form1 = ({ data, setData }) => {
           <FormLabel htmlFor="display" fontWeight={"normal"}>
             Display
           </FormLabel>
-          <Input
+          <Select
             name="display"
-            placeholder="Enter Product Display Size"
+            autoComplete="graphics_card"
+            placeholder="Select option"
+            focusBorderColor="brand.400"
+            shadow="sm"
+            size="sm"
+            w="full"
+            rounded="md"
             onChange={handleChange}
-          />
+          >
+            <option>35.5-cm. touch display Full HD (1920X1200)</option>
+            <option>60.5-cm. display Full HD (1920X1080)</option>
+            <option>40.6-cm. touch display Ultra HD (3840X2400) OLED</option>
+            <option>39.6-cm. display Full HD (1920X1080)</option>
+          </Select>
         </FormControl>
       </Flex>
       <FormControl>
@@ -203,19 +214,27 @@ const Form2 = ({ data, setData }) => {
         >
           Storage
         </FormLabel>
-        <Input
+
+        <Select
           type="text"
           name="storage"
           id="storage"
           autoComplete="storage"
+          placeholder="Select option"
           focusBorderColor="brand.400"
           shadow="sm"
           size="sm"
           w="full"
           rounded="md"
-          placeholder="Enter Storage of device"
           onChange={handleChange}
-        />
+        >
+          <option>256 GB, M.2, PCIe NVMe, SSD</option>
+          <option>512 GB, M.2, PCIe NVMe, SSD</option>
+          <option>
+            256GB M.2 PCIe NVMe Solid State Drive (Boot) + 1TB 5400 rpm 2.5"
+            SATA Hard Drive (Storage)
+          </option>
+        </Select>
       </FormControl>
       <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
         <FormLabel

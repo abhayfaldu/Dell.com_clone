@@ -163,7 +163,15 @@ export const postProductData = (data) => (dispatch) => {
 };
 
 export const updateProductData =
-  (id, discounted_price, original_price, graphics_card, memory, category) =>
+  (
+    id,
+    discounted_price,
+    original_price,
+    graphics_card,
+    memory,
+    category,
+    getToast
+  ) =>
   (dispatch) => {
     dispatch(updateProductRequest());
     return axios
@@ -175,6 +183,9 @@ export const updateProductData =
         category,
       })
       .then((res) => {
+        res.data.success
+          ? getToast("success", res.data.message)
+          : getToast("error", res.data.message);
         dispatch(updateProductSuccess());
       })
       .catch((err) => {
@@ -182,11 +193,14 @@ export const updateProductData =
       });
   };
 
-export const deleteProductData = (id) => (dispatch) => {
+export const deleteProductData = (id, getToast) => (dispatch) => {
   dispatch(deleteProductRequest());
   return axios
     .delete(`http://localhost:8080/products/delete/${id}`)
     .then((res) => {
+      res.data.success
+        ? getToast("success", res.data.message)
+        : getToast("error", res.data.message);
       dispatch(deleteProductSuccess());
     })
     .catch((err) => {

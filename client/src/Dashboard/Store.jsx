@@ -36,6 +36,8 @@ import {
   updateProductData,
 } from "../Redux/Admin/action";
 
+import { useToast } from "@chakra-ui/react";
+
 const AdminStore = () => {
   const { product, isLoading } = useSelector((store) => store.AdminReducer);
   const dispatch = useDispatch();
@@ -52,6 +54,18 @@ const AdminStore = () => {
   const [id, setId] = useState("");
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const toast = useToast();
+
+  const getToast = (success, msg) => {
+    // console.log(success, msg);
+    toast({
+      title: "Product Status",
+      description: msg,
+      status: success,
+      duration: 3000,
+      isClosable: true,
+    });
+  };
 
   useEffect(() => {
     dispatch(getProductData(page, setTotalCount));
@@ -59,7 +73,7 @@ const AdminStore = () => {
   // console.log(totalCount);
 
   const handleDelete = (id) => {
-    dispatch(deleteProductData(id)).then(() => {
+    dispatch(deleteProductData(id, getToast)).then(() => {
       dispatch(getProductData(page, setTotalCount));
     });
   };
@@ -71,7 +85,8 @@ const AdminStore = () => {
         original_price,
         graphics_card,
         memory,
-        category
+        category,
+        getToast
       )
     ).then(() => {
       dispatch(getProductData(page, setTotalCount));
