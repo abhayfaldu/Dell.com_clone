@@ -1,26 +1,34 @@
 import {
   Box,
-  chakra,
   Container,
   Stack,
   Text,
   Image,
   Flex,
-  VStack,
   Button,
   Heading,
   SimpleGrid,
   StackDivider,
   useColorModeValue,
-  VisuallyHidden,
   List,
   ListItem,
 } from '@chakra-ui/react';
-import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
+
 import { MdLocalShipping } from 'react-icons/md';
+import StarRatings from 'react-star-ratings';
 import Carousel from '../Components/Carousel';
+import { useSelector,useDispatch } from "react-redux";
+import { addToCart } from '../Redux/Cart/action';
 
 export default function SingleProductPage() {
+  const dispatch=useDispatch();
+  
+
+
+
+  const handleCart=(title,original_price,discounted_price,image_url)=>{
+    dispatch(addToCart(title,original_price,discounted_price,image_url))
+  }
   return (
     <Container maxW={'7xl'}>
       <SimpleGrid
@@ -34,12 +42,19 @@ export default function SingleProductPage() {
               lineHeight={1.1}
               fontWeight={500}
               fontSize={{ base: '2xl', sm: '4xl', lg: '5xl' }}>
-              Titile: Dell Alienware
+              Title: Dell Alienware
             </Heading>
             <Text
               fontWeight={500}
               fontSize={'2xl'}>
-              Rating :4.5/5
+              Rating: <StarRatings
+                rating={4.3}
+                starRatedColor="#0076ce"
+                numberOfStars={5}
+                name="rating"
+                starDimension="20px"
+                starSpacing="1px"
+              />
             </Text>
           </Box>
         </Flex>
@@ -77,6 +92,7 @@ export default function SingleProductPage() {
         <Flex>EMI starts from ₹ 24,165.83 /month</Flex>
         <Flex>
         <Button
+        onClick={()=>handleCart("Dell",123,100,"xyz")}
             rounded={'none'}
             w={'full'}
             mt={8}

@@ -52,6 +52,8 @@ const Login = () => {
         // alert(res.data.message);
 
         localStorage.setItem("token", res.data.token);
+        console.log("login",res.data.user.first_name)
+        localStorage.setItem("firstName",JSON.stringify(res.data.user.first_name))
 
         if (res.data.success && res.data.token) {
           // alert(res.data.message);
