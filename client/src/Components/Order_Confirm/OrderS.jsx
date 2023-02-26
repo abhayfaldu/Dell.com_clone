@@ -1,6 +1,6 @@
 import {
   Box,
-  Button,
+  // Button,
   Image,
   Modal,
   ModalBody,
@@ -10,12 +10,11 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+
 import logo from "../../Utils/logo.png";
-import { Link } from "react-router-dom";
+import { Link as routerLink } from "react-router-dom";
 
 export const OrderS = () => {
-  const navigate = useNavigate();
   return (
     <Box height="100vh">
       <Modal
@@ -58,14 +57,14 @@ export const OrderS = () => {
                 </Text>
               </Stack>
 
-              <Button
+              {/* <Button
                 fontSize="sm"
                 textAlign="center"
                 color={useColorModeValue("gray.600", "gray.400")}
                 textDecoration="underline"
               >
-                <Link to="/">Go To Home</Link>
-              </Button>
+                <routerLink to="/">Go To Home</routerLink>
+              </Button> */}
             </Stack>
           </ModalBody>
         </ModalContent>

@@ -29,7 +29,7 @@ function rupeeAmountToString(amount, isSaving = false) {
 
 export const CartProductMeta = (props) => {
   const {
-    isGiftWrapping = true,
+    // isGiftWrapping = true,
     image,
     name,
     original_price,

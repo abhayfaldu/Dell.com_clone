@@ -150,6 +150,7 @@ export const clearAllProducts = (id) => (dispatch) => {
 export const addToCart =
   (title, original_price, discounted_price, image_url, getToast) =>
   (dispatch) => {
+	  console.log('image_url:', image_url)
     dispatch(postCartProductsRequestAction());
     return axios
       .post(

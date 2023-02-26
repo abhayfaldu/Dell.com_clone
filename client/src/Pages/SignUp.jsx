@@ -81,7 +81,7 @@ const SignUp = () => {
     <Container maxW="full" p={0}>
       <Flex
         h={{ base: "auto", md: "115vh" }}
-        py={[0, 10, 20]}
+        py={0}
         direction={{ base: "column-reverse", md: "row" }}
       >
         <VStack w="full" h="full" p={10} spacing={10} /*bg={"red.50"}*/>
@@ -97,7 +97,7 @@ const SignUp = () => {
             <form style={{ width: "100%" }} onSubmit={handleSubmit}>
               <SimpleGrid column={2} columnGap={3} rowGap={6} width="full">
                 <GridItem colSpan={colSpan}>
-                  <FormControl>
+                  <FormControl isRequired>
                     <Input
                       onChange={handleChange}
                       placeholder="First Name"
@@ -107,7 +107,7 @@ const SignUp = () => {
                   </FormControl>
                 </GridItem>
                 <GridItem colSpan={colSpan}>
-                  <FormControl>
+                  <FormControl isRequired>
                     <Input
                       onChange={handleChange}
                       placeholder="Last Name"
@@ -117,7 +117,7 @@ const SignUp = () => {
                   </FormControl>
                 </GridItem>
                 <GridItem colSpan={2}>
-                  <FormControl>
+                  <FormControl isRequired>
                     <Input
                       onChange={handleChange}
                       placeholder="Email Address"
@@ -127,7 +127,7 @@ const SignUp = () => {
                   </FormControl>
                 </GridItem>
                 <GridItem colSpan={2}>
-                  <FormControl>
+                  <FormControl isRequired>
                     <InputGroup>
                       <Input
                         onChange={handleChange}
