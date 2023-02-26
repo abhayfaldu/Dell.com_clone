@@ -20,7 +20,7 @@ import CreditCardIcon from "@mui/icons-material/CreditCard";
 import { ConfirmOrder } from "./ConfirmOrder";
 import { useNavigate } from "react-router-dom";
 
-const SignUp = () => {
+const Checkout = () => {
   const colSpan = useBreakpointValue({ base: 2, md: 1 });
   const navigate = useNavigate()
   return (
@@ -168,4 +168,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Checkout;
