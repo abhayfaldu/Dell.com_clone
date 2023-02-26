@@ -61,6 +61,7 @@ import {
                 _hover={{ bg: 'blue.500' }}>
                 Show Now
               </Button>
+              
               <Button
                 size={'lg'}
                 fontWeight={'normal'}
