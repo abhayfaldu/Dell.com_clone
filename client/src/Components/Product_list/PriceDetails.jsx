@@ -1,8 +1,6 @@
 import { Badge, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 
-console.log("hello", process.env.REACT_APP_SERVER_URL);
-
 const calculatePercentDifference = (num1, num2) => {
 	const diff = Math.abs(num1 - num2);
 	const avg = (num1 + num2) / 2;
@@ -10,7 +8,7 @@ const calculatePercentDifference = (num1, num2) => {
 	return percentDiff.toFixed(0);
 };
 
-function rupeeAmountToString(amount, isSaving = false) {
+export function rupeeAmountToString(amount, isSaving = false) {
 	const amountString = amount.toFixed(2).toString();
 	// console.log('amountString:', amountString)
 	const [integerPart, fractionalPart] = amountString.split(".");

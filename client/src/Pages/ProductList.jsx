@@ -1,4 +1,6 @@
 import {
+	Box,
+	Button,
 	Flex,
 	Heading,
 	Select,
@@ -10,21 +12,61 @@ import React, { useEffect, useState } from "react";
 import { BsFillCaretDownFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useSearchParams } from "react-router-dom";
+import FilterDrawer from "../Components/Product_list/FilterDrawer";
 import FilterSection from "../Components/Product_list/FilterSection";
+import Pagination from "../Components/Product_list/Pagination";
 import ProductCard from "../Components/Product_list/ProductCard";
 import { getProducts } from "../Redux/Product/action";
 
 const ProductList = () => {
 	const dispatch = useDispatch();
 	const { products, isLoading } = useSelector(store => store.ProductReducer);
-	const location = useLocation();
-	const [searchParams] = useSearchParams();
-	const [sortBy, setSortBy] = useState(localStorage.getItem("sortBy") || "");
-	const [order, setOrder] = useState(localStorage.getItem("order") || "");
 
+	// to get everything after the `?` from url
+	const location = useLocation();
+	const [ searchParams ] = useSearchParams();
+	const initialMemory = searchParams.getAll("memory");
+	const [memory, setMemory] = useState(initialMemory || []);
+	const initialStorage = searchParams.getAll("storage");
+	const [storage, setStorage] = useState(initialStorage || []);
+	const initialKeyword = searchParams.get("keyword");
+	const [ keyword, setKeyword ] = useState(initialKeyword || "");
+	const initialCategory = searchParams.getAll("category");
+	const [category, setCategory] = useState(initialCategory || []);
+	const initialMinPrice = searchParams.get("discounted_price[gte]");
+	const initialMaxPrice = searchParams.get("discounted_price[lte]");
+
+	// pagination states
+	const initialPage = searchParams.get("page");
+	const [ page, setPage ] = useState(+initialPage || 1);
+	const [totalProducts, setTotalProducts] = useState(39);
+	const { sortAndOrder, setSortAndOrder } = useState("");
+
+	// getting sort data in localStorage for using same sort on refresh
+	const [sortBy, setSortBy] = useState(localStorage.getItem("sortBy") || "");
+	const [ order, setOrder ] = useState(localStorage.getItem("order") || "");
+
+	// page change handler
+	const handlePageChange = newPage => {
+		setPage(newPage);
+	};
+	// prev page handler
+	const handlePrev = () => {
+		setPage(page => page - 1);
+	};
+	// next page handler
+	const handleNext = () => {
+		setPage(page => page + 1);
+	};
+
+	// sort select changes handler
 	const handleSortChange = e => {
-		console.log('change triggered')
-		switch (e.target.value) {
+		setSortAndOrder(e.target.value);
+	};
+
+	// useEffect to set sortBy and order according to sortAndOrder state
+	useEffect(() => {
+		switch (sortAndOrder) {
 			case "priceHightToLow":
 				setSortBy("price");
 				setOrder("des");
@@ -44,35 +86,42 @@ const ProductList = () => {
 			default:
 				return;
 		}
-	};
+	}, [sortAndOrder]);
 
+	// useEffect to fetch data again whenever location.search changes
 	useEffect(() => {
-		const processor = searchParams.get("processor");
-		console.log("processor:", processor);
-		const discounted_price_lte = searchParams.get("discounted_price[lte]")
-		const discounted_price_gte = searchParams.get("discounted_price[gte]");
-		let paramObj = {
+		// params object to data form the query params
+		const paramObj = {
 			params: {
-				category: searchParams.getAll("category"),
-				memory: searchParams.getAll("memory"),
-				storage: searchParams.getAll("storage"),
-				"discounted_price[lte]": discounted_price_lte,
-				"discounted_price[gte]": discounted_price_gte,
+				keyword,
+				category,
+				memory,
+				storage,
+				"discounted_price[lte]": initialMinPrice,
+				"discounted_price[gte]": initialMaxPrice,
+				page,
 			},
 		};
-		if (processor) {
-			paramObj.params.processor = processor;
-		}
+
+		// get processor form search params
+		const processor = searchParams.get("processor");
+
+		// if nothing passed in processor filter it will be empty string
+		// and that's why it should not go in paramObj
+		if (processor) paramObj.params.processor = processor;
+
+		// dispatch getProducts function to get data with new filters
 		dispatch(getProducts(paramObj));
-	}, [location.search]);
+	}, [location.search, page]);
 
-	console.log("products:", products);
-
+	// data sorting management
 	if (sortBy !== "" && order !== "") {
+		// if sortBy and order is not empty then saving them in local storage to use on refresh
 		localStorage.setItem("sortBy", sortBy);
 		localStorage.setItem("order", order);
+
+		// sorting data by according to sortBy and order
 		if (sortBy === "price" && order === "asc") {
-			let newProduct = [...products];
 			products.sort((a, b) => {
 				return a.discounted_price > b.discounted_price
 					? 1
@@ -92,11 +141,8 @@ const ProductList = () => {
 			products.sort((a, b) => {
 				return a.rating < b.rating ? 1 : a.rating > b.rating ? -1 : 0;
 			});
-		} else {
-			// dispatch(getProducts(paramObj));
 		}
 	}
-	console.log("products:", products);
 
 	return (
 		<Flex
@@ -111,80 +157,98 @@ const ProductList = () => {
 
 			{/* Page content */}
 			<Flex gap={6} textAlign="left">
-				<FilterSection />
+				{/* large screen filter */}
+				<Box flex={1} display={["none", "none", "none", "block", "block"]}>
+					<FilterSection />
+				</Box>
 
 				{/* Product list section */}
 				<Flex flexDir={"column"} flex={5} w="full" gap={3}>
 					{/* Pagination info and sort bar */}
-					<Flex justify={"flex-start"}>
+					<Flex gap={4} flexDir={["column", "row", "row"]}>
+						{/* pagination info */}
+						<Flex align="center" flex={[1, 1, 1, 2]}>
+							Pagination info
+						</Flex>
+
+						{/* sort select tag */}
 						<Select
-							size="md"
+							flex={1}
 							icon={<BsFillCaretDownFill />}
-							w="300px"
 							onChange={handleSortChange}
+							value={sortAndOrder}
 						>
-							<option
-								value=""
-								selected={sortBy === "" && order === ""}
-							>
-								Sort by
-							</option>
-							<option
-								value="priceLowToHigh"
-								selected={sortBy === "price" && order === "asc"}
-							>
-								Price low to high
-							</option>
-							<option
-								value="priceHightToLow"
-								selected={sortBy === "price" && order === "des"}
-							>
-								Price hight to low
-							</option>
-							<option value="avgCustomerReview" selected={sortBy === "rating"}>
-								Avg. customer review
-							</option>
+							<option value="">Sort by</option>
+							<option value="priceLowToHigh">Price low to high</option>
+							<option value="priceHightToLow">Price hight to low</option>
+							<option value="avgCustomerReview">Avg. customer review</option>
 						</Select>
+
+						{/* small screen filter */}
+						<Box display={["block", "block", "block", "none", "none"]} flex={1}>
+							<FilterDrawer />
+						</Box>
 					</Flex>
+
+					{/* products list */}
 					{isLoading ? (
 						<>
-							<Skeleton h={"20rem"} w="full"></Skeleton>
-							<Skeleton h={"20rem"} w="full"></Skeleton>
-							<Skeleton h={"20rem"} w="full"></Skeleton>
-							<Skeleton h={"20rem"} w="full"></Skeleton>
+							<Flex flexDir={"column"} align="center" gap={4}>
+								<Skeleton h={"20rem"} w="full" rounded={"md"}></Skeleton>
+								<Skeleton h={"20rem"} w="full" rounded={"md"}></Skeleton>
+								<Skeleton h={"20rem"} w="full" rounded={"md"}></Skeleton>
+								<Skeleton h={"20rem"} w="full" rounded={"md"}></Skeleton>
+								<Skeleton h={"3rem"} w="50%" rounded={"md"}></Skeleton>
+							</Flex>
 						</>
 					) : (
-						<SimpleGrid gap={4}>
-							{products.length <= 0 ? (
-								<Flex align={"center"} justify="center" flexDir={"column"}>
-									<Text fontSize={"10rem"}>😿</Text>
-									<Heading align="center">
-										<Text>No data found with this filters</Text>
-									</Heading>
-								</Flex>
-							) : (
-								products.map((product) => {
-									return (
-										<ProductCard
-											key={product._id}
-											id={product._id}
-											title={product.title}
-											rating={product.rating}
-											number_of_reviews={product.number_of_reviews}
-											processor={product.processor}
-											OS={product.OS}
-											graphics_card={product.graphics_card}
-											memory={product.memory}
-											storage={product.storage}
-											display={product.display}
-											original_price={product.original_price}
-											discounted_price={product.discounted_price}
-											image_url={product.image_url}
-										/>
-									);
-								})
-							)}
-						</SimpleGrid>
+						<>
+							<SimpleGrid gap={4}>
+								{/* if no data found after applying filters */}
+								{products.length <= 0 ? (
+									<Flex align={"center"} justify="center" flexDir={"column"}>
+										<Text fontSize={"10rem"}>😿</Text>
+										<Heading align="center">
+											<Text>No data found</Text>
+										</Heading>
+									</Flex>
+								) : (
+									products.map(product => {
+										return (
+											// product card
+											<ProductCard
+												key={product._id}
+												id={product._id}
+												title={product.title}
+												rating={product.rating}
+												number_of_reviews={product.number_of_reviews}
+												processor={product.processor}
+												OS={product.OS}
+												graphics_card={product.graphics_card}
+												memory={product.memory}
+												storage={product.storage}
+												display={product.display}
+												original_price={product.original_price}
+												discounted_price={product.discounted_price}
+												image_url={product.image_url}
+											/>
+										);
+									})
+								)}
+							</SimpleGrid>
+
+							{/* pagination */}
+							<Flex justify={"center"}>
+								<Pagination
+									page={page}
+									totalProducts={totalProducts}
+									limit={5}
+									onChange={handlePageChange}
+									handleNext={handleNext}
+									handlePrev={handlePrev}
+								/>
+							</Flex>
+						</>
 					)}
 				</Flex>
 			</Flex>

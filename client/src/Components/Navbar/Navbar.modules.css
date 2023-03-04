@@ -1,14 +1,6 @@
 
 .logo{
-    margin-right: 5px;
     font-size: 20px;
-
-}
-.logo:nth-child(1){
-    margin-left: 20px;
-}
-.tags{
-    padding: 10px;
 }
 .inputbtn{
     margin-left: 50px;
@@ -29,10 +21,6 @@
 @media only screen and (max-width: 600px) {
     .text{
         display: none;
-    }
-    .logo{
-        font-size: 20px;
-        margin-right: 5px;
     }
     .laplogo img{
         display: none;
