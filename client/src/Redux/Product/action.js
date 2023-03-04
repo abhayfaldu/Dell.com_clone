@@ -24,7 +24,6 @@ export const getProducts =
 		axios
 			.get(`${process.env.REACT_APP_SERVER_URL}/products/all`, params)
 			.then(res => {
-				console.log(res.data);
 				dispatch(getProductsSuccessAction(res.data.products));
 			})
 			.catch(err => {

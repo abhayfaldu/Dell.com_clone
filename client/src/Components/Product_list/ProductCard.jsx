@@ -24,12 +24,13 @@ const ProductCard = props => {
 	} = props;
 
 	return (
+		// link to go to single product page
 		<Link to={`/products/${id}`}>
 			<Flex
 				flexDir={["column", "row"]}
 				shadow={"0 2px 2px #002A581a, 0 4px 4px #002A581a, 0 8px 8px #002A581a"}
 				border={"1px solid #e1e1e1"}
-				rounded={"base"}
+				rounded={"md"}
 				p={3}
 			>
 				{/* product image */}

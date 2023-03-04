@@ -4,6 +4,7 @@ import {
 	CloseIcon,
 	HamburgerIcon,
 } from "@chakra-ui/icons";
+import {BiChevronDown} from 'react-icons/bi'
 import {
 	Box,
 	Button,
@@ -11,12 +12,9 @@ import {
 	Flex,
 	Icon,
 	IconButton,
-	Input,
-	InputGroup,
-	InputLeftElement,
+	Img,
 	Menu,
 	MenuButton,
-	Center,
 	MenuItem,
 	MenuList,
 	Popover,
@@ -27,157 +25,37 @@ import {
 	useColorModeValue,
 	useDisclosure,
 } from "@chakra-ui/react";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 import { MdOutlineAccountCircle } from "react-icons/md";
 import { RiCustomerService2Fill } from "react-icons/ri";
 import { TbWorld } from "react-icons/tb";
-import { useDispatch, useSelector } from "react-redux";
-
-import { Link as Routerlink } from "react-router-dom";
-
-import {
-	Link,
-	useLocation,
-	useNavigate,
-	useSearchParams,
-} from "react-router-dom";
-import logo from "../Utils/logo.png";
+import { Link, useNavigate } from "react-router-dom";
+import logo from "../../Utils/logo.png";
 import "./Navbar.modules.css";
+import Search from "./Search";
 
 export default function Navbar() {
-	const [products, setProducts] = useState([]);
-
-	const location = useLocation();
-	const [searchParams, setSearchParams] = useSearchParams();
 	const { isOpen, onToggle } = useDisclosure();
 	const navigate = useNavigate();
 	const token = localStorage.getItem("token");
-
 	const name = JSON.parse(localStorage.getItem("firstName"));
 	const role = JSON.parse(localStorage.getItem("role"));
-	const dispatch = useDispatch();
 
-	const handleNavigate = () => {
-		navigate("/login");
-	};
+	const handleNavigate = () => navigate("/login");
 
-	const handleChpassword = () => {
-		navigate("/changepassword");
-	};
+	const handleChpassword = () => navigate("/changepassword");
 
 	const handleLogout = () => {
 		localStorage.clear();
 		navigate("/");
 	};
-	
-	const handleCart = () => {
-		navigate("/cart");
-	};
 
-
-
-	const [keyword, setKeyword] = useState("");
-	const [isInputFocused, setIsInputFocused] = useState(false);
-
-	const handleInputFocus = () => {
-		setIsInputFocused(true);
-	};
-
-	const handleInputBlur = () => {
-		setIsInputFocused(false);
-	};
-
-	const renderSuggestions = () => {
-		if (isInputFocused) {
-			return (
-				<Flex
-					flexDir={"column"}
-					border="1px solid lightgray"
-					position="relative"
-					bgColor={"#fff"}
-					shadow={"lg"}
-					borderRadius="8px"
-					mt={"8px"}
-					textAlign="left"
-				>
-					{products.map(product => (
-						<Text
-							onClick={() => navigate(`/products/${product._id}`)}
-							p={2}
-							curser={"pointer"}
-						>
-							{product.title}
-						</Text>
-					))}
-				</Flex>
-			);
-		}
-		return null;
-	};
-
-	
-
-	const getSearchResults = params => {
-		axios(`${process.env.REACT_APP_SERVER_URL}/products/all`, params)
-			.then(res => {
-				console.log("res.data", res.data.products);
-				setProducts(res.data.products);
-			})
-			.catch(err =>
-				console.log("something went wrong in getting search results", err)
-			);
-	};
-
-	
-
-	useEffect(() => {
-		const params = {
-			// 	category,
-			// 	memory,
-			// 	storage,
-		};
-		if (keyword !== "") params.keyword = keyword;
-		// if (minPrice) params["discounted_price[gte]"] = minPrice;
-		// if (maxPrice) params["discounted_price[lte]"] = maxPrice;
-		// processor && (params.processor = processor);
-		setSearchParams(params);
-	}, [
-		keyword,
-		// category, processor, memory, storage, isPriceFilterApplied
-	]);
-
-	useEffect(() => {
-		// const processor = searchParams.get("processor");
-		// console.log("processor:", processor);
-		// const discounted_price_lte = searchParams.get("discounted_price[lte]");
-		// const discounted_price_gte = searchParams.get("discounted_price[gte]");
-		const keyword = searchParams.get("keyword");
-		console.log("keyword:", keyword);
-		let paramObj = {
-			params: {
-				// category: searchParams.getAll("category"),
-				// memory: searchParams.getAll("memory"),
-				// storage: searchParams.getAll("storage"),
-				// "discounted_price[lte]": discounted_price_lte,
-				// "discounted_price[gte]": discounted_price_gte,
-			},
-		};
-		if (keyword !== "") {
-			paramObj.params.keyword = keyword;
-		}
-		// if (processor) {
-		// 	paramObj.params.processor = process	or;
-		// }
-		if (keyword !== "") {
-			getSearchResults(paramObj);
-		}
-	}, [location.search]);
+	const handleCart = () => navigate("/cart");
 
 	return (
 		<>
 			<Box>
+				{/* main nav */}
 				<Flex
 					bg={useColorModeValue("white", "gray.800")}
 					color={useColorModeValue("gray.600", "white")}
@@ -188,12 +66,10 @@ export default function Navbar() {
 					borderStyle={"solid"}
 					borderColor={useColorModeValue("gray.200", "gray.900")}
 					align={"center"}
+					justify={"space-between"}
 				>
-					<Flex
-						flex={{ base: 1, md: "auto" }}
-						ml={{ base: -2 }}
-						display={{ base: "flex", md: "none" }}
-					>
+					{/* Menu Icon for small screen */}
+					<Flex ml={{ base: -2 }} display={{ base: "flex", md: "none" }}>
 						<IconButton
 							onClick={onToggle}
 							icon={
@@ -207,86 +83,56 @@ export default function Navbar() {
 							aria-label={"Toggle Navigation"}
 						/>
 					</Flex>
-					{/* <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }} border={"1px solid red"} >
-					<Box><Routerlink to={"/"}><div className="laplogo"><img src={logo} alt="" srcset="" width={"35%"} /></div></Routerlink></Box>
-						
-								<Box justify={{ base: "center", md: "start" }}><InputGroup border={"1px solid red"} width={"100%"} >
-								<InputLeftElement pointerEvents="none">
-									<AiOutlineSearch />
-								</InputLeftElement>
-								<Input type="tel" placeholder="Search LAP-DEN"  />
-							</InputGroup></Box>
-					</Flex> */}
+
+					{/* logo */}
 					<Flex
-						color="white"
-						flex={{ base: 1 }}
-						justify={{ base: "center", md: "start" }}
+						minW="100px"
+						maxW="130px"
+						display={{ base: "none", md: "flex" }}
 					>
-						<Center w="100px">
-							<Box>
-								<Routerlink to={"/"}>
-									<div className="laplogo">
-										<img src={logo} alt="" srcset="" />
-									</div>
-								</Routerlink>
-							</Box>
-						</Center>
-						<Center>
-							<Box className="inputbtn">
-								<InputGroup
-								flexDir={"column"}
-								w="350px"
-								zIndex={1000}
-								position="absolute"
-								top={"13px"}
-							>
-								<InputLeftElement pointerEvents="none">
-									<AiOutlineSearch />
-								</InputLeftElement>
-								<Input
-									type="text"
-									onFocus={handleInputFocus}
-									onBlur={handleInputBlur}
-									placeholder="Search LAP-DEN"
-									value={keyword}
-									onChange={e => setKeyword(e.target.value)}
-								/>
-								{renderSuggestions()}
-							</InputGroup>
-							</Box>
-						</Center>
+						<Link to={"/"}>
+							<Img
+								src={logo}
+								alt="logo"
+								display={["none", "none", "block"]}
+								translate={"transform: scale(1.2)"}
+							/>
+						</Link>
 					</Flex>
-					<Stack
-						className="dropdown"
-						flex={{ base: 1, md: 0 }}
-						justify={"flex-end"}
-						direction={"row"}
-						spacing={6}
+
+					{/* search */}
+					<Flex
+						position={"relative"}
+						w={"800px"}
+						align="center"
+						display={{ base: "none", md: "none", lg: "flex" }}
 					>
+						<Search />
+					</Flex>
+
+					{/* main nav items */}
+					<Flex className="dropdown" align="center" gap={4}>
 						{token && name ? (
 							<Menu zIndex={"100"}>
 								<MenuButton>
-									<Button
-										as={"a"}
-										rightIcon={<ChevronDownIcon />}
-										fontSize={"sm"}
-										fontWeight={400}
-										variant={"link"}
-										href={"#"}
-									>
-										<div className="logo">
-											<MdOutlineAccountCircle />
-										</div>
-										<div className="text">{name}</div>
-									</Button>
+									<Flex align={"center"} gap={2}>
+										<MdOutlineAccountCircle fontSize={"18px"} />
+										<Text fontSize={"16px"}>{name}</Text>
+										<ChevronDownIcon
+											display={["none", "block", "block", "block"]}
+										/>
+									</Flex>
 								</MenuButton>
-								<MenuList>
+								<MenuList zIndex={102}>
 									<MenuItem>
 										<Button
 											onClick={handleLogout}
 											backgroundColor={"#0672cb"}
 											width={"100%"}
 											color={"white"}
+											_hover={{
+												backgroundColor: "#0076cecc",
+											}}
 										>
 											Logout
 										</Button>
@@ -313,21 +159,15 @@ export default function Navbar() {
 						) : (
 							<Menu zIndex={"100"}>
 								<MenuButton>
-									<Button
-										as={"a"}
-										rightIcon={<ChevronDownIcon />}
-										fontSize={"sm"}
-										fontWeight={400}
-										variant={"link"}
-										href={"#"}
-									>
-										<div className="logo">
-											<MdOutlineAccountCircle />
-										</div>
-										<div className="text">Sign In</div>
-									</Button>
+									<Flex align={"center"} gap={2}>
+										<MdOutlineAccountCircle fontSize={"18px"} />
+										<Text fontSize={"16px"}>Sign In</Text>
+										<ChevronDownIcon
+											display={["none", "block", "block", "block"]}
+										/>
+									</Flex>
 								</MenuButton>
-								<MenuList>
+								<MenuList zIndex={102}>
 									<MenuItem>
 										<Button
 											backgroundColor={"#0672cb"}
@@ -382,62 +222,60 @@ export default function Navbar() {
 								</MenuList>
 							</Menu>
 						)}
-						<Button
-							as={"a"}
-							fontSize={"sm"}
-							fontWeight={400}
-							variant={"link"}
-							href={"#"}
-						>
-							<div className="logo">
-								<RiCustomerService2Fill />
-							</div>
-
-							<div className="text">Contact Us</div>
-						</Button>
 						<Menu>
 							<MenuButton>
-								<Button
-									as={"a"}
-									fontSize={"sm"}
-									fontWeight={400}
-									variant={"link"}
-									href={"#"}
-								>
-									<div className="logo">
-										<TbWorld />
-									</div>
-
-									<div className="text">IN/EN</div>
-								</Button>
+								<Flex align={"center"} gap={2}>
+									<RiCustomerService2Fill fontSize={"18px"} />
+									<Text
+										fontSize={"16px"}
+										display={[ "none", "block", "block", "block" ]}
+										whiteSpace='nowrap'
+									>
+										Contact Us
+									</Text>
+								</Flex>
 							</MenuButton>
-							<MenuList display={"grid"} gridTemplateColumns={"3"}>
+						</Menu>
+						<Menu>
+							<MenuButton>
+								<Flex align={"center"} gap={2}>
+									<TbWorld fontSize={"18px"} />
+									<Text
+										fontSize={"16px"}
+										display={["none", "block", "block", "block"]}
+									>
+										IN/EN
+									</Text>
+								</Flex>
+							</MenuButton>
+							<MenuList
+								display={"grid"}
+								gridTemplateColumns={"3"}
+								zIndex={1000}
+								bgColor="white"
+							>
 								<MenuItem>
-									<Text>Your cart is empty!</Text>
+									<Text>English</Text>
 								</MenuItem>
 								<MenuItem>
-									<Text>Your cart is empty!</Text>
+									<Text>Hindi</Text>
 								</MenuItem>
 								<MenuItem>
-									<Text>Your cart is empty!</Text>
+									<Text>தமிழ்</Text>
 								</MenuItem>
 							</MenuList>
 						</Menu>
 						<Menu>
 							<MenuButton>
-								<Button
-									as={"a"}
-									fontSize={"sm"}
-									fontWeight={400}
-									variant={"link"}
-									href={"#"}
-								>
-									<div className="logo">
-										<AiOutlineShoppingCart />
-									</div>
-
-									<div className="text">Cart</div>
-								</Button>
+								<Flex align={"center"} gap={2}>
+									<AiOutlineShoppingCart fontSize={"18px"} />
+									<Text
+										fontSize={"16px"}
+										display={["none", "block", "block", "block"]}
+									>
+										Cart
+									</Text>
+								</Flex>
 							</MenuButton>
 							<MenuList>
 								<MenuItem>
@@ -453,35 +291,47 @@ export default function Navbar() {
 								<MenuItem>
 									<Text>Your cart is empty!</Text>
 								</MenuItem>
-								<MenuItem>
-									<Text></Text>
-								</MenuItem>
+								<hr />
 								<MenuItem>
 									{token && name ? (
-										<Text>
-											<hr />
-											Hello {name}
-										</Text>
+										<Text>Hello {name}</Text>
 									) : (
-										<Text>
-											<hr />
-											Sign-in to view Saved Carts
-										</Text>
+										<Text>Sign-in to view Saved Carts</Text>
 									)}
 								</MenuItem>
 							</MenuList>
 						</Menu>
-					</Stack>
+					</Flex>
 				</Flex>
 
+				{/* mobile nav */}
 				<Collapse in={isOpen} animateOpacity>
 					<MobileNav />
 				</Collapse>
 			</Box>
-			<Box className={"tags"}>
-				<Flex display={{ base: "none", md: "flex" }} ml={10}>
-					<DesktopNav />
-				</Flex>
+
+			{/* mobile search */}
+			<Flex
+				position={"relative"}
+				left={"20px"}
+				right={"30px"}
+				align="center"
+				justify={"center"}
+				h={"60px"}
+				display={{ base: "flex", md: "flex", lg: "none" }}
+			>
+				<Search />
+			</Flex>
+
+			<Box
+				borderTop={1}
+				borderStyle={"solid"}
+				borderColor={useColorModeValue("gray.200", "gray.700")}
+				display={{ base: "none", md: "flex" }}
+				py={3}
+				pl={5}
+			>
+				<DesktopNav />
 			</Box>
 		</>
 	);
@@ -493,7 +343,7 @@ const DesktopNav = () => {
 	const popoverContentBgColor = useColorModeValue("white", "gray.800");
 
 	return (
-		<Stack direction={"row"} spacing={4}>
+		<Flex gap={4}>
 			{NAV_ITEMS.map(navItem => (
 				<Box key={navItem.label}>
 					<Popover trigger={"hover"} placement={"bottom-start"}>
@@ -509,7 +359,10 @@ const DesktopNav = () => {
 									color: linkHoverColor,
 								}}
 							>
-								{navItem.label}
+								<Flex align={"center"} gap={"2px"}>
+									<Text>{navItem.label}</Text>
+									<BiChevronDown fontSize={'18px'} color={"#636363"} />
+								</Flex>
 							</Link>
 						</PopoverTrigger>
 
@@ -532,7 +385,7 @@ const DesktopNav = () => {
 					</Popover>
 				</Box>
 			))}
-		</Stack>
+		</Flex>
 	);
 };
 
@@ -564,7 +417,6 @@ const DesktopSubNav = ({ label, href, subLabel }) => {
 					_groupHover={{ opacity: "100%", transform: "translateX(0)" }}
 					justify={"flex-end"}
 					align={"center"}
-					flex={1}
 				>
 					<Icon color={"pink.400"} w={5} h={5} as={ChevronRightIcon} />
 				</Flex>
@@ -669,7 +521,6 @@ const NAV_ITEMS = [
 		children: [
 			{
 				label: "Laptops",
-
 				href: "/products",
 			},
 			{

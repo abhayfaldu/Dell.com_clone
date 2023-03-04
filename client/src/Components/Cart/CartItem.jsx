@@ -35,14 +35,15 @@ import Quantity from "./Quantity";
 // };
 
 export const CartItem = (props) => {
-  const [qty,setQty] = useState(1);
-  console.log('qty:', qty)
+
+
   const { products } = useSelector((store) => store.CartReducer);
   const {
     title,
     original_price,
     discounted_price,
     image_url,
+    items,
     _id,
   } = props;
   // console.log(_id);
@@ -73,19 +74,13 @@ export const CartItem = (props) => {
       {/* Desktop */}
       <Flex
         width="full"
-        justify="space-between"
+        gap={4}
         display={{
           base: "none",
           md: "flex",
         }}
       >
-        {/* <QuantitySelect
-          value={quantity}
-          onChange={(e) => {
-            onChangeQuantity(+e.target.value);
-          }}
-        /> */}
-        <Quantity qty={qty} setQty={setQty}  />
+        <Quantity id={_id} items={items}/>
         <PriceTag price={discounted_price} />
         <CloseButton
           aria-label={`Delete ${title} from cart`}

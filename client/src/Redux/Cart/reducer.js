@@ -11,6 +11,9 @@ import {
 	POST_CART_PRODUCTS_FAILURE,
 	POST_CART_PRODUCTS_REQUEST,
 	POST_CART_PRODUCTS_SUCCESS,
+	UPDATE_CART_ITEMS_PRODUCTS_FAILURE,
+	UPDATE_CART_ITEMS_PRODUCTS_REQUEST,
+	UPDATE_CART_ITEMS_PRODUCTS_SUCCESS,
 } from "./actionTypes";
 
 const instialState = { isLoading: false, isError: false, products: [] };
@@ -43,6 +46,13 @@ const reducer = (state = instialState, { type, payload }) => {
 		case CLEAR_CART_PRODUCTS_SUCCESS:
 			return { ...state, isLoading: false, isError: false };
 		case CLEAR_CART_PRODUCTS_FAILURE:
+			return { ...state, isLoading: false, isError: true };
+
+		case UPDATE_CART_ITEMS_PRODUCTS_REQUEST:
+			return { ...state, isLoading: true, isError: false };
+		case UPDATE_CART_ITEMS_PRODUCTS_SUCCESS:
+			return { ...state, isLoading: false, isError: false };
+		case UPDATE_CART_ITEMS_PRODUCTS_FAILURE:
 			return { ...state, isLoading: false, isError: true };
 		default:
 			return state;

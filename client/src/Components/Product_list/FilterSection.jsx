@@ -2,8 +2,6 @@ import { Box, Button, Checkbox, Flex, Heading, Input } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-// import { useRangeSlider } from "@chakra-ui/react";
-
 // style objects
 const filterBoxStyle = {
 	backgroundColor: "#f3f3f3",
@@ -20,12 +18,15 @@ const radio_input_container_style = {
 	gap: "8px",
 };
 
-const FilterSection = () => {
+const FilterSection = ({onClose, onOpen}) => {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const initialCategory = searchParams.getAll("category");
-	const [category, setCategory] = useState(initialCategory || []);
-	const [processor, setProcessor] = useState(searchParams.getAll("processor"));
-	const initialMinPrice = searchParams.get("discounted_price[gte]")
+	const [ category, setCategory ] = useState(initialCategory || []);
+	const initialProcessor = searchParams.get("processor");
+	const [processor, setProcessor] = useState(initialProcessor || "");
+	const initialPage = searchParams.get("page");
+	const [page, setPage] = useState(+initialPage || 1);
+	const initialMinPrice = searchParams.get("discounted_price[gte]");
 	const [minPrice, setMinPrice] = useState(initialMinPrice);
 	const initialMaxPrice = searchParams.get("discounted_price[lte]");
 	const [maxPrice, setMaxPrice] = useState(initialMaxPrice);
@@ -34,6 +35,8 @@ const FilterSection = () => {
 	const [memory, setMemory] = useState(initialMemory || []);
 	const initialStorage = searchParams.getAll("storage");
 	const [storage, setStorage] = useState(initialStorage || []);
+	const initialKeyword = searchParams.get("keyword");
+	const [keyword, setKeyword] = useState(initialKeyword || "");
 
 	const handleCategoryFilter = e => {
 		let newCategory = [...category];
@@ -69,20 +72,26 @@ const FilterSection = () => {
 		setStorage(newStorage);
 	};
 
+	// useEffect to send all the changes in filters to url
 	useEffect(() => {
 		const params = {
 			category,
 			memory,
-			storage
+			storage,
+			page,
 		};
-		if(minPrice) params["discounted_price[gte]"] = minPrice;
-		if(maxPrice) params["discounted_price[lte]"] = maxPrice;
+		if (keyword) {
+			params.keyword = keyword;
+		}
+		if (minPrice) params["discounted_price[gte]"] = minPrice;
+		if (maxPrice) params["discounted_price[lte]"] = maxPrice;
 		processor && (params.processor = processor);
 		setSearchParams(params);
-	}, [category, processor, memory, storage, isPriceFilterApplied]);
+	}, [category, processor, memory, storage, isPriceFilterApplied, keyword, onClose, onOpen, page]);
 
 	return (
-		<Box gap={4} flex={1} display={["none", "none", "none", "block", "block"]}>
+		<Box gap={4}>
+			{/* filter heading */}
 			<Flex
 				flexDir={"column"}
 				style={filterBoxStyle}
@@ -100,14 +109,14 @@ const FilterSection = () => {
 				<Checkbox
 					value={"Laptop"}
 					onChange={handleCategoryFilter}
-					checked={category.includes("Laptop")}
+					defaultChecked={category.includes("Laptop")}
 				>
 					Laptop
 				</Checkbox>
 				<Checkbox
 					value={"Desktop"}
 					onChange={handleCategoryFilter}
-					checked={category.includes("Desktop")}
+					defaultChecked={category.includes("Desktop")}
 				>
 					Desktop
 				</Checkbox>
@@ -123,7 +132,7 @@ const FilterSection = () => {
 						<input
 							type={"radio"}
 							name="processor"
-							value={null}
+							value={undefined}
 							defaultChecked
 						/>
 						<label>All processors</label>
@@ -226,7 +235,7 @@ const FilterSection = () => {
 					_hover={{ backgroundColor: "#0076cecc" }}
 					onClick={handlePriceChange}
 				>
-					Apply
+					Apply Price Range
 				</Button>
 			</Flex>
 
@@ -239,14 +248,14 @@ const FilterSection = () => {
 					<Checkbox
 						value={"16 GB, 2 x 8 GB, DDR4, 3200 MHz"}
 						onChange={handleMemoryFilter}
-						checked={memory.includes("16 GB, 2 x 8 GB, DDR4, 3200 MHz")}
+						defaultChecked={memory.includes("16 GB, 2 x 8 GB, DDR4, 3200 MHz")}
 					>
 						16 Gb
 					</Checkbox>
 					<Checkbox
 						value={"8 GB, 1 x 8 GB, DDR4, 3200 MHz"}
 						onChange={handleMemoryFilter}
-						checked={memory.includes("8 GB, 1 x 8 GB, DDR4, 3200 MHz")}
+						defaultChecked={memory.includes("8 GB, 1 x 8 GB, DDR4, 3200 MHz")}
 					>
 						8 Gb
 					</Checkbox>
@@ -263,7 +272,7 @@ const FilterSection = () => {
 						'256GB M.2 PCIe NVMe Solid State Drive (Boot) + 1TB 5400 rpm 2.5" SATA Hard Drive (Storage)'
 					}
 					onChange={handleStorageFilter}
-					checked={storage.includes(
+					defaultChecked={storage.includes(
 						'256GB M.2 PCIe NVMe Solid State Drive (Boot) + 1TB 5400 rpm 2.5" SATA Hard Drive (Storage)'
 					)}
 				>
@@ -272,14 +281,14 @@ const FilterSection = () => {
 				<Checkbox
 					value={"512 GB, M.2, PCIe NVMe, SSD"}
 					onChange={handleStorageFilter}
-					checked={storage.includes("512 GB, M.2, PCIe NVMe, SSD")}
+					defaultChecked={storage.includes("512 GB, M.2, PCIe NVMe, SSD")}
 				>
 					512 Gb
 				</Checkbox>
 				<Checkbox
 					value={"256 GB, M.2, PCIe NVMe, SSD"}
 					onChange={handleStorageFilter}
-					checked={storage.includes("256 GB, M.2, PCIe NVMe, SSD")}
+					defaultChecked={storage.includes("256 GB, M.2, PCIe NVMe, SSD")}
 				>
 					256 Gb
 				</Checkbox>

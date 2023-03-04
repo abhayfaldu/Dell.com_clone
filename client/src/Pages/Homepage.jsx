@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react'
 
-
-import "./Homepage.modules.css";
+import "../Components/Home/Homepage.modules.css";
 import { Box, Button, Image, Text, useDisclosure } from '@chakra-ui/react';
 import {BiCookie} from "react-icons/bi";
 import {
@@ -13,10 +12,10 @@ import {
     ModalBody,
     ModalCloseButton,
   } from '@chakra-ui/react';
-import HomeLeft from '../Components/HomeLeft';
-import HomepageCard from '../Components/HomepageCard';
+import HomeLeft from '../Components/Home/HomeLeft';
+import HomepageCard from '../Components/Home/HomepageCard';
 import Support from '../Components/Support';
-import HomeRight from '../Components/HomeRight';
+import HomeRight from '../Components/Home/HomeRight';
 import {
   Container,
   Stack,

@@ -12,7 +12,6 @@ import { formatPrice } from "./PriceTag";
 import { useSelector } from "react-redux";
 const OrderSummaryItem = (props) => {
   const { label, value, children } = props;
-  // console.log('value:', value)
   return (
     <Flex justify="space-between" fontSize="sm">
       <Text fontWeight="medium" color={mode("gray.600", "gray.400")}>
@@ -25,12 +24,10 @@ const OrderSummaryItem = (props) => {
 
 export const CartOrderSummary = () => {
   const { products } = useSelector((store) => store.CartReducer);
-  console.log("products:", products);
 
   const sum = products.reduce((accumulator, object) => {
-    return accumulator + Number(object.discounted_price);
+    return accumulator + Number(object.discounted_price) * Number(object.items);
   }, 0);
-  console.log(sum);
 
   let tax;
   products.length === 0
