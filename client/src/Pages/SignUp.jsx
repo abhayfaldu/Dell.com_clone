@@ -34,9 +34,7 @@ import { useToast } from "@chakra-ui/react";
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [data, setData] = useState({});
-
   const colSpan = useBreakpointValue({ base: 2, md: 1 });
-
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -44,17 +42,14 @@ const SignUp = () => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
 			.post(`${process.env.REACT_APP_SERVER_URL}/users/register`, data)
 			.then(res => {
 				localStorage.setItem("token", res.data.token);
-
-				console.log(res);
-
 				if (res.data.success) {
-					// alert(res.data.message);
 					toast({
 						title: "Account Created.",
 						description: res.data.message,
@@ -64,7 +59,6 @@ const SignUp = () => {
 					});
 					navigate("/login");
 				} else {
-					// alert(res.data.message);
 					toast({
 						title: "Existing User.",
 						description: res.data.message,
@@ -84,7 +78,7 @@ const SignUp = () => {
         py={0}
         direction={{ base: "column-reverse", md: "row" }}
       >
-        <VStack w="full" h="full" p={10} spacing={10} /*bg={"red.50"}*/>
+        <VStack w="full" h="full" p={10} spacing={10}>
           <VStack spacing={10} alignItems="center">
             <Image src={logo} alt="mylogo" w={200} />
 

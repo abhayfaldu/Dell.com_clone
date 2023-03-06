@@ -1,31 +1,30 @@
-
-.logo{
-    font-size: 20px;
+.logo {
+	font-size: 20px;
 }
-.inputbtn{
-    margin-left: 50px;
-    width: 600px;
+.inputbtn {
+	margin-left: 50px;
+	width: 600px;
 }
-.dropdown{
-    z-index: 5;
+.dropdown {
+	z-index: 5;
 }
-.text{
-    font-size: 16px;
+.text {
+	font-size: 16px;
 }
 @media only screen and (max-width: 1024px) {
-    .inputbtn{
-        margin-left: 50px;
-        width: 50%;
-    }
-  }
+	.inputbtn {
+		margin-left: 50px;
+		width: 50%;
+	}
+}
 @media only screen and (max-width: 600px) {
-    .text{
-        display: none;
-    }
-    .laplogo img{
-        display: none;
-    }
-    .inputbtn{
-        display: none;
-    }
-  }
+	.text {
+		display: none;
+	}
+	.laplogo img {
+		display: none;
+	}
+	.inputbtn {
+		display: none;
+	}
+}

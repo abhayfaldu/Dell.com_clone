@@ -3,7 +3,6 @@ require("dotenv").config();
 
 const authorisation = async (req, res, next) => {
 	let token = req.headers.authorization;
-	//   console.log(token);
 	if (token) {
 		await jwt.verify(token, process.env.SECRET_KEY, function (err, decode) {
 			if (err)
@@ -11,7 +10,6 @@ const authorisation = async (req, res, next) => {
 					.status(401)
 					.send({ success: false, message: "Authorization failed" });
 			else {
-				// console.log(decode._id);
 				req.body.user = decode._id;
 				next();
 			}

@@ -1,6 +1,5 @@
 import { Box, Heading } from "@chakra-ui/react";
 import React from "react";
-
 import Sidebar from "./Sidebar";
 import Chart from "react-apexcharts";
 import { useDispatch, useSelector } from "react-redux";

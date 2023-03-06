@@ -6,10 +6,8 @@ import {
   Text,
   useColorModeValue as mode,
 } from "@chakra-ui/react";
-
 import { FaArrowRight } from "react-icons/fa";
 import { formatPrice } from "./PriceTag";
-
 import { useSelector } from "react-redux";
 import { OrderS } from "../Order_Confirm/OrderS";
 import Popup from "reactjs-popup";
@@ -17,7 +15,6 @@ import "reactjs-popup/dist/index.css";
 
 const OrderSummaryItem = (props) => {
   const { label, value, children } = props;
-  // console.log('value:', value)
   return (
     <Flex justify="space-between" fontSize="sm">
       <Text fontWeight="medium" color={mode("gray.600", "gray.400")}>
@@ -30,22 +27,17 @@ const OrderSummaryItem = (props) => {
 
 export const ConfirmOrder = () => {
   const { products } = useSelector((store) => store.CartReducer);
-  console.log("products:", products);
 
   const sum = products.reduce((accumulator, object) => {
     return accumulator + Number(object.discounted_price);
   }, 0);
-  console.log(sum);
   
-
   let x = localStorage.getItem("tax");
-  console.log('x:', x)
   let total = Number(x) + sum;
- 
+
   return (
     <Stack spacing="8" borderWidth="1px" rounded="lg" padding="8" width="full">
       <Heading size="md">Order Summary</Heading>
-
       <Stack spacing="6">
         <OrderSummaryItem label="Subtotal" value={formatPrice(sum)} />
         <OrderSummaryItem label="Shipping + Tax">

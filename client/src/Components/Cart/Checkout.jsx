@@ -23,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 const Checkout = () => {
   const colSpan = useBreakpointValue({ base: 2, md: 1 });
   const navigate = useNavigate()
+
   return (
     <Container maxW="full" p={0}>
       <Flex
@@ -33,9 +34,7 @@ const Checkout = () => {
         <VStack w="full" h="full" p={10} spacing={10} /*bg={"red.50"}*/>
           <VStack spacing={10} alignItems="center">
             <Image onClick={()=>navigate("/")} src={logo} alt="mylogo" w={200} />
-
             <Heading>Shipping Information</Heading>
-
             <form style={{ width: "100%" }}>
               <SimpleGrid column={2} columnGap={3} rowGap={6} width="full">
                 <GridItem colSpan={colSpan}>
@@ -143,20 +142,6 @@ const Checkout = () => {
                   </FormControl>
                 </GridItem>
               </SimpleGrid>
-              {/* <Stack spacing={10} pt={2}>
-                <Button
-                  loadingText="Submitting"
-                  size="lg"
-                  bg={"blue.400"}
-                  color={"white"}
-                  _hover={{
-                    bg: "blue.500",
-                  }}
-                  type="submit"
-                >
-                  Create Account
-                </Button>
-              </Stack> */}
             </form>
           </VStack>
         </VStack>

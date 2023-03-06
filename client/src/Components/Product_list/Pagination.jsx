@@ -1,18 +1,24 @@
 import { Button, Flex } from "@chakra-ui/react";
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
-const Pagination = ({
-	totalProducts,
-	page,
-	limit,
-	onChange,
-	handlePrev,
-	handleNext,
-}) => {
+const Pagination = ({ page, limit, handlePrev, handleNext }) => {
+	const [nextPageLength, setNextPageLength] = useState(0);
+	useEffect(() => {
+		axios
+			.get(`${process.env.REACT_APP_SERVER_URL}/products/all?page=${page + 1}`)
+			.then(res => {
+				setNextPageLength(res.data.products.length);
+			})
+			.catch(err => {
+				console.log("something went wrong in getting products:", err);
+			});
+	}, []);
+	
 	const prev = (
 		<Button
 			onClick={handlePrev}
-			disabled={page === 1}
+			isDisabled={page === 1}
 			bgColor={"brand"}
 			color={"white"}
 			_hover={{ backgroundColor: "#0076cecc" }}
@@ -20,27 +26,10 @@ const Pagination = ({
 			Previous
 		</Button>
 	);
-	const pages = new Array(Math.ceil(totalProducts / limit))
-		.fill(0)
-		.map((el, i) => (
-			<Button
-				key={i + 1}
-				disabled={page === i + 1}
-				bgColor={page === i + 1 ? "brand" : ""}
-				color={page === i + 1 ? "white" : ""}
-				onClick={() => onChange(i + 1)}
-				_hover={{
-					backgroundColor: page === i + 1 ? "#0076cecc" : "brand",
-					color: "#fff",
-				}}
-			>
-				{i + 1}
-			</Button>
-		));
 	const next = (
 		<Button
 			onClick={handleNext}
-			disabled={page === Math.ceil(totalProducts / limit)}
+			isDisabled={nextPageLength <= 0}
 			bgColor={"brand"}
 			color={"white"}
 			_hover={{ backgroundColor: "#0076cecc" }}
@@ -52,7 +41,7 @@ const Pagination = ({
 	return (
 		<Flex gap={2} my={4}>
 			{prev}
-			{pages}
+			<Button>{page}</Button>
 			{next}
 		</Flex>
 	);

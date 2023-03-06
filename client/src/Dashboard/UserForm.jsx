@@ -14,17 +14,11 @@ import {
   SimpleGrid,
   InputLeftAddon,
   InputGroup,
-  Textarea,
 } from "@chakra-ui/react";
 import BeatLoader from "react-spinners/BeatLoader";
 import { useToast } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
 import { postProductData } from "../Redux/Admin/action";
-// import {
-//   addChildAdminProduct,
-//   addMenAdminProduct,
-//   addWomenAdminProduct,
-// } from "../Redux/Admin/action";
 
 const Form1 = ({ data, setData }) => {
   const handleChange = (e) => {
@@ -308,27 +302,6 @@ const Form3 = ({ data, setData }) => {
           </Select>
         </FormControl>
 
-        {/* <FormControl id="discription" mt={1}>
-          <FormLabel
-            fontSize="sm"
-            fontWeight="md"
-            color="gray.700"
-            _dark={{
-              color: "gray.50",
-            }}
-          >
-            Operating System
-          </FormLabel>
-          <Textarea
-            placeholder="Product Discription"
-            rows={3}
-            shadow="sm"
-            focusBorderColor="brand.400"
-            fontSize={{
-              sm: "sm",
-            }}
-          />
-        </FormControl> */}
         <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
           <FormLabel
             htmlFor="os"
@@ -399,7 +372,6 @@ export default function UserForm() {
       setProgress(33.33);
     }, 2000);
     setLoading(true);
-    console.log(data);
   };
 
   return (
@@ -464,7 +436,6 @@ export default function UserForm() {
             </Flex>
             {step === 3 ? (
               <Button
-                // w="7rem"
                 colorScheme="red"
                 variant="solid"
                 isLoading={loading}

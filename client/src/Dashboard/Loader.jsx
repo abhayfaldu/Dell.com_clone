@@ -1,6 +1,7 @@
 import { Box, Image } from "@chakra-ui/react";
 import React from "react";
 import loader from "./Utils/Loader.gif";
+
 const Loading = () => {
   return (
     <Box

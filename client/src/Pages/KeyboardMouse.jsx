@@ -14,7 +14,6 @@ import StarRatings from "react-star-ratings";
 import data from "../Utils/mouse.json";
 
 const KeyboardMouse = () => {
-  console.log(data);
   return (
     <>
       <Box>

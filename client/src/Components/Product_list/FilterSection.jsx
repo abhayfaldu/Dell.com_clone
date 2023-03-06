@@ -25,7 +25,7 @@ const FilterSection = ({onClose, onOpen}) => {
 	const initialProcessor = searchParams.get("processor");
 	const [processor, setProcessor] = useState(initialProcessor || "");
 	const initialPage = searchParams.get("page");
-	const [page, setPage] = useState(+initialPage || 1);
+	const [page] = useState(+initialPage || 1);
 	const initialMinPrice = searchParams.get("discounted_price[gte]");
 	const [minPrice, setMinPrice] = useState(initialMinPrice);
 	const initialMaxPrice = searchParams.get("discounted_price[lte]");
@@ -36,7 +36,7 @@ const FilterSection = ({onClose, onOpen}) => {
 	const initialStorage = searchParams.getAll("storage");
 	const [storage, setStorage] = useState(initialStorage || []);
 	const initialKeyword = searchParams.get("keyword");
-	const [keyword, setKeyword] = useState(initialKeyword || "");
+	const [keyword] = useState(initialKeyword || "");
 
 	const handleCategoryFilter = e => {
 		let newCategory = [...category];

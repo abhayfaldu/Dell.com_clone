@@ -49,10 +49,7 @@ const Login = () => {
     axios
 			.post(`${process.env.REACT_APP_SERVER_URL}/users/login`, data)
 			.then(res => {
-				// alert(res.data.message);
-
 				localStorage.setItem("token", res.data.token);
-				console.log("login", res.data);
 				localStorage.setItem(
 					"firstName",
 					JSON.stringify(res.data.user.first_name)
@@ -60,7 +57,6 @@ const Login = () => {
 				localStorage.setItem("role", JSON.stringify(res.data.user.role));
 
 				if (res.data.success && res.data.token) {
-					// alert(res.data.message);
 					toast({
 						title: "Successfully Logged In.",
 						description: res.data.message,
@@ -70,7 +66,6 @@ const Login = () => {
 					});
 					navigate("/");
 				} else {
-					// alert(res.data.message);
 					toast({
 						title: "Something Went Wrong.",
 						description: res.data.message,
@@ -99,7 +94,7 @@ const Login = () => {
         py={0}
         direction={{ base: "column-reverse", md: "row" }}
       >
-        <VStack w="full" h="full" p={10} spacing={10} /*bg={"red.50"}*/>
+        <VStack w="full" h="full" p={10} spacing={10} >
           <VStack spacing={10} alignItems="center">
             <Image src={logo} alt="mylogo" w={200} />
 
