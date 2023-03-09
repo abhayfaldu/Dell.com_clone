@@ -10,7 +10,6 @@ const calculatePercentDifference = (num1, num2) => {
 
 export function rupeeAmountToString(amount, isSaving = false) {
 	const amountString = amount.toFixed(2).toString();
-	// console.log('amountString:', amountString)
 	const [integerPart, fractionalPart] = amountString.split(".");
 
 	// Add commas to the integer part
@@ -18,7 +17,6 @@ export function rupeeAmountToString(amount, isSaving = false) {
 		/(\d)(?=(\d{2})+\d$)/g,
 		"$1,"
 	);
-	// console.log("integerPartWithCommas:", integerPartWithCommas);
 	if (isSaving) {
 		return integerPartWithCommas + "";
 	}

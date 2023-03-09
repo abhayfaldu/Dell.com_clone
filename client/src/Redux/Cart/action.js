@@ -17,7 +17,7 @@ import {
 	UPDATE_CART_ITEMS_PRODUCTS_SUCCESS,
 } from "./actionTypes";
 
-//post
+// post
 export const postCartProductsRequestAction = () => {
 	return { type: POST_CART_PRODUCTS_REQUEST };
 };
@@ -30,7 +30,7 @@ export const postCartProductsFailureAction = () => {
 	return { type: POST_CART_PRODUCTS_FAILURE };
 };
 
-//get
+// get
 export const getCartProductsRequestAction = () => {
 	return { type: GET_CART_PRODUCTS_REQUEST };
 };
@@ -43,7 +43,7 @@ export const getCartProductsFailureAction = () => {
 	return { type: GET_CART_PRODUCTS_FAILURE };
 };
 
-//delete
+// delete
 export const deleteCartProductsRequestAction = () => {
 	return { type: DELETE_CART_PRODUCTS_REQUEST };
 };
@@ -56,7 +56,7 @@ export const deleteCartProductsFailureAction = () => {
 	return { type: DELETE_CART_PRODUCTS_FAILURE };
 };
 
-//deleteall
+//delete all
 export const clearCartProductsRequestAction = () => {
 	return { type: CLEAR_CART_PRODUCTS_REQUEST };
 };
@@ -81,29 +81,6 @@ export const updateCartItemSuccessAction = () => {
 export const updateCartItemFailureAction = () => {
 	return { type: UPDATE_CART_ITEMS_PRODUCTS_FAILURE };
 };
-
-// <<<<<<< HEAD
-//   (title, original_price, discounted_price, image_url) => (dispatch) => {
-//     dispatch(postCartProductsRequestAction());
-//     return axios
-//       .post(
-//         "http://localhost:8080/cart/create",
-//         { title, original_price, discounted_price, image_url },
-//         {
-//           headers: {
-//             Authorization: localStorage.getItem("token"),
-//           },
-//         }
-//       )
-//       .then((res) => {
-//         console.log(res);
-//         dispatch(postCartProductsSuccessAction());
-//       })
-//       .catch((err) => {
-//         console.log("something went wrong in getting products:", err);
-//         dispatch(postCartProductsFailureAction());
-//       });
-//   };
 
 // Get Cart products
 export const getProducts = dispatch => {

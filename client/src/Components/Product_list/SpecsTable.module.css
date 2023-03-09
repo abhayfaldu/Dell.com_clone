@@ -7,6 +7,7 @@
 	width: 85px;
 	font-size: 14px;
 }
+
 .specs_table > tbody > tr > :nth-child(2) {
 	overflow: hidden;
 	display: -webkit-box;

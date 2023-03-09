@@ -1,6 +1,5 @@
 import {
   Box,
-  // Button,
   Image,
   Modal,
   ModalBody,
@@ -10,9 +9,7 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-
 import logo from "../../Utils/logo.png";
-import { Link as routerLink } from "react-router-dom";
 
 export const OrderS = () => {
   return (
@@ -21,7 +18,6 @@ export const OrderS = () => {
         isOpen={true}
         onClose={() => void 0}
         size="2xl"
-        // `trapFocus` and `blockScrollOnMount` are only switched off so that the preview works properly.
         blockScrollOnMount={false}
         trapFocus={false}
       >
@@ -56,15 +52,6 @@ export const OrderS = () => {
                   Your Order Has Been Successfully Placed
                 </Text>
               </Stack>
-
-              {/* <Button
-                fontSize="sm"
-                textAlign="center"
-                color={useColorModeValue("gray.600", "gray.400")}
-                textDecoration="underline"
-              >
-                <routerLink to="/">Go To Home</routerLink>
-              </Button> */}
             </Stack>
           </ModalBody>
         </ModalContent>

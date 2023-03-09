@@ -16,9 +16,9 @@ import {
 	UPDATE_CART_ITEMS_PRODUCTS_SUCCESS,
 } from "./actionTypes";
 
-const instialState = { isLoading: false, isError: false, products: [] };
+const initialState = { isLoading: false, isError: false, products: [] };
 
-const reducer = (state = instialState, { type, payload }) => {
+const reducer = (state = initialState, { type, payload }) => {
 	switch (type) {
 		case POST_CART_PRODUCTS_REQUEST:
 			return { ...state, isLoading: true, isError: false };

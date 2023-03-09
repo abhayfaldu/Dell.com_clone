@@ -1,24 +1,23 @@
-import { Box, Text, Button, Heading, Tooltip } from "@chakra-ui/react";
-import React from "react";
-import Sidebar from "./Sidebar";
+import { Box, Button, Heading, Tooltip } from "@chakra-ui/react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import Sidebar from "./Sidebar";
 
 import {
   Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
   TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
-import Loading from "./Loader";
 import {
   deleteUserData,
   getUserData,
   updateUserData,
 } from "../Redux/Admin/action";
+import Loading from "./Loader";
 
 const AdminCustomer = () => {
   const { users, isLoading } = useSelector((store) => store.AdminReducer);
@@ -41,7 +40,6 @@ const AdminCustomer = () => {
     dispatch(getUserData);
   }, []);
 
-  //   console.log(users);
   return (
     <Box>
       <Sidebar />
@@ -60,7 +58,6 @@ const AdminCustomer = () => {
           }}
         >
           <Table variant={"striped"} colorScheme={"linkedin"}>
-            {/* <TableCaption>Total Available Products</TableCaption> */}
             <Thead>
               <Tr bg={"#1A2A47"}>
                 <Th color={"white"}>Sr No.</Th>
@@ -68,7 +65,6 @@ const AdminCustomer = () => {
                 <Th color={"white"}>Last Name</Th>
                 <Th color={"white"}>Role</Th>
                 <Th color={"white"}>Email</Th>
-                {/* <Th>Category</Th> */}
 
                 <Th color={"white"}>Delete</Th>
               </Tr>
@@ -80,15 +76,10 @@ const AdminCustomer = () => {
                   return (
                     <Tr
                       key={i}
-                      //   colorScheme={i % 2 == 0 ? "whatsapp" : "default"}
-                      //   color={i % 2 == 0 ? "white" : "default"}
                     >
                       <Td>{i + 1}</Td>
-
                       <Td>{el.first_name}</Td>
                       <Td>{el.last_name}</Td>
-                      {/* <Td>{el.category}</Td> */}
-
                       <Td
                         onClick={() => handleUpdate(el._id, el.role)}
                         cursor={"pointer"}

@@ -1,6 +1,5 @@
 import { HStack, Text, useColorModeValue as mode } from '@chakra-ui/react'
 export function formatPrice(value, opts = {}) {
-  // console.log('value:', value)
   const { locale = 'en-IN', currency = 'INR' } = opts
   const formatter = new Intl.NumberFormat(locale, {
     currency,

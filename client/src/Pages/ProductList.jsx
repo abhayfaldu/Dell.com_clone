@@ -1,6 +1,5 @@
 import {
 	Box,
-	Button,
 	Flex,
 	Heading,
 	Select,
@@ -24,32 +23,27 @@ const ProductList = () => {
 
 	// to get everything after the `?` from url
 	const location = useLocation();
-	const [ searchParams ] = useSearchParams();
+	const [searchParams] = useSearchParams();
 	const initialMemory = searchParams.getAll("memory");
-	const [memory, setMemory] = useState(initialMemory || []);
+	const [memory] = useState(initialMemory || []);
 	const initialStorage = searchParams.getAll("storage");
-	const [storage, setStorage] = useState(initialStorage || []);
+	const [storage] = useState(initialStorage || []);
 	const initialKeyword = searchParams.get("keyword");
-	const [ keyword, setKeyword ] = useState(initialKeyword || "");
+	const [keyword] = useState(initialKeyword || "");
 	const initialCategory = searchParams.getAll("category");
-	const [category, setCategory] = useState(initialCategory || []);
+	const [category] = useState(initialCategory || []);
 	const initialMinPrice = searchParams.get("discounted_price[gte]");
 	const initialMaxPrice = searchParams.get("discounted_price[lte]");
 
 	// pagination states
 	const initialPage = searchParams.get("page");
-	const [ page, setPage ] = useState(+initialPage || 1);
-	const [totalProducts, setTotalProducts] = useState(39);
+	const [page, setPage] = useState(+initialPage || 1);
 	const { sortAndOrder, setSortAndOrder } = useState("");
 
 	// getting sort data in localStorage for using same sort on refresh
 	const [sortBy, setSortBy] = useState(localStorage.getItem("sortBy") || "");
-	const [ order, setOrder ] = useState(localStorage.getItem("order") || "");
+	const [order, setOrder] = useState(localStorage.getItem("order") || "");
 
-	// page change handler
-	const handlePageChange = newPage => {
-		setPage(newPage);
-	};
 	// prev page handler
 	const handlePrev = () => {
 		setPage(page => page - 1);
@@ -164,16 +158,11 @@ const ProductList = () => {
 
 				{/* Product list section */}
 				<Flex flexDir={"column"} flex={5} w="full" gap={3}>
-					{/* Pagination info and sort bar */}
+					{/* sort and small screen filter bar */}
 					<Flex gap={4} flexDir={["column", "row", "row"]}>
-						{/* pagination info */}
-						<Flex align="center" flex={[1, 1, 1, 2]}>
-							Pagination info
-						</Flex>
-
 						{/* sort select tag */}
 						<Select
-							flex={1}
+							flex={[1, 1, 1, 0.4, 0.3]}
 							icon={<BsFillCaretDownFill />}
 							onChange={handleSortChange}
 							value={sortAndOrder}
@@ -241,9 +230,7 @@ const ProductList = () => {
 							<Flex justify={"center"}>
 								<Pagination
 									page={page}
-									totalProducts={totalProducts}
 									limit={5}
-									onChange={handlePageChange}
 									handleNext={handleNext}
 									handlePrev={handlePrev}
 								/>

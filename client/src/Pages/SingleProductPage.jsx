@@ -1,7 +1,6 @@
 import {
 	Box,
 	Button,
-	Container,
 	Flex,
 	Heading,
 	Image,
@@ -31,7 +30,7 @@ export default function SingleProductPage() {
 	const [CarouselImage, setCarouselImage] = useState([]);
 	const toast = useToast();
 	const { id } = useParams();
-	console.log(id);
+
 	const getSingleProduct = async () => {
 		setLoader(true);
 		try {
@@ -42,7 +41,6 @@ export default function SingleProductPage() {
 			setData(data.data.product);
 			setImage(data.data.product.image_url[0]);
 			setCarouselImage(data.data.product.image_url);
-			console.log(data.data.product);
 		} catch (error) {
 			setLoader(false);
 			console.log(error);
@@ -50,7 +48,6 @@ export default function SingleProductPage() {
 	};
 
 	const getToast = (success, msg) => {
-		console.log(success, msg);
 		toast({
 			title: "Cart Status",
 			description: msg,
@@ -60,11 +57,18 @@ export default function SingleProductPage() {
 		});
 	};
 
-	const handleCart = (title, original_price, discounted_price, image_url) => {
+	const handleCart = () => {
 		dispatch(
-			addToCart(title, original_price, discounted_price, image_url, getToast)
+			addToCart(
+				data.title,
+				data.original_price,
+				data.discounted_price,
+				image,
+				getToast
+			)
 		);
 	};
+
 	useEffect(() => {
 		getSingleProduct();
 	}, [id]);
@@ -89,8 +93,13 @@ export default function SingleProductPage() {
 								>
 									{data.title}
 								</Heading>
-								<Text fontWeight={500} fontSize={"2xl"}>
-									Rating:{" "}
+								<Flex
+									fontWeight={500}
+									fontSize={"2xl"}
+									align={"center"}
+									gap={2}
+									mt={2}
+								>
 									<StarRatings
 										rating={data.rating}
 										starRatedColor="#0076ce"
@@ -99,7 +108,11 @@ export default function SingleProductPage() {
 										starDimension="20px"
 										starSpacing="1px"
 									/>
-								</Text>
+									<Text mt={"5px"}>{data.rating}</Text>
+									<Text mt={"5px"} color={"customGray"}>
+										({data.number_of_reviews})
+									</Text>
+								</Flex>
 							</Box>
 						</Flex>
 						<Flex>
@@ -107,7 +120,6 @@ export default function SingleProductPage() {
 								rounded={"md"}
 								objectFit={"contain"}
 								alt={"product image"}
-								//src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQn_P-MTW3fKeEXRxuWkMwLQXFcSinhGYGTXQ&usqp=CAU"
 								src={image}
 								fit={"cover"}
 								align={"center"}
@@ -140,52 +152,36 @@ export default function SingleProductPage() {
 							</Text>
 						</Flex>
 						<Flex>EMI starts from ₹ 24,165.83 /month</Flex>
-						<Flex>
-							<Button
-								onClick={() =>
-									handleCart(
-										data.title,
-										data.original_price,
-										data.discounted_price,
-										image
-									)
-								}
-								rounded={"none"}
-								w={"full"}
-								mt={8}
-								size={"lg"}
-								py={"7"}
-								bg={"gray.900"}
-								color={"white"}
-								textTransform={"uppercase"}
-								_hover={{
-									transform: "translateY(2px)",
-									boxShadow: "lg",
-								}}
-							>
-								Add to cart
-							</Button>
+						<Button
+							style={{ marginTop: "1rem", marginBottom: "1rem" }}
+							onClick={handleCart}
+							rounded={"md"}
+							w={"full"}
+							size={"lg"}
+							py={"7"}
+							bg={"gray.900"}
+							color={"white"}
+							textTransform={"uppercase"}
+							_hover={{
+								transform: "translateY(2px)",
+								boxShadow: "lg",
+							}}
+						>
+							Add to cart
+						</Button>
+						<Flex align={"center"} gap={2}>
+							<MdLocalShipping />
+							<Text>2-3 business days delivery</Text>
 						</Flex>
 						<Flex>
-							<Stack
-								direction="row"
-								alignItems="center"
-								justifyContent={"center"}
+							<Text
+								fontWeight={500}
+								fontSize={"xl"}
+								color={"blue"}
+								textAlign={"left"}
 							>
-								<MdLocalShipping />
-								<Text>2-3 business days delivery</Text>
-							</Stack>
-						</Flex>
-						<Flex>
-							<Stack
-								direction="row"
-								alignItems="center"
-								justifyContent={"center"}
-							>
-								<Text fontWeight={500} fontSize={"xl"} color={"blue"}>
-									Click "Buy Now" to shop this product on LAP-DEN.com
-								</Text>
-							</Stack>
+								Click "Buy Now" to shop this product on LAP-DEN.com
+							</Text>
 						</Flex>
 					</Stack>
 					<Stack spacing={{ base: 6, md: 10 }}>
@@ -203,17 +199,17 @@ export default function SingleProductPage() {
 									textTransform={"uppercase"}
 									mb={"4"}
 								>
-									Processor | Which processor is right for you?
+									Processor
 								</Text>
-								<SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
-									<Text
-										border={"1px solid blue"}
-										bg={"blue.100"}
-										padding={"10px"}
-									>
-										{data.processor}
-									</Text>
-								</SimpleGrid>
+								<Text
+									border={"1px solid blue"}
+									bg={"blue.100"}
+									padding={"10px"}
+									textAlign="left"
+									rounded={"md"}
+								>
+									{data.processor}
+								</Text>
 							</Box>
 							<Box>
 								<Text
@@ -224,17 +220,17 @@ export default function SingleProductPage() {
 									textTransform={"uppercase"}
 									mb={"4"}
 								>
-									Operating System | Which operating system is right for you?
+									Operating System
 								</Text>
-								<SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
-									<Text
-										border={"1px solid blue"}
-										bg={"blue.100"}
-										padding={"10px"}
-									>
-										{data.OS}
-									</Text>
-								</SimpleGrid>
+								<Text
+									border={"1px solid blue"}
+									bg={"blue.100"}
+									padding={"10px"}
+									textAlign="left"
+									rounded={"md"}
+								>
+									{data.OS}
+								</Text>
 							</Box>
 							<Box>
 								<Text
@@ -245,17 +241,17 @@ export default function SingleProductPage() {
 									textTransform={"uppercase"}
 									mb={"4"}
 								>
-									Graphics Card | Which graphics card is right for you?
+									Graphics Card
 								</Text>
-								<SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
-									<Text
-										border={"1px solid blue"}
-										bg={"blue.100"}
-										padding={"10px"}
-									>
-										{data.graphics_card}
-									</Text>
-								</SimpleGrid>
+								<Text
+									border={"1px solid blue"}
+									bg={"blue.100"}
+									padding={"10px"}
+									textAlign="left"
+									rounded={"md"}
+								>
+									{data.graphics_card}
+								</Text>
 							</Box>
 							<Box>
 								<Text
@@ -266,17 +262,17 @@ export default function SingleProductPage() {
 									textTransform={"uppercase"}
 									mb={"4"}
 								>
-									Memory | How much memory is right for you?
+									Memory
 								</Text>
-								<SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
-									<Text
-										border={"1px solid blue"}
-										bg={"blue.100"}
-										padding={"10px"}
-									>
-										{data.memory}
-									</Text>
-								</SimpleGrid>
+								<Text
+									border={"1px solid blue"}
+									bg={"blue.100"}
+									padding={"10px"}
+									textAlign="left"
+									rounded={"md"}
+								>
+									{data.memory}
+								</Text>
 							</Box>
 							<Box>
 								<Text
@@ -287,17 +283,17 @@ export default function SingleProductPage() {
 									textTransform={"uppercase"}
 									mb={"4"}
 								>
-									Hard Drive | How much storage is right for you?
+									Hard Drive
 								</Text>
-								<SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
-									<Text
-										border={"1px solid blue"}
-										bg={"blue.100"}
-										padding={"10px"}
-									>
-										{data.storage}
-									</Text>
-								</SimpleGrid>
+								<Text
+									border={"1px solid blue"}
+									bg={"blue.100"}
+									padding={"10px"}
+									textAlign="left"
+									rounded={"md"}
+								>
+									{data.storage}
+								</Text>
 							</Box>
 							<Box>
 								<Text
@@ -308,17 +304,17 @@ export default function SingleProductPage() {
 									textTransform={"uppercase"}
 									mb={"4"}
 								>
-									Display | Which display is right for you?
+									Display
 								</Text>
-								<SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
-									<Text
-										border={"1px solid blue"}
-										bg={"blue.100"}
-										padding={"10px"}
-									>
-										{data.display}
-									</Text>
-								</SimpleGrid>
+								<Text
+									border={"1px solid blue"}
+									bg={"blue.100"}
+									padding={"10px"}
+									textAlign="left"
+									rounded={"md"}
+								>
+									{data.display}
+								</Text>
 							</Box>
 							<Box>
 								<Text
@@ -335,7 +331,7 @@ export default function SingleProductPage() {
 								<List spacing={2} align={"start"}>
 									<ListItem>
 										<Text as={"span"} fontWeight={"bold"}>
-											Title:
+											Device:
 										</Text>{" "}
 										{data.title}
 									</ListItem>

@@ -57,7 +57,6 @@ const AdminStore = () => {
   const toast = useToast();
 
   const getToast = (success, msg) => {
-    // console.log(success, msg);
     toast({
       title: "Product Status",
       description: msg,
@@ -70,7 +69,6 @@ const AdminStore = () => {
   useEffect(() => {
     dispatch(getProductData(page, setTotalCount));
   }, [page]);
-  // console.log(totalCount);
 
   const handleDelete = (id) => {
     dispatch(deleteProductData(id, getToast)).then(() => {
@@ -99,7 +97,6 @@ const AdminStore = () => {
     });
   };
   const handleModal = (id) => {
-    // localStorage.setItem("key", id);
     setId(id);
     onOpen();
   };

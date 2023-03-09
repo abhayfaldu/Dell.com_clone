@@ -26,21 +26,17 @@ import {
   EmailIcon,
 } from "@chakra-ui/icons";
 import PersonIcon from "@mui/icons-material/Person";
-
 import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 const ChangePw = () => {
   const [showPassword, setShowPassword] = useState(false);
-
   const [data, setData] = useState({});
-
   const toast = useToast();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setData({ ...data, [name]: value });
   };
 
@@ -53,10 +49,7 @@ const ChangePw = () => {
 				},
 			})
 			.then(res => {
-				// alert(res.data.message);
-
 				if (res.data.success) {
-					// alert(res.data.message);
 					toast({
 						title: "Successfully Logged In.",
 						description: res.data.message,
@@ -66,7 +59,6 @@ const ChangePw = () => {
 					});
 					navigate("/login");
 				} else {
-					// alert(res.data.message);
 					toast({
 						title: "Something Went Wrong.",
 						description: res.data.message,
@@ -87,14 +79,6 @@ const ChangePw = () => {
 				});
 			});
   };
-
-  /*
-  const res = await axios.post('https://httpbin.org/post', body, {
-  headers: {
-    'Authorization': 'my secret token'
-  }
-});
-  */
 
   return (
     <Container maxW="full" p={0}>

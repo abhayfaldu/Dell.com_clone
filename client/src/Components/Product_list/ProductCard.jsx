@@ -1,6 +1,5 @@
 import { Box, Flex, Heading, Img, Text } from "@chakra-ui/react";
 import React from "react";
-import { MdStarBorder, MdStarHalf, MdStarRate } from "react-icons/md";
 import PriceDetails from "./PriceDetails";
 import SpecsTable from "./SpecsTable";
 import StarRatings from "react-star-ratings";

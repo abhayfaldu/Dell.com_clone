@@ -1,11 +1,8 @@
 import {
-	Box,
 	Flex,
 	HStack,
 	Icon,
 	Image,
-	// Link,
-	Stack,
 	Text,
 	useColorModeValue as mode,
 } from "@chakra-ui/react";
@@ -13,7 +10,6 @@ import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 
 function rupeeAmountToString(amount, isSaving = false) {
 	const amountString = amount.toFixed(2).toString();
-	// console.log('amountString:', amountString)
 	const [integerPart, fractionalPart] = amountString.split(".");
 
 	// Add commas to the integer part
@@ -21,7 +17,6 @@ function rupeeAmountToString(amount, isSaving = false) {
 		/(\d)(?=(\d{2})+\d$)/g,
 		"$1,"
 	);
-	// console.log("integerPartWithCommas:", integerPartWithCommas);
 	if (isSaving) {
 		return integerPartWithCommas + "";
 	}
@@ -29,15 +24,11 @@ function rupeeAmountToString(amount, isSaving = false) {
 }
 
 export const CartProductMeta = props => {
-	const {
-		// isGiftWrapping = true,
-		image,
-		name,
-		original_price,
-		discounted_price,
-	} = props;
+	const { image, name, original_price, discounted_price } = props;
 	return (
-		<Stack direction="row" spacing="5" width="full" >
+		<Flex gap="5" width="full"
+			// border={"1px solid red"}
+			w={[ "full", "full", "60%" ]}>
 			<Image
 				rounded="lg"
 				width="120px"
@@ -48,8 +39,10 @@ export const CartProductMeta = props => {
 				draggable="false"
 				loading="lazy"
 			/>
-			<Flex flexDir={"column"} gap={2} justify={'center'}>
-				<Text fontWeight="medium">{name}</Text>
+			<Flex flexDir={"column"} gap={2} justify={"center"}>
+				<Text fontWeight="medium" textAlign={"left"}>
+					{name}
+				</Text>
 				<HStack spacing="1" color={mode("gray.600", "gray.400")}>
 					<Icon as={LocalOfferIcon} boxSize="4" />
 					<Text fontSize="sm" color={"green"}>
@@ -58,6 +51,6 @@ export const CartProductMeta = props => {
 					</Text>
 				</HStack>
 			</Flex>
-		</Stack>
+		</Flex>
 	);
 };
